@@ -15,8 +15,9 @@ int main(){
     do{
        DrunkenWalk dwlk = DrunkenWalk(10,5,1,1);
 
+        cout << endl << "==========Naive==========" << endl;
 
-        int** matrix = dwlk.generate2DMap(15);
+        int** matrix = dwlk.generate2DMap(20);
 
         for(int i = 0; i < 5; i++){
             for(int j = 0; j < 10; j ++){
@@ -24,6 +25,18 @@ int main(){
             }
             cout << endl;
         }
+
+        cout << endl << "==========Predictive==========" << endl;
+        
+        int** matrix2 = dwlk.walkPathNoRetrace(20);
+
+        for(int i = 0; i < 5; i++){
+            for(int j = 0; j < 10; j ++){
+                cout << matrix2[j][i] << " ";
+            }
+            cout << endl;
+        }
+
         cout << "continue?(y|n):";
         getline( cin, temp );
         if(temp == "y"){
