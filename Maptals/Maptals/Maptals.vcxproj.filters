@@ -24,6 +24,15 @@
     <ClCompile Include="Maptal.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="Fractal.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TileSpec.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TileFactory.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include=".\DrunkenWalk.h">
@@ -32,5 +41,19 @@
     <ClInclude Include=".\Maptal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Fractal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TileSpec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\TileFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Text.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

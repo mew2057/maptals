@@ -71,11 +71,20 @@
   <ItemGroup>
     <ClCompile Include=".\EntryPoint.cpp" />
     <ClCompile Include=".\DrunkenWalk.cpp" />
+    <ClCompile Include="Fractal.cpp" />
     <ClCompile Include="Maptal.cpp" />
+    <ClCompile Include="TileFactory.cpp" />
+    <ClCompile Include="TileSpec.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include=".\DrunkenWalk.h" />
     <ClInclude Include=".\Maptal.h" />
+    <ClInclude Include="Fractal.h" />
+    <ClInclude Include=".\TileFactory.h" />
+    <ClInclude Include="TileSpec.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Text.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
