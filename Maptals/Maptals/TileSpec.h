@@ -1,0 +1,51 @@
+/*!
+* \author John Dunham
+* \date 7-1-12
+* 
+* This is a class designed to specify a set of rules for a tile in a tile based game, indicating valid tiles that follow it in the 4 cardinal directions.
+* This class should not be handled by any user of this library.
+*
+*/
+#ifndef MAPTALS_TILE_SPEC_H
+#define MAPTALS_TILE_SPEC_H
+#endif
+
+#ifndef north
+#define north 0
+#endif
+
+#ifndef east
+#define east 1
+#endif
+
+#ifndef south
+#define south 2
+#endif
+
+#ifndef west
+#define west 3
+#endif
+
+#include <cstdlib>
+#include <time.h>
+#include <vector>
+
+// TODO
+// Variable tile rarity.
+// References to other tiles.
+// Design a file format for storing alongside tile.
+// 
+class TileSpec {
+private:
+    //! Holds the valid adjacent tiles.
+    std::vector<std::vector<int>> succeedingTiles;
+
+public:    
+    int getNextTile(int direction);
+    int getNextTile(int direction, unsigned int seed);
+    void appendTile(int direction, int tile);
+    
+    TileSpec();
+    ~TileSpec();
+
+};

@@ -8,12 +8,18 @@
 * random number generator I am simply using srand and rand. -John
 *
 * Update 6-21-12 : Added the walkPathNoRetrace function in an effort to beautify the results of the map generation.
+*
+* Update 6-21-12 : I was reviewing the general algorithm for this and I realized that I implemented an additive variation of this walk.
+*                  It should be noted that the logic is unchanged, and this variation is slightly more expandable for what I want to do
+*                  with it.
 */
 #ifndef MAPTALS_DRUNKEN_WALK_H
 #define MAPTALS_DRUNKEN_WALK_H
 #endif
 
 #include "Maptal.h"
+#include <map>
+
 class DrunkenWalk: public Maptal{
     public:
         /*!
@@ -65,10 +71,21 @@ class DrunkenWalk: public Maptal{
         * acquired from this experience. However, this is not the end of my exploration and modification of this algorithm as there are still more modifications that
         * may be done to improve the produced maps.
         *
+        * 
+        *
         * \param numSteps The number of steps the algorithm should take for the map to be considered "complete".
         * \return A double pointer to the now populated map matrix.       
         */
         int** walkPathNoRetrace(int numSteps);
+
+        /**!
+        * \brief Uses the tileMap specified by the user to generate a map with the drunken walk algorithm.
+        * 
+        * \param numSteps The number of steps the algorithm should take for the map to be considered "complete".
+        * \param tileMap The Map of the tile value and TileSpec that the map will be based on.
+        * \return A double pointer to the now populated map matrix.       
+        */
+        int** walkPathWithMap(int numSteps, const std::map<int,TileSpec> tileMap);
 
         /*!
         * \brief The gettor for the matrix, ideal for reusing the map for respawn. 

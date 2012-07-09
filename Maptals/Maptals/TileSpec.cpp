@@ -1,13 +1,4 @@
-#include "TileSpec.h"
-
-int TileSpec::getTileValue(){
-    return tileValue;
-}
-
-void TileSpec::setTileValue(int newVal){
-    tileValue = newVal;
-}
-    
+#include "TileSpec.h" 
 
 int TileSpec::getNextTile(int direction){
     unsigned int defaultSeed = static_cast<unsigned int>(time(NULL));
@@ -33,7 +24,6 @@ void TileSpec::appendTile(int direction, int tile){
 
 TileSpec::TileSpec(){
     succeedingTiles = std::vector<std::vector<int>>(4, std::vector<int>(0));
-    tileValue = -1;
 }
 
 TileSpec::~TileSpec(){
