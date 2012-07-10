@@ -50,6 +50,9 @@
     <ClInclude Include=".\TileFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MaptalsHeaders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Text.txt">

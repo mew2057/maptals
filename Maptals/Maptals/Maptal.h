@@ -1,6 +1,5 @@
 #ifndef MAPTALS_MAPTAL_H
 #define MAPTALS_MAPTAL_H
-#endif
 
 #include <cstdlib>
 #include <time.h>
@@ -26,3 +25,5 @@ class Maptal{
         int width;
         int** matrix;
 };
+
+#endif

@@ -6,25 +6,15 @@
 * This class should not be handled by any user of this library.
 *
 */
+
 #ifndef MAPTALS_TILE_SPEC_H
 #define MAPTALS_TILE_SPEC_H
-#endif
 
-#ifndef north
 #define north 0
-#endif
-
-#ifndef east
 #define east 1
-#endif
-
-#ifndef south
 #define south 2
-#endif
-
-#ifndef west
 #define west 3
-#endif
+
 
 #include <cstdlib>
 #include <time.h>
@@ -49,3 +39,5 @@ public:
     ~TileSpec();
 
 };
+
+#endif

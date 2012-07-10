@@ -1,6 +1,4 @@
 #include "DrunkenWalk.h"
-#include "TileSpec.h"
-
 #define doubleRate 2
 
 
@@ -90,7 +88,7 @@ int** DrunkenWalk::walkPathNoRetrace(int numSteps){
 
      //! Seed the random number generator.
     srand(time(NULL));
-    
+
     //! A short for maintaining the las direction moved to prevent the algorithm from doubleing back on itself.
     short lastDirection=-1;
 
@@ -163,17 +161,18 @@ int** DrunkenWalk::walkPathNoRetrace(int numSteps){
 }
 
 int** DrunkenWalk::walkPathWithMap(int numSteps, const std::map<int,TileSpec> tileMap){
-     //! This clears the field (ensuring any height or width changes are reflected in the new map.
+  
+    
+    //TODO pull from map.
+    int tileID=0;
+   //! This clears the field (ensuring any height or width changes are reflected in the new map.
     //! The the freshly defined map is "zeroed", or each index is set to minValue-1.
     removeMatrix();
     zeroMatrix();
 
-     //! Seed the random number generator.
+    //! Seed the random number generator.
     srand(time(NULL));
     
-    //! A short for maintaining the las direction moved to prevent the algorithm from doubleing back on itself.
-    short lastDirection=-1;
-
     //! Set the step related values: zeroes the step count.
     int stepsTaken = 0;
 
@@ -185,46 +184,42 @@ int** DrunkenWalk::walkPathWithMap(int numSteps, const std::map<int,TileSpec> ti
     
     //! Randomly set the y start point.
     int y = rand() % (height);
-        
+    
     //! Sets the difference in the ids to reduce the number of computations in the loop.
     int valueDiff = maxValue - minValue + 1;
-
+    int direction=-1;
     //! The failure sentinel.
     bool failed = true;
 
     while (stepsTaken < numberSteps){
         // Get a random number from 0-3 and react accordingly.
-        switch (rand() % doubleRate || lastDirection == -1 ? rand() % 4 : lastDirection){
+        switch ((direction=rand()%4)){
             // North - step up.
             case north:
-                if(y != height-1 && lastDirection != south){
+                if(y != height-1){
                     y++;
                     failed = false;
-                    lastDirection=north;
                 }
                 break;
             // East - step right.
             case east:
-                if(x != width-1 && lastDirection != west){
+                if(x != width-1){
                     x++;
                     failed = false;
-                    lastDirection=east;
                 }
                 break;
             // South - step down.
             case south:
-                if(y != 0 && lastDirection != north){
+                if(y != 0){
                     y--;
                     failed = false;
-                    lastDirection=south;
                 }
                 break;
             // West - step left.
             case west:
-                if(x != 0 && lastDirection != east){
+                if(x != 0){
                     x--;
                     failed = false;
-                    lastDirection=west;
                 }
                 break;
             default:
@@ -232,13 +227,13 @@ int** DrunkenWalk::walkPathWithMap(int numSteps, const std::map<int,TileSpec> ti
         }
         //! If the new position is not out of bounds and the matrix at that point is empty add a new value there.
         if(!failed && matrix[x][y] == emptyValue) {
-            matrix[x][y] = rand() % valueDiff + minValue;
+           tileID= static_cast<TileSpec>(tileMap.at(tileID)).getNextTile(direction);
+            matrix[x][y] = tileID;
             stepsTaken++;
         }
 
         failed = true;
     }
-
     return matrix;
 }
 
