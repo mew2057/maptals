@@ -16,6 +16,9 @@
 * Warning:
 * If a tile doesn't have a tile ID associated with a direction other than its own, that ID can potentially dominate the tile maps!
 */
+#ifndef MAPTALS_TILE_FACTORY_H
+#define MAPTALS_TILE_FACTORY_H
+
 #include <map>
 #include "TileSpec.h"
 #include <string>
@@ -39,3 +42,5 @@ private:
     */
     static TileSpec TileFactory::appendCardinality(std::string tileString);
 };
+
+#endif

@@ -81,6 +81,7 @@
     <ClInclude Include=".\Maptal.h" />
     <ClInclude Include="Fractal.h" />
     <ClInclude Include=".\TileFactory.h" />
+    <ClInclude Include="MaptalsHeaders.h" />
     <ClInclude Include="TileSpec.h" />
   </ItemGroup>
   <ItemGroup>

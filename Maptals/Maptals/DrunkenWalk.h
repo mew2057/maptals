@@ -15,10 +15,10 @@
 */
 #ifndef MAPTALS_DRUNKEN_WALK_H
 #define MAPTALS_DRUNKEN_WALK_H
-#endif
 
 #include "Maptal.h"
 #include <map>
+#include "TileSpec.h"
 
 class DrunkenWalk: public Maptal{
     public:
@@ -94,3 +94,5 @@ class DrunkenWalk: public Maptal{
         **/
         int** get2DMap();  
 };
+
+#endif
