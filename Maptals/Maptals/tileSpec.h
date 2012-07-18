@@ -19,6 +19,8 @@
 #include <cstdlib>
 #include <time.h>
 #include <vector>
+#include <iostream>
+
 
 // TODO
 // Variable tile rarity.
@@ -38,6 +40,7 @@ public:
     TileSpec();
     ~TileSpec();
 
+    friend std::ostream& operator<< ( std::ostream& outputStream, TileSpec& specification );
 };
 
 #endif

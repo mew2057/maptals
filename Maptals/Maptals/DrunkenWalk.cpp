@@ -1,11 +1,6 @@
 #include "DrunkenWalk.h"
 #define doubleRate 2
 
-struct predictor{
-    short direction;
-    short timesTaken;
-};
-
 int** DrunkenWalk::generate2DMap(int numSteps){
     //! This clears the field (ensuring any height or width changes are reflected in the new map.
     //! The the freshly defined map is "zeroed", or each index is set to minValue-1.
@@ -225,14 +220,12 @@ int** DrunkenWalk::walkPathWithMap(int numSteps, const std::map<int,TileSpec> ti
         }
         //! If the new position is not out of bounds and the matrix at that point is empty add a new value there.
         if(!failed && matrix[x][y] == emptyValue) {
-
             // This prevents fatal crashes due to poorly organized constraints. 
             // Please note, this makes the remainder of the ma a standard drunken walk with one tile.
             if(tileMap.find(tileID) != tileMap.end())
                tileID= static_cast<TileSpec>(tileMap.find(tileID)->second).getNextTile(direction);
             else
                 ;//TODO add exception.
-            
             matrix[x][y] = tileID;
             stepsTaken++;
         }

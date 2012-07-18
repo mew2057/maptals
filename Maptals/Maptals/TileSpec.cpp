@@ -12,7 +12,7 @@ int TileSpec::getNextTile(int direction, unsigned int seed){
 
     if(direction < succeedingTiles.size())
     {
-        return succeedingTiles.at(direction).at(rand() % succeedingTiles.at(direction).size());
+        return succeedingTiles[direction][rand() % succeedingTiles[direction].size()];
     }
     else
     {
@@ -22,8 +22,7 @@ int TileSpec::getNextTile(int direction, unsigned int seed){
 
 void TileSpec::appendTile(int direction, int tile){
     if(direction < succeedingTiles.size())
-        succeedingTiles.at(direction).push_back(tile);
-    //TODO add error condition.    
+        succeedingTiles[direction].push_back(tile);
 }
 
 TileSpec::TileSpec(){
@@ -31,4 +30,12 @@ TileSpec::TileSpec(){
 }
 
 TileSpec::~TileSpec(){
+}
+
+std::ostream& operator<< ( std::ostream& outputStream, TileSpec& specification ){
+    return outputStream << " North : \n" 
+                        << specification.succeedingTiles[0].size() << "\n East: \n"
+                        << specification.succeedingTiles[1].size() << "\n West: \n"
+                        << specification.succeedingTiles[2].size() << "\n South: \n"
+                        << specification.succeedingTiles[3].size() << "\n";
 }

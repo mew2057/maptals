@@ -28,7 +28,7 @@ std::map<int,TileSpec> TileFactory::generateTileMap(std::string fileName){
 
     while(tileNode !=0)
     {
-        istringstream(tileNode->first_attribute("id")->name()) >> currentTile;
+        istringstream(tileNode->first_attribute("id")->value()) >> currentTile;
         
         tileValueNode=tileNode->first_node();
 
