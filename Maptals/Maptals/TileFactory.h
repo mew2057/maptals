@@ -1,18 +1,17 @@
 /*!
 * \author John Dunham
-* \date 7-6-12
+* \date 7-18-12
 *
-* A factory for deserializing and creating tile specification maps to be used in Maptal algorithms.
-* A properly formatted data file example follows.
+* The following factory generates a tile map from a user supplied xml file, the xml file currently follows the following standards:
+* 
+* <tileset> is the root directory in the DOM, this should contain the following attributes:
 *
-* General Template:
-* TileID | direction{ TileID, TileID, TileID } direction{...} ... ;
+* <tile> is the root of a tile definition, the following attributes are valid:
+*   id:<int> The tileid of the tile (must be an integer)
 *
-* Sample:
-* 0| 0{1,2} 1{0,2} 2{0} 3{0,1,2};
-* 1| 0{0,1} 1{2} 3{0,1};
-* 2| 0{1} 1{2} 2{2,0} 3{0,1,2};
+* <north>,<south>,<east>,<west> cardinality tags defined within a tile tree.
 *
+* <nextTile> An array element between the cardinality tags, should contain the id of a valid tile as the value.
 * Warning:
 * If a tile doesn't have a tile ID associated with a direction other than its own, that ID can potentially dominate the tile maps!
 */
@@ -22,6 +21,8 @@
 #include <map>
 #include "TileSpec.h"
 #include <string>
+#include "rapidxml-1.13\rapidxml.hpp"
+
 
 
 
@@ -36,11 +37,12 @@ public:
 
 private:
     /*!
-    * \brief A function that generates a TileSpec object from a serialized tileString.
-    * \param tileString The line from the serialized file to be made into the tileSpec object (will contain cardinal data).
-    * \return The TileSpec generated from the given string.
+    * \brief A function that generates a TileSpec object from an xml root node.
+    * \param tileNode The root of the xml tree for a particular tileNode.
+    * \return The TileSpec generated from the root tileNode.
     */
-    static TileSpec TileFactory::appendCardinality(std::string tileString);
+    static TileSpec TileFactory::appendCardinality(rapidxml::xml_node<> *tileNode);
+
 };
 
 #endif

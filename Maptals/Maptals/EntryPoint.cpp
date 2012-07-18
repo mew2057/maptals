@@ -12,7 +12,7 @@ int main(){
     int maxValue = 1;
     string temp;
     bool cont;
-    std::map<int,TileSpec> tMap= TileFactory::generateTileMap("Text.txt");
+    std::map<int,TileSpec> tMap= TileFactory::generateTileMap("tileset.xml");
     do{
        DrunkenWalk dwlk = DrunkenWalk(10,5,1,1);
 

@@ -2,88 +2,76 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <algorithm>
 using namespace std;
 
-#define TILE_SEPARATOR '|'
-#define SUCCESSOR_TILE_START '{'
-#define SUCCESSOR_TILE_END '}'
-#define TILE_DELIMITER ','
-#define LINE_SEPARTOR ';'
-
-
 std::map<int,TileSpec> TileFactory::generateTileMap(std::string fileName){
-    std::ifstream tileFile =std::ifstream(fileName);
-
-    std::string fileContents;
-
     std::map<int, TileSpec> tileMap;
 
-    int delimiterLocation =0;
-    
-    int currentTile = 0;
+    std::ifstream tileFile =std::ifstream(fileName);
 
+    int currentTile;
+    
     istringstream stringconvertor;
 
-    while(std::getline(tileFile, fileContents,LINE_SEPARTOR)){
+    rapidxml::xml_document<> tileSet;
 
-        std::remove (fileContents.begin(),fileContents.end(),' ');
+    rapidxml::xml_node<> *tileNode;
+    rapidxml::xml_node<> *tileValueNode;
+    
+    vector<char> xmlDoc((istreambuf_iterator<char>(tileFile)), istreambuf_iterator<char>( ));  
+
+    xmlDoc.push_back('\0');
+
+    tileSet.parse<0>(&xmlDoc[0]);
+       
+    tileNode = tileSet.first_node("tileset")->first_node("tile");
+
+    while(tileNode !=0)
+    {
+        istringstream(tileNode->first_attribute("id")->name()) >> currentTile;
         
-        delimiterLocation = fileContents.find_first_of(TILE_SEPARATOR);
+        tileValueNode=tileNode->first_node();
 
-        stringconvertor = istringstream(fileContents.substr(0,delimiterLocation));
-        
-        stringconvertor >> currentTile;        
+        tileMap.insert(std::pair<int,TileSpec>(currentTile, appendCardinality(tileValueNode)));       
 
-        fileContents.erase(0,delimiterLocation + 1);
-
-        tileMap.insert(std::pair<int,TileSpec>(currentTile, appendCardinality(fileContents)));
-
+        tileNode=tileNode->next_sibling("tile");
     }
 
     return tileMap;
+
 }
 
-TileSpec TileFactory::appendCardinality(std::string tileString){
-    TileSpec specification;    
-    
-    int direction;
-    int location;
-    int tile;
-    istringstream stringconvertor;
-    string successorTiles;
+TileSpec TileFactory::appendCardinality(rapidxml::xml_node<> *tileNode){
+        TileSpec specification;    
+        string dir;
+        int direction;
+        int nextTile;
 
-    while((location = tileString.find_first_of(SUCCESSOR_TILE_START)) != -1)
-    {
-        stringconvertor =  istringstream(tileString.substr(0,location));
+        rapidxml::xml_node<> *tempNode;
 
-        tileString.erase(0,location + 1);
-
-        if((location = tileString.find_first_of(SUCCESSOR_TILE_END)) != -1)
+        while(tileNode !=0)
         {
-            successorTiles = tileString.substr(0,location);
+            dir=tileNode->name();
+
+            if(dir=="north")
+                direction=north;
+            else if(dir=="south")
+                direction=south;
+            else if(dir=="east")
+                direction=east;
+            else if(dir=="west")
+                direction=west;
+
+            tempNode=tileNode->first_node("nextTile");
+
+            while(tempNode != 0)
+            {
+                istringstream(tempNode->value()) >> nextTile;
+                specification.appendTile(direction,nextTile);
+                tempNode=tempNode->next_sibling("nextTile");
+            }
+
+            tileNode=tileNode->next_sibling();
         }
-        
-        tileString.erase(0,location + 1);
-       
-        stringconvertor >> direction;
-        
-        while((location = successorTiles.find_first_of(TILE_DELIMITER)) != -1)
-        {
-            stringconvertor =  istringstream(successorTiles.substr(0,location));
-            
-            successorTiles.erase(0,location + 1);
-
-            stringconvertor >> tile;
-
-            specification.appendTile(direction, tile);
-        }
-        stringconvertor =  istringstream(successorTiles);
-            
-        stringconvertor >> tile;
-
-        specification.appendTile(direction, tile);
-    }
-
-    return specification;
+        return specification;
 }
