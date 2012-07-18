@@ -14,6 +14,8 @@ class Maptal{
         void setMaxValue(int max);
         void setHeight(int height);
         void setWidth(int width);
+        void toMappy();
+        void toTMX();
 
     protected:
         void zeroMatrix();
