@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tileset>
+  <tile>
+    <tileid>0</tileid>
+    <north>1,2,3</north>
+    <east>0,2,5</east>
+    <south>0</south>
+    <west>0,1,2</west>
+  </tile>
+
+  <tile>
+    <tileid>1</tileid>
+    <north>4</north>
+    <east>5</east>
+    <south>5</south>
+    <west>5</west>
+  </tile>
+
+  <tile>
+    <tileid>2</tileid>
+    <north>1</north>
+    <east>2</east>
+    <south>2,3</south>
+    <west>0,1,2</west>
+  </tile>
+
+  <tile>
+    <tileid>3</tileid>
+    <north>1,3,4</north>
+    <east>2,4,0</east>
+    <south>0,1</south>
+    <west>2,3,4</west>
+  </tile>
+
+  <tile>
+    <tileid>4</tileid>
+    <north>1</north>
+    <east>2</east>
+    <south>3</south>
+    <west>5</west>
+  </tile>
+
+  <tile>
+    <tileid>5</tileid>
+    <north>4</north>
+    <east>3</east>
+    <south>2</south>
+    <west>1</west>
+  </tile>
+</tileset>

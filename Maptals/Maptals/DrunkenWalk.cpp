@@ -1,7 +1,5 @@
 #include "DrunkenWalk.h"
 #define doubleRate 2
-#include <iostream>
-
 
 struct predictor{
     short direction;
