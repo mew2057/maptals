@@ -6,15 +6,38 @@
 * This class should not be handled by any user of this library.
 *
 */
+
 #ifndef MAPTALS_TILE_SPEC_H
 #define MAPTALS_TILE_SPEC_H
-#endif
+
+#define north 0
+#define east 1
+#define south 2
+#define west 3
+
+
+#include <cstdlib>
+#include <time.h>
+#include <vector>
 
 // TODO
-// Tile Value.
-// Valid directions.
 // Variable tile rarity.
 // References to other tiles.
-// Randomizer for next tile (e.g. getNextTile(int dir)).
 // Design a file format for storing alongside tile.
 // 
+class TileSpec {
+private:
+    //! Holds the valid adjacent tiles.
+    std::vector<std::vector<int>> succeedingTiles;
+
+public:    
+    int getNextTile(int direction);
+    int getNextTile(int direction, unsigned int seed);
+    void appendTile(int direction, int tile);
+    
+    TileSpec();
+    ~TileSpec();
+
+};
+
+#endif

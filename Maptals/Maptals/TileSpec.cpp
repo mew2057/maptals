@@ -11,9 +11,13 @@ int TileSpec::getNextTile(int direction, unsigned int seed){
     srand(seed);
 
     if(direction < succeedingTiles.size())
-        return rand()%succeedingTiles.at(direction).size();
+    {
+        return succeedingTiles.at(direction).at(rand() % succeedingTiles.at(direction).size());
+    }
     else
+    {
         return -1;
+    }
 }
 
 void TileSpec::appendTile(int direction, int tile){

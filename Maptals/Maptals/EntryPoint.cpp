@@ -14,7 +14,7 @@ int main(){
     bool cont;
     std::map<int,TileSpec> tMap= TileFactory::generateTileMap("Text.txt");
     do{
-       DrunkenWalk dwlk = DrunkenWalk(10,5,1,5);
+       DrunkenWalk dwlk = DrunkenWalk(10,5,1,1);
 
         std::cout << endl << "==========Naive==========" << endl;
 
@@ -27,7 +27,7 @@ int main(){
             std::cout << endl;
         }
 
-        std::cout << endl << "==========Predictive==========" << endl;
+        std::cout << endl << "=========\"Predictive\"=========" << endl;
         
         int** matrix2 = dwlk.walkPathNoRetrace(20);
 
