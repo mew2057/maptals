@@ -1,5 +1,6 @@
 #include "DrunkenWalk.h"
 #define doubleRate 2
+#include <iostream>
 
 
 struct predictor{
@@ -161,11 +162,10 @@ int** DrunkenWalk::walkPathNoRetrace(int numSteps){
 }
 
 int** DrunkenWalk::walkPathWithMap(int numSteps, const std::map<int,TileSpec> tileMap){
-  
-    
-    //TODO pull from map.
-    int tileID=0;
-   //! This clears the field (ensuring any height or width changes are reflected in the new map.
+    //! This grabs the first tile id listed in the tile map, this is the lowest numeric id in the tileset.
+    int tileID=tileMap.begin()->first;
+
+    //! This clears the field (ensuring any height or width changes are reflected in the new map.
     //! The the freshly defined map is "zeroed", or each index is set to minValue-1.
     removeMatrix();
     zeroMatrix();
@@ -227,7 +227,14 @@ int** DrunkenWalk::walkPathWithMap(int numSteps, const std::map<int,TileSpec> ti
         }
         //! If the new position is not out of bounds and the matrix at that point is empty add a new value there.
         if(!failed && matrix[x][y] == emptyValue) {
-           tileID= static_cast<TileSpec>(tileMap.at(tileID)).getNextTile(direction);
+
+            // This prevents fatal crashes due to poorly organized constraints. 
+            // Please note, this makes the remainder of the ma a standard drunken walk with one tile.
+            if(tileMap.find(tileID) != tileMap.end())
+               tileID= static_cast<TileSpec>(tileMap.find(tileID)->second).getNextTile(direction);
+            else
+                ;//TODO add exception.
+            
             matrix[x][y] = tileID;
             stepsTaken++;
         }
