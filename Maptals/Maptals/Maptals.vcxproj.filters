@@ -9,32 +9,32 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Header Files\rapidxml">
       <UniqueIdentifier>{4e8dc3b3-045d-4302-be5d-01e0a5b07d45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include=".\EntryPoint.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Header Files\Resource Files</Filter>
     </ClCompile>
     <ClCompile Include=".\DrunkenWalk.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Header Files\Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="Maptal.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Header Files\Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="Fractal.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Header Files\Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="TileSpec.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Header Files\Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="TileFactory.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Header Files\Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

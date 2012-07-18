@@ -1,50 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tileset>
-  <tile>
-    <tileid>0</tileid>
-    <north>1,2,3</north>
-    <east>0,2,5</east>
-    <south>0</south>
-    <west>0,1,2</west>
+  <tile id="0">
+    <north>
+      <nextTile>1</nextTile>
+      <nextTile>2</nextTile>
+      <nextTile>5</nextTile>
+    </north>
+    <east>
+      <nextTile>2</nextTile>
+      <nextTile>3</nextTile>
+      <nextTile>4</nextTile>
+    </east>
+    <south>
+      <nextTile>0</nextTile>      
+    </south>
+    <west>
+      <nextTile>1</nextTile>
+      <nextTile>2</nextTile>
+      <nextTile>0</nextTile>
+    </west>
   </tile>
 
-  <tile>
-    <tileid>1</tileid>
-    <north>4</north>
-    <east>5</east>
-    <south>5</south>
-    <west>5</west>
+  <tile id="1">
+    <north>
+      <nextTile>4</nextTile>
+    </north>
+    <east>
+      <nextTile>5</nextTile>
+    </east>
+    <south>
+      <nextTile>4</nextTile>
+    </south>
+    <west>
+      <nextTile>5</nextTile>
+    </west>
   </tile>
 
-  <tile>
-    <tileid>2</tileid>
-    <north>1</north>
-    <east>2</east>
-    <south>2,3</south>
-    <west>0,1,2</west>
+  <tile id="2">
+    <north>
+      <nextTile>1</nextTile>
+    </north>
+    <east>
+      <nextTile>2</nextTile>
+    </east>
+    <south>
+      <nextTile>5</nextTile>
+      <nextTile>3</nextTile>
+    </south>
+    <west>
+      <nextTile>4</nextTile>
+      <nextTile>2</nextTile>
+      <nextTile>1</nextTile>
+    </west>
   </tile>
 
-  <tile>
-    <tileid>3</tileid>
-    <north>1,3,4</north>
-    <east>2,4,0</east>
-    <south>0,1</south>
-    <west>2,3,4</west>
+  <tile id="3">
+    <north>
+      <nextTile>1</nextTile>
+      <nextTile>3</nextTile>
+      <nextTile>4</nextTile>
+    </north>
+    <east>
+      <nextTile>0</nextTile>
+      <nextTile>2</nextTile>
+      <nextTile>4</nextTile>
+    </east>
+    <south>
+      <nextTile>0</nextTile>
+      <nextTile>1</nextTile>
+    </south>
+    <west>
+      <nextTile>3</nextTile>
+      <nextTile>2</nextTile>
+      <nextTile>4</nextTile>
+    </west>
   </tile>
 
-  <tile>
-    <tileid>4</tileid>
-    <north>1</north>
-    <east>2</east>
-    <south>3</south>
-    <west>5</west>
+  <tile id="4">
+    <north>
+      <nextTile>1</nextTile>
+    </north>
+    <east>
+      <nextTile>2</nextTile>
+    </east>
+    <south>
+      <nextTile>3</nextTile>
+    </south>
+    <west>
+      <nextTile>5</nextTile>
+    </west>
   </tile>
 
-  <tile>
-    <tileid>5</tileid>
-    <north>4</north>
-    <east>3</east>
-    <south>2</south>
-    <west>1</west>
+  <tile id="5">
+    <north>
+      <nextTile>4</nextTile>
+    </north>
+    <east>
+      <nextTile>3</nextTile>
+    </east>
+    <south>
+      <nextTile>2</nextTile>
+    </south>
+    <west>
+      <nextTile>1</nextTile>
+    </west>
   </tile>
 </tileset>
