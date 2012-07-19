@@ -31,12 +31,14 @@ class TileSpec {
 private:
     //! Holds the valid adjacent tiles.
     std::vector<std::vector<int>> succeedingTiles;
+    std::vector<int> validDirections;
 
 public:    
     int getNextTile(int direction);
     int getNextTile(int direction, unsigned int seed);
     void appendTile(int direction, int tile);
-    
+    int getNextDirection();
+
     TileSpec();
     ~TileSpec();
 

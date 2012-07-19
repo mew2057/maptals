@@ -155,10 +155,12 @@ int** DrunkenWalk::walkPathNoRetrace(int numSteps){
     return matrix;
 }
 
-int** DrunkenWalk::walkPathWithMap(int numSteps, const std::map<int,TileSpec> tileMap){
+int** DrunkenWalk::walkPathWithMap(const std::map<int,TileSpec> tileMap){
     //! This grabs the first tile id listed in the tile map, this is the lowest numeric id in the tileset.
     int tileID=4;
 
+    TileSpec currentTile=tileMap.find(tileID)->second;
+    emptyValue=-1;
     //! This clears the field (ensuring any height or width changes are reflected in the new map.
     //! The the freshly defined map is "zeroed", or each index is set to minValue-1.
     removeMatrix();
@@ -170,54 +172,52 @@ int** DrunkenWalk::walkPathWithMap(int numSteps, const std::map<int,TileSpec> ti
     //! Set the step related values: zeroes the step count.
     int stepsTaken = 0;
 
-    int tempID;
-
-    //! Ensures the number of steps is positive and not greater than the size of the map.
-    int numberSteps = abs(numSteps) < width*height ? abs(numSteps) :width*height;
-
-   
     //! Randomly set the x start point.
     int x = 0;
     
     //! Randomly set the y start point.
     int y = height-1;
 
-
-    std::cout << "x: " << x << " y: " << y << std::endl; 
-    
-    //! Sets the difference in the ids to reduce the number of computations in the loop.
-    int valueDiff = maxValue - minValue + 1;
     int direction=-1;
+    
     //! The failure sentinel.
     bool failed = true;
 
-    while (stepsTaken < numberSteps){
+ 
+    matrix[x][y]=tileID;
+
+
+    while (x < width-1){
         // Get a random number from 0-3 and react accordingly.
-        switch ((direction=rand()%4)){
+        switch (direction=currentTile.getNextDirection()){
             // North - step up.
             case north:
-                if(y != height-1){
-                    y++;
+                if(y > 0){
+                    y--;
                     failed = false;
                 }
                 break;
             // East - step right.
             case east:
-                if(x != width-1){
+                if(x < width-1){
                     x++;
                     failed = false;
+                }
+                else{
+                    x++;
+                    continue;
                 }
                 break;
             // South - step down.
             case south:
-                if(y != 0){
-                    y--;
+                if(y < height-1){
+                    y++;
                     failed = false;
                 }
                 break;
             // West - step left.
             case west:
-                if(x != 0){
+                if(x > 0){
                     x--;
                     failed = false;
                 }
@@ -225,27 +225,28 @@ int** DrunkenWalk::walkPathWithMap(int numSteps, const std::map<int,TileSpec> ti
             default:
                 break;
         }
+
+        std::cout<< direction<<std::endl;
         //! If the new position is not out of bounds and the matrix at that point is empty add a new value there.
         if(!failed && matrix[x][y] == emptyValue) {
             // This prevents fatal crashes due to poorly organized constraints. 
             // Please note, this makes the remainder of the ma a standard drunken walk with one tile.
             if(tileMap.find(tileID) != tileMap.end()){
-               tempID =static_cast<TileSpec>(tileMap.find(tileID)->second).getNextTile(direction);
+               tileID = static_cast<TileSpec>(tileMap.find(tileID)->second).getNextTile(direction);
+
+               if (tileID == INT_MIN)
+                exit(0); //This is a major violation and indicates a bad tile specification
+
+               currentTile=tileMap.find(tileID)->second;
             }
             else
                 ;//TODO add exception.
-
-            if(tempID <0 && tempID != INT_MIN){
-                tileID = static_cast<TileSpec>(tileMap.find(tileID)->second).getNextTile(tempID);
-            }
-            else if (tempID == INT_MIN)
-                break; //This is a major violation
-
+            std::cout << "x: " << x << " y: " << y << std::endl;
             matrix[x][y] = tileID;
-            stepsTaken++;
         }
 
         failed = true;
+
     }
     return matrix;
 }
