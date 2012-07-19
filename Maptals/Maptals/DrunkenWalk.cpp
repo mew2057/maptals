@@ -1,5 +1,6 @@
 #include "DrunkenWalk.h"
 #define doubleRate 2
+#include <iostream>
 
 int** DrunkenWalk::generate2DMap(int numSteps){
     //! This clears the field (ensuring any height or width changes are reflected in the new map.
@@ -156,7 +157,7 @@ int** DrunkenWalk::walkPathNoRetrace(int numSteps){
 
 int** DrunkenWalk::walkPathWithMap(int numSteps, const std::map<int,TileSpec> tileMap){
     //! This grabs the first tile id listed in the tile map, this is the lowest numeric id in the tileset.
-    int tileID=tileMap.begin()->first;
+    int tileID=4;
 
     //! This clears the field (ensuring any height or width changes are reflected in the new map.
     //! The the freshly defined map is "zeroed", or each index is set to minValue-1.
@@ -169,14 +170,20 @@ int** DrunkenWalk::walkPathWithMap(int numSteps, const std::map<int,TileSpec> ti
     //! Set the step related values: zeroes the step count.
     int stepsTaken = 0;
 
+    int tempID;
+
     //! Ensures the number of steps is positive and not greater than the size of the map.
     int numberSteps = abs(numSteps) < width*height ? abs(numSteps) :width*height;
 
+   
     //! Randomly set the x start point.
-    int x = rand() % (width);
+    int x = 0;
     
     //! Randomly set the y start point.
-    int y = rand() % (height);
+    int y = height-1;
+
+
+    std::cout << "x: " << x << " y: " << y << std::endl; 
     
     //! Sets the difference in the ids to reduce the number of computations in the loop.
     int valueDiff = maxValue - minValue + 1;
@@ -222,10 +229,18 @@ int** DrunkenWalk::walkPathWithMap(int numSteps, const std::map<int,TileSpec> ti
         if(!failed && matrix[x][y] == emptyValue) {
             // This prevents fatal crashes due to poorly organized constraints. 
             // Please note, this makes the remainder of the ma a standard drunken walk with one tile.
-            if(tileMap.find(tileID) != tileMap.end())
-               tileID= static_cast<TileSpec>(tileMap.find(tileID)->second).getNextTile(direction);
+            if(tileMap.find(tileID) != tileMap.end()){
+               tempID =static_cast<TileSpec>(tileMap.find(tileID)->second).getNextTile(direction);
+            }
             else
                 ;//TODO add exception.
+
+            if(tempID <0 && tempID != INT_MIN){
+                tileID = static_cast<TileSpec>(tileMap.find(tileID)->second).getNextTile(tempID);
+            }
+            else if (tempID == INT_MIN)
+                break; //This is a major violation
+
             matrix[x][y] = tileID;
             stepsTaken++;
         }
