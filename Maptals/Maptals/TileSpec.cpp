@@ -1,5 +1,7 @@
 #include "TileSpec.h" 
 
+#include <iostream>
+
 int TileSpec::getNextTile(int direction){
     unsigned int defaultSeed = static_cast<unsigned int>(time(NULL));
 
@@ -10,13 +12,26 @@ int TileSpec::getNextTile(int direction){
 int TileSpec::getNextTile(int direction, unsigned int seed){
     srand(seed);
 
-    if(direction < succeedingTiles.size())
+    if(direction < succeedingTiles.size() && succeedingTiles[direction].size() > 0)
     {
         return succeedingTiles[direction][rand() % succeedingTiles[direction].size()];
     }
+    else if(direction < 0 && direction > -5)
+    {
+           return succeedingTiles[(direction*-1)-1][rand() % succeedingTiles[(direction*-1)-1].size()];
+    }
     else
     {
-        return -1;
+  /*      int newDir = (direction+1)%4;
+        
+        while(newDir!=direction && succeedingTiles[newDir].size() <= 0){
+           newDir=(newDir+1)%4;
+        }
+
+        if(newDir==direction)*/
+            return INT_MIN;
+    /*    else
+            return (-1*newDir)-1;*/
     }
 }
 

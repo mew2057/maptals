@@ -68,6 +68,12 @@
     <ClInclude Include="rapidxml-1.13\rapidxml.hpp">
       <Filter>Header Files\rapidxml</Filter>
     </ClInclude>
+    <ClInclude Include="TMXWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TileSet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Text.txt">
@@ -81,5 +87,10 @@
     <Xml Include=".\tileset.xml">
       <Filter>Source Files</Filter>
     </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="testTile.png">
+      <Filter>Source Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

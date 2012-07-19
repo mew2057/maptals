@@ -1,108 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tileset>
+<tileset emptyTile="5" startTile="4" imageSource="TestTile.png" tileWidth="32" tileHeight="32" >  
   <tile id="0">
     <north>
-      <nextTile>1</nextTile>
-      <nextTile>2</nextTile>
-      <nextTile>5</nextTile>
-    </north>
-    <east>
-      <nextTile>2</nextTile>
-      <nextTile>3</nextTile>
-      <nextTile>4</nextTile>
-    </east>
-    <south>
-      <nextTile>0</nextTile>      
-    </south>
-    <west>
-      <nextTile>1</nextTile>
-      <nextTile>2</nextTile>
       <nextTile>0</nextTile>
-    </west>
+      <nextTile>1</nextTile>
+    </north>
   </tile>
 
   <tile id="1">
-    <north>
-      <nextTile>4</nextTile>
-    </north>
     <east>
-      <nextTile>5</nextTile>
-    </east>
-    <south>
       <nextTile>4</nextTile>
-    </south>
-    <west>
-      <nextTile>5</nextTile>
-    </west>
+    </east>
   </tile>
 
   <tile id="2">
-    <north>
-      <nextTile>1</nextTile>
-    </north>
     <east>
-      <nextTile>2</nextTile>
+      <nextTile>5</nextTile>
     </east>
     <south>
-      <nextTile>5</nextTile>
-      <nextTile>3</nextTile>
-    </south>
-    <west>
-      <nextTile>4</nextTile>
       <nextTile>2</nextTile>
-      <nextTile>1</nextTile>
-    </west>
+    </south>
   </tile>
 
   <tile id="3">
-    <north>
-      <nextTile>1</nextTile>
-      <nextTile>3</nextTile>
-      <nextTile>4</nextTile>
-    </north>
-    <east>
-      <nextTile>0</nextTile>
-      <nextTile>2</nextTile>
-      <nextTile>4</nextTile>
-    </east>
     <south>
-      <nextTile>0</nextTile>
-      <nextTile>1</nextTile>
-    </south>
-    <west>
-      <nextTile>3</nextTile>
       <nextTile>2</nextTile>
-      <nextTile>4</nextTile>
-    </west>
+    </south>
   </tile>
 
   <tile id="4">
-    <north>
-      <nextTile>1</nextTile>
-    </north>
-    <east>
-      <nextTile>2</nextTile>
-    </east>
-    <south>
-      <nextTile>3</nextTile>
-    </south>
     <west>
-      <nextTile>5</nextTile>
+      <nextTile>4</nextTile>
+      <nextTile>3</nextTile>
     </west>
   </tile>
 
   <tile id="5">
-    <north>
-      <nextTile>4</nextTile>
-    </north>
-    <east>
-      <nextTile>3</nextTile>
+   <east>
+      <nextTile>0</nextTile>
     </east>
-    <south>
-      <nextTile>2</nextTile>
-    </south>
-    <west>
-      <nextTile>1</nextTile>
-    </west>
   </tile>
+  
 </tileset>

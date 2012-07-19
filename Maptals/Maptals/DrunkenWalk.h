@@ -19,7 +19,6 @@
 #include "Maptal.h"
 #include <map>
 #include "TileSpec.h"
-
 class DrunkenWalk: public Maptal{
     public:
         /*!
