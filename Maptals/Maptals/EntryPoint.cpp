@@ -40,7 +40,7 @@ int main(){
 
         std::cout << endl << "==========Mapped==========" << endl;
         
-        int** matrix3 = dwlk.walkPathWithMap(20,tMap);
+        int** matrix3 = dwlk.walkPathWithMap(tMap);
 
         for(int i = 0; i < 5; i++){
             for(int j = 0; j < 10; j ++){

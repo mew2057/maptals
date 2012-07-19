@@ -80,11 +80,10 @@ class DrunkenWalk: public Maptal{
         /**!
         * \brief Uses the tileMap specified by the user to generate a map with the drunken walk algorithm.
         * 
-        * \param numSteps The number of steps the algorithm should take for the map to be considered "complete".
         * \param tileMap The Map of the tile value and TileSpec that the map will be based on.
         * \return A double pointer to the now populated map matrix.       
         */
-        int** walkPathWithMap(int numSteps, const std::map<int,TileSpec> tileMap);
+        int** walkPathWithMap(const std::map<int,TileSpec> tileMap);
 
         /*!
         * \brief The gettor for the matrix, ideal for reusing the map for respawn. 

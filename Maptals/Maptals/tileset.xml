@@ -23,16 +23,19 @@
   </tile>
 
   <tile id="3">
+    <east>
+      <nextTile>5</nextTile>
+    </east>
     <south>
       <nextTile>2</nextTile>
     </south>
   </tile>
 
   <tile id="4">
-    <west>
+    <east>
       <nextTile>4</nextTile>
       <nextTile>3</nextTile>
-    </west>
+    </east>
   </tile>
 
   <tile id="5">
