@@ -44,9 +44,6 @@
     <ClInclude Include=".\Maptal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Fractal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TileSpec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -72,6 +69,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TileSet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Fractal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

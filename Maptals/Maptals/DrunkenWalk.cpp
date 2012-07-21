@@ -226,7 +226,6 @@ int** DrunkenWalk::walkPathWithMap(const std::map<int,TileSpec> tileMap){
                 break;
         }
 
-        std::cout<< direction<<std::endl;
         //! If the new position is not out of bounds and the matrix at that point is empty add a new value there.
         if(!failed && matrix[x][y] == emptyValue) {
             // This prevents fatal crashes due to poorly organized constraints. 
@@ -241,7 +240,7 @@ int** DrunkenWalk::walkPathWithMap(const std::map<int,TileSpec> tileMap){
             }
             else
                 ;//TODO add exception.
-            std::cout << "x: " << x << " y: " << y << std::endl;
+
             matrix[x][y] = tileID;
         }
 

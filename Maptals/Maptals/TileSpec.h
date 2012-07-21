@@ -19,6 +19,8 @@
 #include <cstdlib>
 #include <time.h>
 #include <vector>
+#include <iostream>
+
 
 // TODO
 // Variable tile rarity.
@@ -29,15 +31,18 @@ class TileSpec {
 private:
     //! Holds the valid adjacent tiles.
     std::vector<std::vector<int>> succeedingTiles;
+    std::vector<int> validDirections;
 
 public:    
     int getNextTile(int direction);
     int getNextTile(int direction, unsigned int seed);
     void appendTile(int direction, int tile);
-    
+    int getNextDirection();
+
     TileSpec();
     ~TileSpec();
 
+    friend std::ostream& operator<< ( std::ostream& outputStream, TileSpec& specification );
 };
 
 #endif
