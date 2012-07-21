@@ -5,7 +5,7 @@
 
 class TMXWriter{
 public:
-    void write();
+    void writeTileset();
 };
 
 #endif

@@ -18,15 +18,14 @@
 #ifndef MAPTALS_TILE_FACTORY_H
 #define MAPTALS_TILE_FACTORY_H
 
-#include <map>
 #include "TileSpec.h"
-#include <string>
+#include "TileSet.h"
 #include "rapidxml-1.13\rapidxml.hpp"
+#include <string>
+#include <map>
 
-
-
-
-class TileFactory{
+class TileFactory
+{
 public:
     /*!
     * \brief A deserializer that converts the file contents into a map with the tile value as the key and the tileSpec as the value.
@@ -41,8 +40,10 @@ private:
     * \param tileNode The root of the xml tree for a particular tileNode.
     * \return The TileSpec generated from the root tileNode.
     */
-    static TileSpec TileFactory::appendCardinality(rapidxml::xml_node<> *tileNode);
+    static TileSpec appendCardinality(rapidxml::xml_node<> *tileNode);
 
+    
+    static TileSet initializeTileSet(const rapidxml::xml_node<> *headerNode);
 };
 
 #endif

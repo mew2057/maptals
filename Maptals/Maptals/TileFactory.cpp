@@ -7,7 +7,7 @@ using namespace std;
 std::map<int,TileSpec> TileFactory::generateTileMap(std::string fileName){
     std::map<int, TileSpec> tileMap;
 
-    std::ifstream tileFile =std::ifstream(fileName);
+    std::ifstream tileFile=std::ifstream(fileName);
 
     int currentTile;
     
@@ -24,7 +24,11 @@ std::map<int,TileSpec> TileFactory::generateTileMap(std::string fileName){
 
     tileSet.parse<0>(&xmlDoc[0]);
        
-    tileNode = tileSet.first_node("tileset")->first_node("tile");
+    tileNode = tileSet.first_node("tileset");
+
+    initializeTileSet(tileNode);
+
+    tileNode=tileNode->first_node("tile");
 
     while(tileNode !=0)
     {
@@ -75,3 +79,22 @@ TileSpec TileFactory::appendCardinality(rapidxml::xml_node<> *tileNode){
         }
         return specification;
 }
+
+TileSet TileFactory::initializeTileSet(const rapidxml::xml_node<> *headerNode){
+    TileSet newSet;
+
+    rapidxml::xml_attribute<char> *currentAttribute = headerNode->first_attribute();
+
+    string attributeName;
+
+    while(currentAttribute != 0){
+        attributeName=currentAttribute->name();
+
+        if(attributeName=="horizon"){
+            ;
+        }
+
+        currentAttribute=currentAttribute->next_attribute();
+    }
+    return newSet;
+};
