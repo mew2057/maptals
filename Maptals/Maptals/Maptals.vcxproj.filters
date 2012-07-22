@@ -36,6 +36,9 @@
     <ClCompile Include="TileFactory.cpp">
       <Filter>Header Files\Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="TileSet.cpp">
+      <Filter>Header Files\Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include=".\DrunkenWalk.h">

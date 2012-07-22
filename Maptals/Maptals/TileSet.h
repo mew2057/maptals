@@ -24,25 +24,35 @@ public:
     //! \return The imagePath field.
     std::string getImagePath();
 
-    void setImagePath(std::string imagePath);
+    void setImagePath(std::string path);
     
     //! \brief The so called empty tile.
     //! \return The emptyTile field.
     int getEmptyTile();
 
-    void setEmptyTile(int emptyTile);
+    void setEmptyTile(int empty);
 
     //! \brief The tile that the map should begin with.
     //! \return The startTile field.
     int getStartTile();
 
-    void setStartTile(int startTile);
+    void setStartTile(int start);
 
     //! \brief The division of the map (y value in tiles for the starting location).
     //! \return The horizon field.
     int getHorizon();
     
-    void setHorizon(int horizon);
+    void setHorizon(int horiz);
+
+    void appendTileSpec(int tileID, TileSpec specification);
+
+    std::map<int,TileSpec> getTileMap();
+
+    TileSet();
+    ~TileSet();
+
+    friend std::ostream& operator<< ( std::ostream& outputStream, TileSet& set );
+    
 
 private:
     //! The tilemap containing tile rules for use with map generators.

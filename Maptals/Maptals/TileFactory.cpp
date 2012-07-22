@@ -4,29 +4,31 @@
 #include <sstream>
 using namespace std;
 
-std::map<int,TileSpec> TileFactory::generateTileMap(std::string fileName){
+TileSet TileFactory::generateTileSet(std::string fileName){
     std::map<int, TileSpec> tileMap;
-
+    
     std::ifstream tileFile=std::ifstream(fileName);
 
     int currentTile;
     
     istringstream stringconvertor;
 
-    rapidxml::xml_document<> tileSet;
+    //! Start xml initialization.
 
-    rapidxml::xml_node<> *tileNode;
-    rapidxml::xml_node<> *tileValueNode;
+    rapidxml::xml_document<> xmlTileSet;
+    rapidxml::xml_node<> * tileNode, * tileValueNode;
     
     vector<char> xmlDoc((istreambuf_iterator<char>(tileFile)), istreambuf_iterator<char>( ));  
 
     xmlDoc.push_back('\0');
 
-    tileSet.parse<0>(&xmlDoc[0]);
+    xmlTileSet.parse<0>(&xmlDoc[0]);
        
-    tileNode = tileSet.first_node("tileset");
+    tileNode = xmlTileSet.first_node("tileset");
 
-    initializeTileSet(tileNode);
+    //!End XML Initialization.
+
+    TileSet tileSet = initializeTileSet(tileNode);
 
     tileNode=tileNode->first_node("tile");
 
@@ -36,12 +38,12 @@ std::map<int,TileSpec> TileFactory::generateTileMap(std::string fileName){
         
         tileValueNode=tileNode->first_node();
 
-        tileMap.insert(std::pair<int,TileSpec>(currentTile, appendCardinality(tileValueNode)));       
+        tileSet.appendTileSpec(currentTile, appendCardinality(tileValueNode));
 
         tileNode=tileNode->next_sibling("tile");
     }
 
-    return tileMap;
+    return tileSet;
 
 }
 
@@ -84,17 +86,45 @@ TileSet TileFactory::initializeTileSet(const rapidxml::xml_node<> *headerNode){
     TileSet newSet;
 
     rapidxml::xml_attribute<char> *currentAttribute = headerNode->first_attribute();
-
-    string attributeName;
+    
+    std::string attributeName;
+    
+    int attributeValue;
 
     while(currentAttribute != 0){
         attributeName=currentAttribute->name();
-
-        if(attributeName=="horizon"){
-            ;
+        
+        istringstream(currentAttribute->value()) >> attributeValue;      
+        
+        if(attributeName=="horizon")
+        {
+            newSet.setHorizon(attributeValue);
+        }
+        else if (attributeName == "emptyTile")
+        {
+            newSet.setEmptyTile(attributeValue);
+        }
+         else if (attributeName == "startTile")
+        {
+            newSet.setStartTile(attributeValue);
+        }
+         else if (attributeName == "imagePath")
+        {
+            newSet.setImagePath(currentAttribute->value());
+        }
+          else if (attributeName == "tileWidth")
+        {
+            newSet.setTileWidth(attributeValue);
+        }
+          else if (attributeName == "tileHeight")
+        {
+            newSet.setTileHeight(attributeValue);
         }
 
         currentAttribute=currentAttribute->next_attribute();
     }
+
+    std::cout << newSet;
+
     return newSet;
 };

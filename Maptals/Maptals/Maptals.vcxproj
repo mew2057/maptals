@@ -74,6 +74,7 @@
     <ClCompile Include="Fractal.cpp" />
     <ClCompile Include="Maptal.cpp" />
     <ClCompile Include="TileFactory.cpp" />
+    <ClCompile Include="TileSet.cpp" />
     <ClCompile Include="TileSpec.cpp" />
   </ItemGroup>
   <ItemGroup>
