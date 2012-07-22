@@ -19,6 +19,7 @@
 #include "Maptal.h"
 #include <map>
 #include "TileSpec.h"
+#include "TileSet.h"
 class DrunkenWalk: public Maptal{
     public:
         /*!
@@ -27,15 +28,15 @@ class DrunkenWalk: public Maptal{
         **/
         DrunkenWalk():Maptal(){}
 
+
         /*!
         * \brief This is the Overloaded constructor, it takes in the base elements of a drunken walk map generation.
         *
         * \param width The width of the map to be generated.
         * \param height The height of the map to be generated.
-        * \param minValue The minimum id for drunken walk generation.
-        * \param maxValue The maximum id for drunken walk generation.
+        * \param tileSet The tileSet the walk will be generated from.
         **/
-        DrunkenWalk(int width, int height, int minValue, int maxValue):Maptal(width, height, minValue, maxValue){}
+        DrunkenWalk(int width, int height,TileSet tileSet):Maptal(width, height, tileSet){}
 
         /*!
         * \brief This generation takes roughly O(n) to O(n^2) time to execute (I haven't done full calculations at the time of this write up 6-18-12).
@@ -54,8 +55,8 @@ class DrunkenWalk: public Maptal{
         * \param numSteps The number of steps the algorithm should take for the map to be considered "complete".
         * \return A double pointer to the now populated map matrix.        
         **/
-        int** generate2DMap(int numSteps);        
-        
+        //int** walkPathNaive(int numSteps);
+    
         /*!
         * \brief A variation on the basic drunken walk that adds a variable to prevent the walk from doubling back to the drunken walk.
         *
@@ -75,22 +76,22 @@ class DrunkenWalk: public Maptal{
         * \param numSteps The number of steps the algorithm should take for the map to be considered "complete".
         * \return A double pointer to the now populated map matrix.       
         */
-        int** walkPathNoRetrace(int numSteps);
+        //int** walkPathNoRetrace(int numSteps);
 
         /**!
-        * \brief Uses the tileMap specified by the user to generate a map with the drunken walk algorithm.
+        * \brief Uses the tileSet specified by the user to generate a map with the drunken walk algorithm.
         * 
-        * \param tileMap The Map of the tile value and TileSpec that the map will be based on.
+        * \param tileSet
         * \return A double pointer to the now populated map matrix.       
         */
-        int** walkPathWithMap(const std::map<int,TileSpec> tileMap);
+        //int** walkPathWithTileSet(TileSet tileSet);
 
         /*!
-        * \brief The gettor for the matrix, ideal for reusing the map for respawn. 
-        * \return The map matrix, performs no procedural operation to recieve the map.
-        * XXX should this be in Maptal (probably).
-        **/
-        int** get2DMap();  
+        * This uses the inherent tileSet associated with the object to generate the map.
+        */
+        std::vector<std::vector<int>> generate2DMap();        
+
+      
 };
 
 #endif
