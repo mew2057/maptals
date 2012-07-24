@@ -71,11 +71,28 @@
   <ItemGroup>
     <ClCompile Include=".\EntryPoint.cpp" />
     <ClCompile Include=".\DrunkenWalk.cpp" />
+    <ClCompile Include=".\base64\Base64.h" />
+    <ClCompile Include="base64\Base64.cpp" />
     <ClCompile Include="Fractal.cpp" />
     <ClCompile Include="Maptal.cpp" />
     <ClCompile Include="TileFactory.cpp" />
     <ClCompile Include="TileSet.cpp" />
     <ClCompile Include="TileSpec.cpp" />
+    <ClCompile Include="zlib-1.2.7\adler32.c" />
+    <ClCompile Include="zlib-1.2.7\compress.c" />
+    <ClCompile Include="zlib-1.2.7\crc32.c" />
+    <ClCompile Include="zlib-1.2.7\deflate.c" />
+    <ClCompile Include="zlib-1.2.7\gzclose.c" />
+    <ClCompile Include="zlib-1.2.7\gzlib.c" />
+    <ClCompile Include="zlib-1.2.7\gzread.c" />
+    <ClCompile Include="zlib-1.2.7\gzwrite.c" />
+    <ClCompile Include="zlib-1.2.7\infback.c" />
+    <ClCompile Include="zlib-1.2.7\inffast.c" />
+    <ClCompile Include="zlib-1.2.7\inflate.c" />
+    <ClCompile Include="zlib-1.2.7\inftrees.c" />
+    <ClCompile Include="zlib-1.2.7\trees.c" />
+    <ClCompile Include="zlib-1.2.7\uncompr.c" />
+    <ClCompile Include="zlib-1.2.7\zutil.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include=".\DrunkenWalk.h" />
@@ -90,6 +107,17 @@
     <ClInclude Include="TileSet.h" />
     <ClInclude Include="TileSpec.h" />
     <ClInclude Include="TMXWriter.h" />
+    <ClInclude Include="zlib-1.2.7\crc32.h" />
+    <ClInclude Include="zlib-1.2.7\deflate.h" />
+    <ClInclude Include="zlib-1.2.7\gzguts.h" />
+    <ClInclude Include="zlib-1.2.7\inffast.h" />
+    <ClInclude Include="zlib-1.2.7\inffixed.h" />
+    <ClInclude Include="zlib-1.2.7\inflate.h" />
+    <ClInclude Include="zlib-1.2.7\inftrees.h" />
+    <ClInclude Include="zlib-1.2.7\trees.h" />
+    <ClInclude Include="zlib-1.2.7\zconf.h" />
+    <ClInclude Include="zlib-1.2.7\zlib.h" />
+    <ClInclude Include="zlib-1.2.7\zutil.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="rapidxml-1.13\license.txt" />
@@ -102,6 +130,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="testTile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

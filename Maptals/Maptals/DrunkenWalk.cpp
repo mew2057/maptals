@@ -321,6 +321,7 @@ std::vector<std::vector<int>> DrunkenWalk::generate2DMap()
             default:
                 break;
         }
+                std::cout << direction;
 
         //! If the new position is not out of bounds and the matrix at that point is empty add a new value there.
         if(!failed && matrix[y][x] == tileSet.getEmptyTile()) {

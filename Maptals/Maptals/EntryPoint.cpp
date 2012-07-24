@@ -6,8 +6,8 @@ using namespace std;
 #include "DrunkenWalk.h"
 #include "TileFactory.h"
 int main(){
-	int height = 10;
-    int width = 5;
+	int height = 6;
+    int width = 20;
     int minValue = 1;
     int maxValue = 1;
     string temp;
@@ -51,9 +51,10 @@ int main(){
 
         std::cout << endl << "==========Tile Set==========" << endl;
         
-        DrunkenWalk dwalk = DrunkenWalk(height,width, tSet);
+        DrunkenWalk dwalk = DrunkenWalk(width,height, tSet);
 
         std::vector<std::vector<int>> matrix4 = dwalk.generate2DMap();
+        cout << endl;
 
           for(int i = 0; i < matrix4.size(); i++){
             for(int j = 0; j < matrix4[i].size(); j ++){
@@ -62,7 +63,8 @@ int main(){
             std::cout << endl;
         }
 
-          dwalk.toTMX();
+        dwalk.toTMX();
+
         std::cout << "continue?(y|n):";
        std::getline( cin, temp );
         if(temp == "y"){

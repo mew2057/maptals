@@ -16,6 +16,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\zlib">
+      <UniqueIdentifier>{e3692425-0647-4163-a52a-01a1ef700b78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\base64">
+      <UniqueIdentifier>{82c047bf-fcf6-4109-8d37-05be447f260c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include=".\EntryPoint.cpp">
@@ -38,6 +44,57 @@
     </ClCompile>
     <ClCompile Include="TileSet.cpp">
       <Filter>Header Files\Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib-1.2.7\crc32.c">
+      <Filter>Header Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib-1.2.7\deflate.c">
+      <Filter>Header Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib-1.2.7\gzclose.c">
+      <Filter>Header Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib-1.2.7\infback.c">
+      <Filter>Header Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib-1.2.7\inffast.c">
+      <Filter>Header Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib-1.2.7\inflate.c">
+      <Filter>Header Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib-1.2.7\inftrees.c">
+      <Filter>Header Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib-1.2.7\trees.c">
+      <Filter>Header Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib-1.2.7\uncompr.c">
+      <Filter>Header Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib-1.2.7\zutil.c">
+      <Filter>Header Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include=".\base64\Base64.h">
+      <Filter>Header Files\base64</Filter>
+    </ClCompile>
+    <ClCompile Include="base64\Base64.cpp">
+      <Filter>Header Files\base64</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib-1.2.7\gzread.c">
+      <Filter>Header Files\base64</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib-1.2.7\gzwrite.c">
+      <Filter>Header Files\base64</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib-1.2.7\gzlib.c">
+      <Filter>Header Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib-1.2.7\compress.c">
+      <Filter>Header Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib-1.2.7\adler32.c">
+      <Filter>Header Files\zlib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +134,39 @@
     <ClInclude Include="Fractal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="zlib-1.2.7\crc32.h">
+      <Filter>Header Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib-1.2.7\deflate.h">
+      <Filter>Header Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib-1.2.7\gzguts.h">
+      <Filter>Header Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib-1.2.7\inffast.h">
+      <Filter>Header Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib-1.2.7\inffixed.h">
+      <Filter>Header Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib-1.2.7\inflate.h">
+      <Filter>Header Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib-1.2.7\inftrees.h">
+      <Filter>Header Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib-1.2.7\trees.h">
+      <Filter>Header Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib-1.2.7\zconf.h">
+      <Filter>Header Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib-1.2.7\zlib.h">
+      <Filter>Header Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib-1.2.7\zutil.h">
+      <Filter>Header Files\zlib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Text.txt">
@@ -95,5 +185,8 @@
     <Image Include="testTile.png">
       <Filter>Source Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
