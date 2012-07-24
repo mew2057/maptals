@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tileset emptyTile="6" startTile="4" imagePath="TestTile.png" tileWidth="32" tileHeight="32" horizon="1">  
+<tileset emptyTile="6" startTile="4" imagePath="TestTile.png" tileWidth="32" tileHeight="32" horizon="1" imageHeight="64" imageWidth="128">  
   <tile id="0">
     <north>
       <nextTile>0</nextTile>

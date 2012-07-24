@@ -30,7 +30,7 @@ public:
     /*!
     * \brief A deserializer that converts the file contents into a map with the tile value as the key and the tileSpec as the value.
     * \param fileName The name of the file to be converted.
-    * \return The tileset gnerated from the file.
+    * \return The tileset generated from the file.
     */
     static TileSet generateTileSet(std::string fileName);
 

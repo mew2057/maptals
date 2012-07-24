@@ -44,6 +44,14 @@ public:
     
     void setHorizon(int horiz);
 
+    int getImageHeight();
+    
+    void setImageHeight(int height);
+
+    int getImageWidth();
+    
+    void setImageWidth(int width);
+
     void appendTileSpec(int tileID, TileSpec specification);
 
     std::map<int,TileSpec> getTileMap();
@@ -75,6 +83,12 @@ private:
     
     //! The division of the map (y value in tiles for the starting location).
     int horizon;
+
+    //! The height of the tileset image in pixels.
+    int imageHeight;
+
+    //! The width of the tileset image in pixels.
+    int imageWidth;
     
 };
 

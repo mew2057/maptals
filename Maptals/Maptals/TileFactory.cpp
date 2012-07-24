@@ -2,7 +2,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-using namespace std;
+#include <vector>
+
 
 TileSet TileFactory::generateTileSet(std::string fileName){
     std::map<int, TileSpec> tileMap;
@@ -11,14 +12,14 @@ TileSet TileFactory::generateTileSet(std::string fileName){
 
     int currentTile;
     
-    istringstream stringconvertor;
+    std::istringstream stringconvertor;
 
     //! Start xml initialization.
 
     rapidxml::xml_document<> xmlTileSet;
     rapidxml::xml_node<> * tileNode, * tileValueNode;
     
-    vector<char> xmlDoc((istreambuf_iterator<char>(tileFile)), istreambuf_iterator<char>( ));  
+    std::vector<char> xmlDoc((std::istreambuf_iterator<char>(tileFile)), std::istreambuf_iterator<char>( ));  
 
     xmlDoc.push_back('\0');
 
@@ -34,7 +35,7 @@ TileSet TileFactory::generateTileSet(std::string fileName){
 
     while(tileNode !=0)
     {
-        istringstream(tileNode->first_attribute("id")->value()) >> currentTile;
+        std::istringstream(tileNode->first_attribute("id")->value()) >> currentTile;
         
         tileValueNode=tileNode->first_node();
 
@@ -49,7 +50,7 @@ TileSet TileFactory::generateTileSet(std::string fileName){
 
 TileSpec TileFactory::appendCardinality(rapidxml::xml_node<> *tileNode){
         TileSpec specification;    
-        string dir;
+        std::string dir;
         int direction;
         int nextTile;
 
@@ -72,7 +73,7 @@ TileSpec TileFactory::appendCardinality(rapidxml::xml_node<> *tileNode){
 
             while(tempNode != 0)
             {
-                istringstream(tempNode->value()) >> nextTile;
+                std::istringstream(tempNode->value()) >> nextTile;
                 specification.appendTile(direction,nextTile);
                 tempNode=tempNode->next_sibling("nextTile");
             }
@@ -94,7 +95,7 @@ TileSet TileFactory::initializeTileSet(const rapidxml::xml_node<> *headerNode){
     while(currentAttribute != 0){
         attributeName=currentAttribute->name();
         
-        istringstream(currentAttribute->value()) >> attributeValue;      
+        std::istringstream(currentAttribute->value()) >> attributeValue;      
         
         if(attributeName=="horizon")
         {
@@ -104,21 +105,29 @@ TileSet TileFactory::initializeTileSet(const rapidxml::xml_node<> *headerNode){
         {
             newSet.setEmptyTile(attributeValue);
         }
-         else if (attributeName == "startTile")
+        else if (attributeName == "startTile")
         {
             newSet.setStartTile(attributeValue);
         }
-         else if (attributeName == "imagePath")
+        else if (attributeName == "imagePath")
         {
             newSet.setImagePath(currentAttribute->value());
         }
-          else if (attributeName == "tileWidth")
+        else if (attributeName == "tileWidth")
         {
             newSet.setTileWidth(attributeValue);
         }
-          else if (attributeName == "tileHeight")
+        else if (attributeName == "tileHeight")
         {
             newSet.setTileHeight(attributeValue);
+        }
+        else if(attributeName =="imageWidth")
+        {
+            newSet.setImageHeight(attributeValue);    
+        }
+        else if(attributeName =="imageHeight")
+        {
+            newSet.setImageWidth(attributeValue);
         }
 
         currentAttribute=currentAttribute->next_attribute();

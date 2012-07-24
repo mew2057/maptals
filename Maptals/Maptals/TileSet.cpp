@@ -62,6 +62,26 @@ void TileSet::setHorizon(int horiz)
     horizon=horiz;
 }
 
+int TileSet::getImageHeight()
+{
+    return imageHeight;
+}
+    
+void TileSet::setImageHeight(int height)
+{
+    imageHeight=height;
+}
+
+int TileSet::getImageWidth()
+{
+    return imageWidth;
+}
+    
+void TileSet::setImageWidth(int width)
+{
+    imageWidth=width;
+}
+
 void TileSet::appendTileSpec(int tileID, TileSpec specification)
 {
     tileMap.insert(std::pair<int,TileSpec>(tileID, specification));

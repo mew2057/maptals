@@ -17,8 +17,9 @@ class Maptal{
         void setWidth(int width);
         void toMappy();
         void toTMX();
+        std::string base64Encode(std::vector<std::vector<int>> matrix, int emptyTile);
 
-          /*!
+        /*!
         * \brief The gettor for the matrix, ideal for reusing the map for respawn. 
         * \return The map matrix, performs no procedural operation to recieve the map.
         **/
