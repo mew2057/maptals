@@ -26,6 +26,7 @@ Maptal::Maptal(int width, int height, TileSet tSet){
     setTileSet(tSet);
 
     matrix = std::vector<std::vector<int>>(height, std::vector<int>(width));
+    oid_matrix = std::vector<std::vector<int>>(height, std::vector<int>(width));
 
     zeroMatrix();
 }
@@ -56,13 +57,14 @@ void Maptal::zeroMatrix(){
         for(int x=0; x< matrix[y].size(); x++)
         {
             matrix[y][x]=tileSet.getEmptyTile();
+            oid_matrix[y][x]=-1;
         }
     }
     
 }
 void Maptal::resizeMatrix(){
     matrix.resize(height, std::vector<int>(width));
-    zeroMatrix();
+    oid_matrix.resize(height, std::vector<int>(width));
 }
 
 std::vector<std::vector<int>> Maptal::get2DMap()
@@ -70,14 +72,23 @@ std::vector<std::vector<int>> Maptal::get2DMap()
     return matrix;
 }
 
-//template<typename type>
-//const char * toString(type x,rapidxml::xml_document<char> tmx)
-//{
-//    return 0;
-//    //return const_cast<const char *>(tmx.allocate_string(std::to_string(x).c_str()));
-//}
+std::string Maptal::generateWorldObjects(std::vector<std::vector<int>> matrix,TileSet tiles)
+{
+    int empty = tiles.getEmptyTile();
+    // Generate tile collisions.
+     for(int y=0, offset=0, currentId =0; y < matrix.size();y++)
+    {
+        for(int x=0; x < matrix[y].size();x++,offset+=4)
+        {
+            if (matrix[y][x] != empty)
+            {
 
-//! Assumes a jagged vector with heightxwidth
+            }
+        }
+     }
+}
+
+//! Assumes a rectangular vector with heightxwidth
 //Only has support for integers up to 1000 characters (shouldn't be an issue.
 std::string  Maptal::base64Encode(std::vector<std::vector<int>> matrix, int emptyTile)
 {
@@ -109,8 +120,6 @@ std::string  Maptal::base64Encode(std::vector<std::vector<int>> matrix, int empt
 
     return Base64::base64_encode(compressedTiles,destinationSize);
 }
-
-
 void Maptal::toTMX()
 {
     rapidxml::xml_document<char> tmx;   
@@ -203,4 +212,3 @@ void Maptal::toTMX()
 
     tmxFile.close();
 }
-

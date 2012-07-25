@@ -8,38 +8,64 @@
 TileSet TileFactory::generateTileSet(std::string fileName){
     std::map<int, TileSpec> tileMap;
     
+    TileSpec currentSpec;
     std::ifstream tileFile=std::ifstream(fileName);
 
     int currentTile;
+
+    int oid;
     
     std::istringstream stringconvertor;
 
     //! Start xml initialization.
 
     rapidxml::xml_document<> xmlTileSet;
-    rapidxml::xml_node<> * tileNode, * tileValueNode;
+    rapidxml::xml_node<> * rootNode, * tileNode, * objectNode;
     
     std::vector<char> xmlDoc((std::istreambuf_iterator<char>(tileFile)), std::istreambuf_iterator<char>( ));  
 
     xmlDoc.push_back('\0');
 
     xmlTileSet.parse<0>(&xmlDoc[0]);
-       
-    tileNode = xmlTileSet.first_node("tileset");
 
     //!End XML Initialization.
 
-    TileSet tileSet = initializeTileSet(tileNode);
+    
+    rootNode = xmlTileSet.first_node("tileset");
 
-    tileNode=tileNode->first_node("tile");
+    objectNode=rootNode->first_node("objects");   
+
+    
+    TileSet tileSet = initializeTileSet(rootNode);
+    
+    objectNode=objectNode->first_node("object");
+
+    while(objectNode != 0)
+    {
+        std::istringstream(objectNode->first_attribute("oid")->value()) >> oid;
+
+        tileSet.addObjectType(oid, (std::string)objectNode->first_attribute("type")->value());
+
+        objectNode=objectNode->next_sibling("object");
+    }
+
+
+    tileNode=rootNode->first_node("tile");
 
     while(tileNode !=0)
     {
         std::istringstream(tileNode->first_attribute("id")->value()) >> currentTile;
-        
-        tileValueNode=tileNode->first_node();
 
-        tileSet.appendTileSpec(currentTile, appendCardinality(tileValueNode));
+        if(tileNode->first_attribute("objectID"))
+            std::istringstream(tileNode->first_attribute("objectID")->value()) >> oid;
+        else
+            oid=-1;
+
+       
+        currentSpec = appendCardinality(tileNode->first_node());   
+        currentSpec.setOID(oid);
+
+        tileSet.appendTileSpec(currentTile, currentSpec);
 
         tileNode=tileNode->next_sibling("tile");
     }

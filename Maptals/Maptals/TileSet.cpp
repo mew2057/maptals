@@ -5,7 +5,6 @@ int TileSet::getTileWidth()
     return tileWidth;
 }
 
-
 void TileSet::setTileWidth(int width)
 {
     tileWidth=width;
@@ -92,7 +91,28 @@ std::map<int,TileSpec> TileSet::getTileMap()
     return tileMap;
 }
 
+TileSpec * TileSet::getTileID(int tileID)
+{
+    std::map<int, TileSpec>::iterator it = tileMap.find(tileID);
+    if (it != tileMap.end())
+        return &(tileMap.find(tileID)->second);
+    else
+        return nullptr;
+}
 
+std::string TileSet::getObjectType(int oid)
+{
+    std::map<int, std::string>::iterator it = objectMap.find(oid);
+    if (it != objectMap.end())
+        return objectMap.find(oid)->second;
+    else
+        return "";
+}
+
+void TileSet::addObjectType(int oid, std::string objectType)
+{
+    objectMap.insert(std::pair<int,std::string>(oid, objectType));
+}
 TileSet::TileSet()
 {
     setHorizon(0);
@@ -102,6 +122,7 @@ TileSet::TileSet()
     setTileWidth(0);
     setImagePath("\\");
     tileMap=std::map<int, TileSpec>();
+    objectMap=std::map<int, std::string>();
 }
 
 TileSet::~TileSet()

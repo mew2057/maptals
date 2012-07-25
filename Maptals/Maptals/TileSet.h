@@ -56,6 +56,12 @@ public:
 
     std::map<int,TileSpec> getTileMap();
 
+    TileSpec * getTileID(int tileID);
+
+    std::string getObjectType(int oid);
+
+    void addObjectType(int oid, std::string objectType);
+
     TileSet();
     ~TileSet();
 
@@ -89,6 +95,9 @@ private:
 
     //! The width of the tileset image in pixels.
     int imageWidth;
+
+    std::map<int, std::string> objectMap;
+
     
 };
 

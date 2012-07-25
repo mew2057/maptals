@@ -20,8 +20,18 @@ int TileSpec::getNextDirection(){
     if(validDirections.size()>0)
         return validDirections[rand()%validDirections.size()];
     else
-        return -1;
+        return INT_MIN;
 }
+
+int TileSpec::getOID()
+{
+    return oid;
+}
+void TileSpec::setOID(int objectID)
+{
+    oid=objectID;
+}
+
 
 void TileSpec::appendTile(int direction, int tile){
     if(direction < succeedingTiles.size()) 
@@ -34,6 +44,8 @@ void TileSpec::appendTile(int direction, int tile){
 
 TileSpec::TileSpec(){
     succeedingTiles = std::vector<std::vector<int>>(4, std::vector<int>(0));
+    validDirections=std::vector<int>();
+    oid=-1;
     srand(time(NULL));
 }
 

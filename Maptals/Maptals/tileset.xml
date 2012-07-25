@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tileset emptyTile="6" startTile="4" imagePath="TestTile.png" tileWidth="32" tileHeight="32" horizon="1" imageHeight="64" imageWidth="128">  
-  <tile id="0">
+
+<tileset emptyTile="6" startTile="4" imagePath="TestTile.png" tileWidth="32" tileHeight="32" horizon="1" imageHeight="64" imageWidth="128">
+  <objects>
+    <object type="AllCollide" oid="0" />
+    <object type="TopCollide" oid="1" />
+  </objects>
+    <tile id="0" objectID="0">
     <north>
       <nextTile>0</nextTile>
       <nextTile>1</nextTile>
     </north>
   </tile>
 
-  <tile id="1">
+  <tile id="1" objectID="1">
     <east>
       <nextTile>4</nextTile>
     </east>
   </tile>
 
-  <tile id="2">
+  <tile id="2" objectID="0">
     <east>
       <nextTile>5</nextTile>
     </east>
@@ -22,7 +27,7 @@
     </south>
   </tile>
 
-  <tile id="3">
+  <tile id="3" objectID="1">
     <east>
       <nextTile>5</nextTile>
     </east>
@@ -31,14 +36,14 @@
     </south>
   </tile>
 
-  <tile id="4">
+  <tile id="4" objectID="0">
     <east>
       <nextTile>4</nextTile>
       <nextTile>3</nextTile>
     </east>
   </tile>
 
-  <tile id="5">
+  <tile id="5" objectID="-1">
    <east>
       <nextTile>0</nextTile>
     </east>

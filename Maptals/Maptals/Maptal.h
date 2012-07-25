@@ -39,6 +39,12 @@ class Maptal{
         */
         std::vector<std::vector<int>> matrix;
 
+        std::vector<std::vector<int>> oid_matrix;
+
+
+        std::string generateWorldObjects(std::vector<std::vector<int>> matrix,TileSet tiles);
+
+
 
 };
 
