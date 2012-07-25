@@ -32,12 +32,17 @@ private:
     //! Holds the valid adjacent tiles.
     std::vector<std::vector<int>> succeedingTiles;
     std::vector<int> validDirections;
-
+    int oid;
+    int gid;
 public:    
     int getNextTile(int direction);
     int getNextTile(int direction, unsigned int seed);
+
     void appendTile(int direction, int tile);
     int getNextDirection();
+
+    int getOID();
+    void setOID(int objectID);
 
     TileSpec();
     ~TileSpec();

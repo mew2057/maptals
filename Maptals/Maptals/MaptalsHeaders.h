@@ -1,5 +1,0 @@
-#include "TileSpec.h"
-#include "DrunkenWalk.h"
-#include "Fractal.h"
-#include "Maptal.h"
-#include "TileFactory.h"
