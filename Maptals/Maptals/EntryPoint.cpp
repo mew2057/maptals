@@ -14,41 +14,6 @@ int main(){
     bool cont;
     TileSet tSet= TileFactory::generateTileSet("tileset.xml");
     do{
-       //DrunkenWalk dwlk = DrunkenWalk(10,5,1,1);
-
-       // std::cout << endl << "==========Naive==========" << endl;
-
-       // int** matrix = dwlk.walkPathNaive(20);
-
-       //  for(int i = 0; i < 5; i++){
-       //     for(int j = 0; j < 10; j ++){
-       //         std::cout << matrix[i][j] << " ";
-       //     }
-       //     std::cout << endl;
-       // }
-
-       // std::cout << endl << "=========\"Predictive\"=========" << endl;
-       // 
-       // int** matrix2 = dwlk.walkPathNoRetrace(20);
-
-       //  for(int i = 0; i < 5; i++){
-       //     for(int j = 0; j < 10; j ++){
-       //         std::cout << matrix2[i][j] << " ";
-       //     }
-       //     std::cout << endl;
-       // }
-       // std::cout << endl << "==========Mapped==========" << endl;
-       // 
-       // int** matrix3 = dwlk.walkPathWithTileSet(tSet);
-
-       //   for(int i = 0; i < 5; i++){
-       //     for(int j = 0; j < 10; j ++){
-       //         std::cout << matrix3[i][j] << " ";
-       //     }
-       //     std::cout << endl;
-       // }
-
-
         std::cout << endl << "==========Tile Set==========" << endl;
         
         DrunkenWalk dwalk = DrunkenWalk(width,height, tSet);
@@ -56,8 +21,8 @@ int main(){
         std::vector<std::vector<int>> matrix4 = dwalk.generate2DMap();
         cout << endl;
 
-          for(int i = 0; i < matrix4.size(); i++){
-            for(int j = 0; j < matrix4[i].size(); j ++){
+          for(unsigned int i = 0; i < matrix4.size(); i++){
+            for(unsigned int j = 0; j < matrix4[i].size(); j ++){
                 std::cout << matrix4[i][j] << " ";
             }
             std::cout << endl;
