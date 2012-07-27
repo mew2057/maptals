@@ -73,6 +73,7 @@
     <ClCompile Include=".\DrunkenWalk.cpp" />
     <ClCompile Include=".\base64\Base64.h" />
     <ClCompile Include="base64\Base64.cpp" />
+    <ClCompile Include="MapObject.cpp" />
     <ClCompile Include="Maptal.cpp" />
     <ClCompile Include="TileFactory.cpp" />
     <ClCompile Include="TileSet.cpp" />
@@ -97,6 +98,7 @@
     <ClInclude Include=".\DrunkenWalk.h" />
     <ClInclude Include=".\Maptal.h" />
     <ClInclude Include=".\TileFactory.h" />
+    <ClInclude Include="MapObject.h" />
     <ClInclude Include="rapidxml-1.13\rapidxml.hpp" />
     <ClInclude Include="rapidxml-1.13\rapidxml_iterators.hpp" />
     <ClInclude Include="rapidxml-1.13\rapidxml_print.hpp" />

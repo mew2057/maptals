@@ -93,6 +93,9 @@
     <ClCompile Include="zlib-1.2.7\adler32.c">
       <Filter>Header Files\zlib</Filter>
     </ClCompile>
+    <ClCompile Include="MapObject.cpp">
+      <Filter>Header Files\Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include=".\DrunkenWalk.h">
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="zlib-1.2.7\zutil.h">
       <Filter>Header Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="MapObject.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

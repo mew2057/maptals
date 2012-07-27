@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <time.h>
 #include "TileSet.h"
+#include "MapObject.h"
 
 class Maptal{
     public:
@@ -41,11 +42,12 @@ class Maptal{
 
         std::vector<std::vector<int>> oid_matrix;
 
+        void objectsFromVector(std::vector<MapObject> *objects, 
+                            TileSet *tileSet,
+                            rapidxml::xml_node<char> * rootNodePtr, 
+                            rapidxml::xml_document<char> * tmx_doc);
 
-        std::string generateWorldObjects(std::vector<std::vector<int>> matrix,TileSet tiles);
-
-
-
+        std::vector<MapObject> generateObjectVector(std::vector<std::vector<int>> matrix,TileSet tiles);
 };
 
 #endif

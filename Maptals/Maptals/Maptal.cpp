@@ -10,7 +10,6 @@
 #include "base64\Base64.h"
 #include "zlib-1.2.7/zlib.h"
 
-//! Masks the current id in the encoding process (workds as an extrcator.
 #define LAST_BYTE 0x000000FF
 
 Maptal::Maptal(){
@@ -18,8 +17,6 @@ Maptal::Maptal(){
     width = 0;
     zeroMatrix();
 }
-
-
 Maptal::Maptal(int width, int height, TileSet tSet){
     setWidth(width);
     setHeight(height);
@@ -36,25 +33,22 @@ Maptal::~Maptal(){
 TileSet Maptal::getTileSet(){
     return tileSet;
 }
-
 void Maptal::setTileSet(TileSet tSet)
 {
     tileSet=tSet;
 }
 
-
 void Maptal::setHeight(int _height){
     height = _height;
 }
-
 void Maptal::setWidth(int _width){
     width = _width;
 }
 
 void Maptal::zeroMatrix(){
-    for (int y =0; y<matrix.size();y++)
+    for (unsigned int y =0; y<matrix.size();y++)
     {
-        for(int x=0; x< matrix[y].size(); x++)
+        for(unsigned int x=0; x< matrix[y].size(); x++)
         {
             matrix[y][x]=tileSet.getEmptyTile();
             oid_matrix[y][x]=-1;
@@ -72,21 +66,142 @@ std::vector<std::vector<int>> Maptal::get2DMap()
     return matrix;
 }
 
-std::string Maptal::generateWorldObjects(std::vector<std::vector<int>> matrix,TileSet tiles)
+void Maptal::objectsFromVector(std::vector<MapObject> *objects, 
+                            TileSet *tileSet,
+                            rapidxml::xml_node<char> * rootNodePtr,
+                            rapidxml::xml_document<char> * tmx_doc)
 {
-    int empty = tiles.getEmptyTile();
-    // Generate tile collisions.
-     for(int y=0, offset=0, currentId =0; y < matrix.size();y++)
-    {
-        for(int x=0; x < matrix[y].size();x++,offset+=4)
-        {
-            if (matrix[y][x] != empty)
-            {
+    auto intToString = [&tmx_doc](int x){return const_cast<const char *>(tmx_doc->allocate_string(std::to_string(x).c_str()));};
 
-            }
-        }
-     }
+
+    MapObject currentObject;
+    rapidxml::xml_node<char> * tempNode;
+
+    for (unsigned int i = 0; i < objects->size();i++)
+    {
+        currentObject = objects->at(i);
+        tempNode=tmx_doc->allocate_node(rapidxml::node_element, "object");
+
+        tempNode->append_attribute(tmx_doc->allocate_attribute("Type",tmx_doc->allocate_string(tileSet->getObjectType(currentObject.getOid()).c_str())));
+
+        tempNode->append_attribute(tmx_doc->allocate_attribute("x",intToString((currentObject.getStartX())*tileSet->getTileWidth())));
+        tempNode->append_attribute(tmx_doc->allocate_attribute("y",intToString((currentObject.getStartY())*tileSet->getTileHeight())));
+
+
+        tempNode->append_attribute(tmx_doc->allocate_attribute("width",intToString((currentObject.getEndX()+1 -currentObject.getStartX())*tileSet->getTileWidth())));
+        tempNode->append_attribute(tmx_doc->allocate_attribute("height",intToString((currentObject.getEndY()+1-currentObject.getStartY())*tileSet->getTileHeight())));
+
+        rootNodePtr->append_node(tempNode);
+    }    
 }
+
+std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>> matrix,TileSet tiles)
+{
+   int empty = tiles.getEmptyTile(), currentoid=-1, previousoid=-1;
+   bool grouped =false,bufferedObject=false;
+
+   TileSpec *currentTileSpec;
+    
+   MapObject * currentGroup=new MapObject(), * previousGroup=new MapObject(), tempObject;
+
+   std::vector<MapObject> objects;
+   std::vector<std::vector<MapObject>> singularObjects= std::vector<std::vector<MapObject>>(matrix[0].size());
+
+   // Generate tile collisions.
+   for(unsigned int y=0, offset=0; y < matrix.size();y++)
+   {
+       for( unsigned int x=0; x < matrix[y].size();x++,offset+=4)
+       {
+           if(matrix[y][x] != empty)
+           {
+               currentoid = tiles.getTileID(matrix[y][x])->getOID();
+                
+               if(bufferedObject && currentoid == previousoid && currentGroup!=0)
+               {
+                   currentGroup->setEnd(x,y);
+                   previousoid=currentoid;
+                   grouped=true;
+               }
+               else
+               {
+                   if(grouped && bufferedObject)
+                   {
+                       objects.push_back(*currentGroup);
+                       grouped=!grouped;
+                   }
+                   else if(bufferedObject)
+                   {
+                       singularObjects[x].push_back(*currentGroup);
+                   }                   
+
+                   if( currentoid >= 0)
+                   {
+                        currentGroup=new MapObject(x,y,currentoid);
+                        previousoid=currentoid;
+                        bufferedObject=true;
+                   }
+                   else
+                       bufferedObject=false;
+               }
+           }
+           else if(bufferedObject)
+           {
+                   if(grouped)
+                   {
+                       objects.push_back(*currentGroup);
+                       grouped=!grouped;
+                   }
+                   else
+                   {
+                       singularObjects[x].push_back(*currentGroup);
+                   }
+                   bufferedObject=false;                   
+           }              
+       }
+
+       if(bufferedObject)
+       {
+           objects.push_back(*currentGroup);
+           grouped=false;
+           bufferedObject=false;
+
+       }
+   }
+
+   currentGroup=previousGroup=0;
+   bufferedObject=false;
+   for(unsigned int x=0; x< singularObjects.size(); x++)
+   {
+       for(unsigned int y=0; y< singularObjects[x].size();y++)
+       {           
+           currentGroup=&(singularObjects[x][y]);
+
+           if(bufferedObject 
+               && previousGroup->getOid()==currentGroup->getOid() 
+               && currentGroup->isAdjacentY(previousGroup))
+           {
+               previousGroup->setEnd(currentGroup->getEndX(),currentGroup->getEndY());
+               currentGroup=previousGroup;
+           }
+           else if(bufferedObject)
+           {
+               objects.push_back(*previousGroup);
+           }
+           previousGroup=currentGroup;
+           bufferedObject=true;
+
+       }
+
+       if(bufferedObject)
+       {
+           objects.push_back(*previousGroup); 
+           bufferedObject=false;
+       }
+   }
+
+   return objects;
+}
+
 
 //! Assumes a rectangular vector with heightxwidth
 //Only has support for integers up to 1000 characters (shouldn't be an issue.
@@ -101,9 +216,9 @@ std::string  Maptal::base64Encode(std::vector<std::vector<int>> matrix, int empt
     Bytef * bufferedTiles = (Bytef*)malloc(bufferSize);
     Bytef * compressedTiles = (Bytef*) malloc(destinationSize);
    
-    for(int y=0, offset=0, currentId =0; y < matrix.size();y++)
+    for(unsigned int y=0, offset=0, currentId =0; y < matrix.size();y++)
     {
-        for(int x=0; x < matrix[y].size();x++,offset+=4)
+        for(unsigned int x=0; x < matrix[y].size();x++,offset+=4)
         {
             
             //Seems as though an offset is needed.
@@ -120,6 +235,7 @@ std::string  Maptal::base64Encode(std::vector<std::vector<int>> matrix, int empt
 
     return Base64::base64_encode(compressedTiles,destinationSize);
 }
+
 void Maptal::toTMX()
 {
     rapidxml::xml_document<char> tmx;   
@@ -177,6 +293,15 @@ void Maptal::toTMX()
         //**********************************
     rootNodePtr->append_node(subNodePtr);
 
+    
+    subNodePtr = tmx.allocate_node(rapidxml::node_element, "objectgroup");
+    
+    subNodePtr->append_attribute(tmx.allocate_attribute("name", "collisions"));
+
+    objectsFromVector(&generateObjectVector(matrix, tileSet), &tileSet, subNodePtr,&tmx);
+
+    rootNodePtr->append_node(subNodePtr);
+
     //**********************************
     //! Layer node creation.
     //**********************************
@@ -197,6 +322,7 @@ void Maptal::toTMX()
                 //! Map data encoding.
                 //**********************************
                 dataNodePtr->value(tmx.allocate_string(base64Encode(matrix, tileSet.getEmptyTile()).c_str()));
+
                 //**********************************
 
             //**********************************
@@ -204,11 +330,11 @@ void Maptal::toTMX()
     //**********************************
     rootNodePtr->append_node(subNodePtr);
 
-
-    std::fstream tmxFile;
+   
+    std::ofstream tmxFile;
     tmxFile.open("Maptal.tmx");
 
     tmxFile<<tmx;
-
+        
     tmxFile.close();
 }
