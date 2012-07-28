@@ -14,6 +14,10 @@
 * <nextTile> An array element between the cardinality tags, should contain the id of a valid tile as the value.
 * Warning:
 * If a tile doesn't have a tile ID associated with a direction other than its own, that ID can potentially dominate the tile maps!
+*
+* Update 7-27-12 : Haven't updated my log in a while now, but I've switched the serialized format of my code to XML. I should probably rename this
+*                  as it doesn't quite meet the requirements for a factory pattern. I found a defect in specifying the imageHeight and imageWidth (they were swapped).
+*                  Created define values for the literal strings. Added full documentation to the code and refactored objectID to oid in the xml format.
 */
 #ifndef MAPTALS_TILE_FACTORY_H
 #define MAPTALS_TILE_FACTORY_H
@@ -44,9 +48,9 @@ private:
 
     
     /*!
-    * \brief 
-    * \param
-    * \return
+    * \brief Creates a TileSet object and then parses the xml for the tile set's base attributes.
+    * \param headerNode A pointer to the node containing the details relevant to the most basic TileSet attributes (eg. tileWidth, tileHeight, etc.
+    * \return A new TileSet initialized to the contents of the xml attribute list supplied.
     */
     static TileSet initializeTileSet(const rapidxml::xml_node<> *headerNode);
 };

@@ -40,7 +40,6 @@ void TileSet::setEmptyTile(int empty)
     emptyTile=empty;
 }
 
-
 int TileSet::getStartTile()
 {
     return startTile;
@@ -123,10 +122,6 @@ TileSet::TileSet()
     setImagePath("\\");
     tileMap=std::map<int, TileSpec>();
     objectMap=std::map<int, std::string>();
-}
-
-TileSet::~TileSet()
-{
 }
 
 std::ostream& operator<< ( std::ostream& outputStream, TileSet& set ){

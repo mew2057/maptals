@@ -12,12 +12,8 @@
 
 #define LAST_BYTE 0x000000FF
 
-Maptal::Maptal(){
-    height = 0;
-    width = 0;
-    zeroMatrix();
-}
-Maptal::Maptal(int width, int height, TileSet tSet){
+Maptal::Maptal(int width, int height, TileSet tSet)
+{
     setWidth(width);
     setHeight(height);
     setTileSet(tSet);
@@ -27,25 +23,30 @@ Maptal::Maptal(int width, int height, TileSet tSet){
 
     zeroMatrix();
 }
-Maptal::~Maptal(){ 
-}
+
         
-TileSet Maptal::getTileSet(){
+TileSet Maptal::getTileSet()
+{
     return tileSet;
 }
+
 void Maptal::setTileSet(TileSet tSet)
 {
     tileSet=tSet;
 }
 
-void Maptal::setHeight(int _height){
+void Maptal::setHeight(int _height)
+{
     height = _height;
 }
-void Maptal::setWidth(int _width){
+
+void Maptal::setWidth(int _width)
+{
     width = _width;
 }
 
-void Maptal::zeroMatrix(){
+void Maptal::zeroMatrix()
+{
     for (unsigned int y =0; y<matrix.size();y++)
     {
         for(unsigned int x=0; x< matrix[y].size(); x++)
@@ -56,7 +57,9 @@ void Maptal::zeroMatrix(){
     }
     
 }
-void Maptal::resizeMatrix(){
+
+void Maptal::resizeMatrix()
+{
     matrix.resize(height, std::vector<int>(width));
     oid_matrix.resize(height, std::vector<int>(width));
 }
@@ -98,10 +101,7 @@ void Maptal::objectsFromVector(std::vector<MapObject> *objects,
 std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>> matrix,TileSet tiles)
 {
    int empty = tiles.getEmptyTile(), currentoid=-1, previousoid=-1;
-   bool grouped =false,bufferedObject=false;
-
-   TileSpec *currentTileSpec;
-    
+   bool grouped =false,bufferedObject=false;  
    MapObject * currentGroup=new MapObject(), * previousGroup=new MapObject(), tempObject;
 
    std::vector<MapObject> objects;
