@@ -30,7 +30,7 @@ int main(){
             std::cout << endl;
         }
 
-        dwalk.toTMX();
+        dwalk.toTMX("Maptal.tmx");
 
         std::cout << "continue?(y|n):";
        std::getline( cin, temp );

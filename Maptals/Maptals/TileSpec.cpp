@@ -13,14 +13,20 @@ int TileSpec::getNextTile(int direction){
         return succeedingTiles[direction][rand() % succeedingTiles[direction].size()];
     }
     else
+    {
        return INT_MIN;
+    }
 }
 
 int TileSpec::getNextDirection(){
     if(validDirections.size()>0)
+    {
         return validDirections[rand()%validDirections.size()];
+    }
     else
+    {
         return INT_MIN;
+    }
 }
 
 int TileSpec::getOID()
@@ -38,7 +44,10 @@ void TileSpec::appendTile(int direction, int tile){
     {
         succeedingTiles[direction].push_back(tile);
 
-        if(succeedingTiles[direction].size()==1) validDirections.push_back(direction);
+        if(succeedingTiles[direction].size()==1)
+        {
+            validDirections.push_back(direction);
+        }
     }
 }
 

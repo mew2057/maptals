@@ -1,16 +1,14 @@
 #include "Maptal.h"
 #include "rapidxml-1.13\rapidxml.hpp"
 #include "rapidxml-1.13\rapidxml_print.hpp"
-
 #include <sstream>
-
 #include <istream>
 #include <fstream>
-
 #include "base64\Base64.h"
 #include "zlib-1.2.7/zlib.h"
 
-#define LAST_BYTE 0x000000FF
+// A masking tool for base 64 encoding.
+#define MAPTAL_LAST_BYTE 0xFF
 
 Maptal::Maptal(int width, int height, TileSet tSet)
 {
@@ -52,6 +50,7 @@ void Maptal::zeroMatrix()
         for(unsigned int x=0; x< matrix[y].size(); x++)
         {
             matrix[y][x]=tileSet.getEmptyTile();
+
             oid_matrix[y][x]=-1;
         }
     }
@@ -74,12 +73,14 @@ void Maptal::objectsFromVector(std::vector<MapObject> *objects,
                             rapidxml::xml_node<char> * rootNodePtr,
                             rapidxml::xml_document<char> * tmx_doc)
 {
+    // Anonymous function for int conversion.
     auto intToString = [&tmx_doc](int x){return const_cast<const char *>(tmx_doc->allocate_string(std::to_string(x).c_str()));};
 
-
+    // Placeholders.
     MapObject currentObject;
     rapidxml::xml_node<char> * tempNode;
 
+    // Iterates over the map objects and writes their contents to the supplied xml node.
     for (unsigned int i = 0; i < objects->size();i++)
     {
         currentObject = objects->at(i);
@@ -100,11 +101,22 @@ void Maptal::objectsFromVector(std::vector<MapObject> *objects,
 
 std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>> matrix,TileSet tiles)
 {
-   int empty = tiles.getEmptyTile(), currentoid=-1, previousoid=-1;
+    //! The tile id to be ignored in searching for objects.
+   int empty = tiles.getEmptyTile();
+   
+   //! oid placeholders.
+   int currentoid=-1, previousoid=-1;
+
+   //! Used in streamlining the logic to select the appropriate reactin to the current state of the process.
    bool grouped =false,bufferedObject=false;  
+
+   //! Map objects used to ensure the tightest possible groupings.
    MapObject * currentGroup=new MapObject(), * previousGroup=new MapObject(), tempObject;
 
+   //! The vector of valid map object gorups or singletons.
    std::vector<MapObject> objects;
+   
+   //! The matrix of objects that may benefit from vertical grouping.
    std::vector<std::vector<MapObject>> singularObjects= std::vector<std::vector<MapObject>>(matrix[0].size());
 
    // Generate tile collisions.
@@ -112,18 +124,28 @@ std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>
    {
        for( unsigned int x=0; x < matrix[y].size();x++,offset+=4)
        {
+           // If the tileID is not empty either execute object creation or expansion logic.
+           // Else If an object is "buffered" place it in the respective collection.
            if(matrix[y][x] != empty)
            {
                currentoid = tiles.getTileID(matrix[y][x])->getOID();
-                
-               if(bufferedObject && currentoid == previousoid && currentGroup!=0)
+               /*
+                * If An object is in the "buffer" and the current and previous oids match expand the group.
+                * Else place the current object in either the objects vector or singular matrix 
+                *    (if no buffered object exists, create it)
+                */
+               if(bufferedObject && currentoid == previousoid )
                {
+                   // "Expand" the object.
                    currentGroup->setEnd(x,y);
+                   
                    previousoid=currentoid;
+                   
                    grouped=true;
                }
                else
                {
+                   // If an object is present use grouped to select the correct structure to place it in.
                    if(grouped && bufferedObject)
                    {
                        objects.push_back(*currentGroup);
@@ -134,6 +156,7 @@ std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>
                        singularObjects[x].push_back(*currentGroup);
                    }                   
 
+                   // If the oid is non negative generate an object for it.
                    if( currentoid >= 0)
                    {
                         currentGroup=new MapObject(x,y,currentoid);
@@ -159,23 +182,37 @@ std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>
            }              
        }
 
+       // If an object was still in the "buffer" place it where it belongs.
        if(bufferedObject)
        {
-           objects.push_back(*currentGroup);
-           grouped=false;
-           bufferedObject=false;
+           if(grouped)
+           {
+               objects.push_back(*currentGroup);
+               grouped=false;
+           }
+           else
+           {
+               singularObjects[matrix[y].size()-1].push_back(*currentGroup);
+           }
 
+           bufferedObject=false;
        }
    }
 
+   //! Reset necessary helper variables.
    currentGroup=previousGroup=0;
    bufferedObject=false;
+
    for(unsigned int x=0; x< singularObjects.size(); x++)
    {
        for(unsigned int y=0; y< singularObjects[x].size();y++)
        {           
            currentGroup=&(singularObjects[x][y]);
 
+           /*
+            * If an object is present (eg the object is not the first of its row), the two have matching oids and are adjacent expand the group.
+            * Else If an object is present it needs to be placed in the objects vector.
+            */
            if(bufferedObject 
                && previousGroup->getOid()==currentGroup->getOid() 
                && currentGroup->isAdjacentY(previousGroup))
@@ -187,11 +224,13 @@ std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>
            {
                objects.push_back(*previousGroup);
            }
+
+           // The current is now the previous, and there is at least one object in the row.
            previousGroup=currentGroup;
            bufferedObject=true;
 
        }
-
+       // If an object is still in the "buffer" make sure it makes it to the objects vector. (ensures single objects on a row make it to the vector)
        if(bufferedObject)
        {
            objects.push_back(*previousGroup); 
@@ -202,10 +241,7 @@ std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>
    return objects;
 }
 
-
-//! Assumes a rectangular vector with heightxwidth
-//Only has support for integers up to 1000 characters (shouldn't be an issue.
-std::string  Maptal::base64Encode(std::vector<std::vector<int>> matrix, int emptyTile)
+std::string  Maptal::base64Encode(std::vector<std::vector<int>> matrix)
 {
     // Assumes the matrix is square.
     uLongf bufferSize = matrix.size() * matrix[0].size() * 4;
@@ -213,6 +249,7 @@ std::string  Maptal::base64Encode(std::vector<std::vector<int>> matrix, int empt
     // This is per the zlib standardization.
     uLongf destinationSize = (uLongf)(bufferSize + (bufferSize * 0.1) + 12);
     
+    //! The data buffers.
     Bytef * bufferedTiles = (Bytef*)malloc(bufferSize);
     Bytef * compressedTiles = (Bytef*) malloc(destinationSize);
    
@@ -225,10 +262,10 @@ std::string  Maptal::base64Encode(std::vector<std::vector<int>> matrix, int empt
             currentId=matrix[y][x]+1;
 
             // This adds each byte of the integer to the tile buffer, the SLL is by byte intervals which are then masked by LAST_BYTE.
-            bufferedTiles[offset] = (currentId       & LAST_BYTE);
-            bufferedTiles[offset+1] = (currentId >> 8  & LAST_BYTE);
-            bufferedTiles[offset+2] = (currentId >> 16 & LAST_BYTE);
-            bufferedTiles[offset+3] = (currentId >> 24 & LAST_BYTE);
+            bufferedTiles[offset] =   (currentId       & MAPTAL_LAST_BYTE);
+            bufferedTiles[offset+1] = (currentId >> 8  & MAPTAL_LAST_BYTE);
+            bufferedTiles[offset+2] = (currentId >> 16 & MAPTAL_LAST_BYTE);
+            bufferedTiles[offset+3] = (currentId >> 24 & MAPTAL_LAST_BYTE);
         }
     }
     compress(compressedTiles, &destinationSize,bufferedTiles, bufferSize);
@@ -236,7 +273,7 @@ std::string  Maptal::base64Encode(std::vector<std::vector<int>> matrix, int empt
     return Base64::base64_encode(compressedTiles,destinationSize);
 }
 
-void Maptal::toTMX()
+void Maptal::toTMX(std::string fileDestination)
 {
     rapidxml::xml_document<char> tmx;   
 
@@ -321,7 +358,7 @@ void Maptal::toTMX()
                 //**********************************
                 //! Map data encoding.
                 //**********************************
-                dataNodePtr->value(tmx.allocate_string(base64Encode(matrix, tileSet.getEmptyTile()).c_str()));
+                dataNodePtr->value(tmx.allocate_string(base64Encode(matrix).c_str()));
 
                 //**********************************
 
@@ -332,7 +369,7 @@ void Maptal::toTMX()
 
    
     std::ofstream tmxFile;
-    tmxFile.open("Maptal.tmx");
+    tmxFile.open(fileDestination);
 
     tmxFile<<tmx;
         

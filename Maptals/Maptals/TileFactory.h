@@ -2,7 +2,7 @@
 * \author John Dunham
 * \date 7-18-12
 *
-* The following factory generates a tile map from a user supplied xml file, the xml file currently follows the following standards:
+* \brief The following "factory" generates a tile map from a user supplied xml file, the xml file currently follows the following standards:
 * 
 * <tileset> is the root directory in the DOM, this should contain the following attributes:
 *

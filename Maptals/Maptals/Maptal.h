@@ -1,3 +1,10 @@
+/*!
+* \author John Dunham
+* \date 7-28-12
+* 
+* \brief The base class for all Maptal map generators. Ensures consistent map generation, allowing the end user to change map generation as simply as possible.
+* 
+*/
 #ifndef MAPTALS_MAPTAL_H
 #define MAPTALS_MAPTAL_H
 
@@ -9,22 +16,56 @@
 class Maptal{
 public:
     /*
-     *!  \brief An overloaded constructor that accepts all the possible inputs for Maptal configuration.
-     *!  \param width The width of the map (in tiles). [defaults to 0]
-     *!  \param height The height of the map (in tiles). [defaults to 0]
-     *!  \param tSet The tile set to be used by the maptal operations. [defaults to the generic TileSet]
+     *! \brief An overloaded constructor that accepts all the possible inputs for Maptal configuration.
+     *! \param width The width of the map (in tiles). [defaults to 0]
+     *! \param height The height of the map (in tiles). [defaults to 0]
+     *! \param tSet The tile set to be used by the maptal operations. [defaults to the generic TileSet]
      */
     Maptal(int width = 0, int height = 0, TileSet tSet=TileSet());
 
+    /*
+     *! \brief The gettor for the tileSet field.
+     *! \return the tileSet field.
+     */
     TileSet getTileSet();
+
+    /*
+     *! \brief A settor for the tileSet referenced by the Maptal map/matrix.
+     *! \param tSet The new value of the tileSet field.
+     */
     void setTileSet(TileSet tSet);
+
+    /*
+     *! \brief A settor for the height of the Maptal map/matrix.
+     *! \param height The new value of the height field.
+     */
     void setHeight(int height);
+
+    /*
+     *! \brief A settor for the width of the Maptal map.
+     *! \param width The new value of the width field.
+     */
     void setWidth(int width);
-    void toMappy();
-    void toTMX();
+
+    /*
+     *! \brief generates and writes the 2DMap to a tmx file.
+     *! \param fileDestination The path/filename of the tmx file to be output.
+     */
+    void toTMX(std::string fileDestination);
 
 
-    std::string base64Encode(std::vector<std::vector<int>> matrix, int emptyTile);
+    /*
+     *! \brief Generates a byte array of the supplied vector which is them compressed using the zlib library and encoded to a base64 encoded string.
+     *! \param matrix The tileID matrix to encode, assumed to be rectangular.
+     *! \return The base64 encoded string of the compressed map data.
+     */
+    std::string base64Encode(std::vector<std::vector<int>> matrix);
+
+    /*
+     *! \brief Generate a 2D map utilizing the Maptal supplied TileSet with the world building algorithm specified by sub classes.
+     *! \return The matrix containg the map details produced by the world building algorithm. Default behavior returns the unaltered matrix field.
+     */
+    virtual std::vector<std::vector<int>> generate2DMap(){return matrix;};        
 
     /*!
      * \brief The gettor for the matrix, ideal for reusing the map for respawn. 
@@ -32,34 +73,60 @@ public:
      */
     std::vector<std::vector<int>> get2DMap();  
 protected:
-    void zeroMatrix();
-    void resizeMatrix();
-
-
+    /*
+     *! \brief The height of the map in tiles.
+     */
     int height;
+
+    /*
+     *! \brief The width of the map in tiles.
+     */
     int width;
+
+    /*
+     *! \brief A tile set containing information vital to creating maps.
+     */
     TileSet tileSet;
 
     /*
-     *! \brief A matrix with dimensions height by width or matrix[height][width].
+     *! \brief A matrix with dimensions height by width or matrix[height][width], containing a mapping of tileIDs.
      */
     std::vector<std::vector<int>> matrix;
 
+    //! XXX remove?
+    /*
+     *! \brief A matrix with dimensions height by width or matrix[height][width], contains a mapping of oids.
+     */
     std::vector<std::vector<int>> oid_matrix;
 
+    /*
+     *! \brief Zeroes the matrices associated with the Maptal object with the "empty tile" value of the tileSet.
+     */
+    void zeroMatrix();
+    
+    /*
+     *! \brief Resizes the matrices associated with the Maptal object to its height and width fields.
+     */
+    void resizeMatrix();
 private:
     /*
-     *! \brief Appends objects within an object vector as children to the root node supplied in the function call.
+     *! \brief Appends objects within an object vector as children to the root node supplied in the function call. [For toTMX]
      *! \param objects A vector containing the objects to serialize.
-     *! \param tileSet
-     *! \param rootNodePrt
-     *! \param tmx_doc
+     *! \param tileSet Contains the object mapping and tile width and height (used in translating the object dimensions to tmx format.
+     *! \param rootNodePrt The parent node for objects in the XML (TMX) document. [should be objectGroup]
+     *! \param tmx_doc The XML document, used for string and node allocation.
      */
     void objectsFromVector(std::vector<MapObject> *objects, 
                             TileSet *tileSet,
                             rapidxml::xml_node<char> * rootNodePtr, 
                             rapidxml::xml_document<char> * tmx_doc);
 
+    /*
+     *! \brief Generates a vector of MapObjects based on the supplied tileID matrix that references the tileMap in the supplied TileSet. [For toTMX]
+     *! \param matrix A vector of a vector that holds a matrix of tileIDs
+     *! \param tiles Contains the tile specifications that are referenced by the contents of the matrix.
+     *! \return A vector containing MapObjects that contain the oid, start x and y and the end x and y.
+     */
     std::vector<MapObject> generateObjectVector(std::vector<std::vector<int>> matrix,TileSet tiles);
 };
 
