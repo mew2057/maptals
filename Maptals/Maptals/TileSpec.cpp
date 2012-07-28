@@ -42,14 +42,11 @@ void TileSpec::appendTile(int direction, int tile){
     }
 }
 
-TileSpec::TileSpec(){
+TileSpec::TileSpec(int _oid){
     succeedingTiles = std::vector<std::vector<int>>(4, std::vector<int>(0));
-    validDirections=std::vector<int>();
-    oid=-1;
+    validDirections = std::vector<int>(0);
+    oid=_oid;
     srand(time(NULL));
-}
-
-TileSpec::~TileSpec(){
 }
 
 std::ostream& operator<< ( std::ostream& outputStream, TileSpec& specification ){

@@ -12,6 +12,8 @@ int main(){
     int maxValue = 1;
     string temp;
     bool cont;
+
+    //Maptal tempMap = DrunkenWalk();
     TileSet tSet= TileFactory::generateTileSet("tileset.xml");
     do{
         std::cout << endl << "==========Tile Set==========" << endl;

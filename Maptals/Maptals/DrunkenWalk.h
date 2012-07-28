@@ -12,6 +12,7 @@
 * Update 6-21-12 : I was reviewing the general algorithm for this and I realized that I implemented an additive variation of this walk.
 *                  It should be noted that the logic is unchanged, and this variation is slightly more expandable for what I want to do
 *                  with it.
+*
 */
 #ifndef MAPTALS_DRUNKEN_WALK_H
 #define MAPTALS_DRUNKEN_WALK_H
@@ -23,20 +24,18 @@
 class DrunkenWalk: public Maptal{
     public:
         /*!
-        * \brief This is the default constructor for which the Maptals constructor suffices.
+        * \brief The Constructor of Drunken Walk, not much else to say here.
         *
+        * \param width The width of the map to be generated. [defaults to 0]
+        * \param height The height of the map to be generated. [defaults to 0]
+        * \param tileSet The tileSet the walk will be generated from. [defaults to the generic TileSet]
         **/
-        DrunkenWalk():Maptal(){}
-
+        DrunkenWalk(int width=0, int height=0,TileSet tileSet=TileSet()):Maptal(width, height, tileSet){}
 
         /*!
-        * \brief This is the Overloaded constructor, it takes in the base elements of a drunken walk map generation.
-        *
-        * \param width The width of the map to be generated.
-        * \param height The height of the map to be generated.
-        * \param tileSet The tileSet the walk will be generated from.
-        **/
-        DrunkenWalk(int width, int height,TileSet tileSet):Maptal(width, height, tileSet){}
+         * \brief generates a two dimensional map using the Maptal's TileSet object and the drunken walk world building algorithm.
+         */
+        std::vector<std::vector<int>> generate2DMap();        
 
         /*!
         * \brief This generation takes roughly O(n) to O(n^2) time to execute (I haven't done full calculations at the time of this write up 6-18-12).
@@ -86,11 +85,7 @@ class DrunkenWalk: public Maptal{
         */
         //int** walkPathWithTileSet(TileSet tileSet);
 
-        /*!
-        * This uses the inherent tileSet associated with the object to generate the map.
-        */
-        std::vector<std::vector<int>> generate2DMap();        
-
+ 
       
 };
 
