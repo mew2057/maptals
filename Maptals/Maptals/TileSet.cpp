@@ -112,6 +112,7 @@ void TileSet::addObjectType(int oid, std::string objectType)
 {
     objectMap.insert(std::pair<int,std::string>(oid, objectType));
 }
+
 TileSet::TileSet()
 {
     setHorizon(0);

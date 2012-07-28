@@ -2,6 +2,8 @@
 * \author John Dunham
 * \date 6-18-12
 *
+* \brief An implementation of the DrunkenWalk world generation algorithm for the Maptal library.
+*
 * This is my first attempt at a procedurally generated world. To say it is simple/ naive is an understatement, 
 * but it illustrates the basic concepts of procedural generation. The algorithm is simple and lacks any form of
 * intelligence in execution. The main benefit of this alogrithm lies in the guaranteed complete paths. For the
@@ -13,6 +15,8 @@
 *                  It should be noted that the logic is unchanged, and this variation is slightly more expandable for what I want to do
 *                  with it.
 *
+* Update 7-28-12 : Cleaned up the haeder file, updated Doxygen docs.
+*
 */
 #ifndef MAPTALS_DRUNKEN_WALK_H
 #define MAPTALS_DRUNKEN_WALK_H
@@ -22,71 +26,27 @@
 #include "TileSpec.h"
 #include "TileSet.h"
 class DrunkenWalk: public Maptal{
-    public:
-        /*!
-        * \brief The Constructor of Drunken Walk, not much else to say here.
-        *
-        * \param width The width of the map to be generated. [defaults to 0]
-        * \param height The height of the map to be generated. [defaults to 0]
-        * \param tileSet The tileSet the walk will be generated from. [defaults to the generic TileSet]
-        **/
-        DrunkenWalk(int width=0, int height=0,TileSet tileSet=TileSet()):Maptal(width, height, tileSet){}
+public:
+   /*
+    *! \brief The Constructor of Drunken Walk, not much else to say here.
+    *!
+    *! \param width The width of the map to be generated. [defaults to 0]
+    *! \param height The height of the map to be generated. [defaults to 0]
+    *! \param tileSet The tileSet the walk will be generated from. [defaults to the generic TileSet]
+    */
+    DrunkenWalk(int width=0, int height=0,TileSet tileSet=TileSet()):Maptal(width, height, tileSet){}
 
-        /*!
-         * \brief generates a two dimensional map using the Maptal's TileSet object and the drunken walk world building algorithm.
-         */
-        std::vector<std::vector<int>> generate2DMap();        
-
-        /*!
-        * \brief This generation takes roughly O(n) to O(n^2) time to execute (I haven't done full calculations at the time of this write up 6-18-12).
-        *
-        * Initially the algorithm zeroes the map matrix, then randomly assigns a start point in the matrix to begin the drunken walk from.
-        * The drunken walk itself in this implementation is rather naive: a while loop guarded by the number of steps supplied in the function call
-        * containing an invocation of the rand() function seeded by time(NULL). The results of the rand call are then converted to range from 0-3, with each 
-        * number in the range representing a cardinal direction (0-N, 1-E, 2-S, 3-W). The algorithm then takes a "step" in that direction (adding or subtracting 1
-        * from the x or y) if the direction is valid and empty a newvalue in the id range is randomly assigned and the step counter is incremented. If the step is 
-        * out of bounds or the cell is occupied the state of the map and number of steps remain unchanged.
-        *
-        * John's aside:
-        * The main strength of this implementation lies in the simplicity of implementation and a guaranteed connected path, making it excellent for "rouge-like" games.
-        * As it stands this algorithm is useless for most platformers, but a second pass may be beneficial.
-        * 
-        * \param numSteps The number of steps the algorithm should take for the map to be considered "complete".
-        * \return A double pointer to the now populated map matrix.        
-        **/
-        //int** walkPathNaive(int numSteps);
-    
-        /*!
-        * \brief A variation on the basic drunken walk that adds a variable to prevent the walk from doubling back to the drunken walk.
-        *
-        * This modification is born of the cluttered appearance of the base drunken walk algorithm. As such new techniques are being employed in attempting to
-        * find more aesthetic variations in the maps that would be more interesting to traverse.
-        *
-        * John's aside (6-21-12):
-        * The addition of the last direction variable appears to increase the likelihood of winding paths considerably versus the naive aproach,
-        * granted this is possible in both variations. To improve the occurance of winding paths in the map I added a randomized selection of a repeat of the 
-        * last direction or a newly random direction. I found that this increases the straight path rate considerably. Still the maps are too linear for a
-        * good map and some variations need to be added. Perhaps this is a good time to move onto the next map generation algorithm, using some of the knowledge 
-        * acquired from this experience. However, this is not the end of my exploration and modification of this algorithm as there are still more modifications that
-        * may be done to improve the produced maps.
-        *
-        * 
-        *
-        * \param numSteps The number of steps the algorithm should take for the map to be considered "complete".
-        * \return A double pointer to the now populated map matrix.       
-        */
-        //int** walkPathNoRetrace(int numSteps);
-
-        /**!
-        * \brief Uses the tileSet specified by the user to generate a map with the drunken walk algorithm.
-        * 
-        * \param tileSet
-        * \return A double pointer to the now populated map matrix.       
-        */
-        //int** walkPathWithTileSet(TileSet tileSet);
-
- 
-      
+   /*
+    *! \brief Generate a 2D map utilizing the Maptal supplied TileSet with the DrunkenWalk world building algorithm.
+    *!
+    *! Initially the algorithm zeroes the map matrix, then a start point in the matrix to begin the drunken walk from (derived from the tileSet).
+    *! After zeroing and getting the initial details from the tileSet the algorithm procedes to randomly determine the next direction to take 
+    *! (as limited by the current tile specification) and randomly retrieves the next valid tile specification from the tileset. This process loops
+    *! until the bounding condition is reached.
+    *!
+    *! \return The matrix containg the map details produced by the DrunkenWalk world building algorithm.
+    */
+    std::vector<std::vector<int>> generate2DMap();     
 };
 
 #endif

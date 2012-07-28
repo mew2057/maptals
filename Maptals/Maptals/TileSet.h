@@ -1,3 +1,9 @@
+/*!
+* \author John Dunham
+* \date 7-28-12
+*
+* \brief A class designed to contain all data that could possibly be relevant to one discrete tileset.
+*/
 #ifndef MAPTALS_TILE_SET_H
 #define MAPTALS_TILE_SET_H
 

@@ -1,3 +1,9 @@
+/*!
+* \author John Dunham
+* \date 7-28-12
+*
+* \brief A class that contains all the necessary components to represent a TMX map object.
+*/
 #ifndef MAPTALS_MAP_OBJECT_H
 #define MAPTALS_MAP_OBJECT_H
 

@@ -2,7 +2,7 @@
 * \author John Dunham
 * \date 7-1-12
 * 
-* This is a class designed to specify a set of rules for a tile in a tile based game, indicating valid tiles that follow it in the 4 cardinal directions.
+* \brief This is a class designed to specify a set of rules for a tile in a tile based game, indicating valid tiles that follow it in the 4 cardinal directions.
 * This class should not be handled by any user of this library.
 *
 */
