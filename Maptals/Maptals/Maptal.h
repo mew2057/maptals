@@ -94,12 +94,6 @@ protected:
      */
     std::vector<std::vector<int>> matrix;
 
-    //! XXX remove?
-    /*
-     *! \brief A matrix with dimensions height by width or matrix[height][width], contains a mapping of oids.
-     */
-    std::vector<std::vector<int>> oid_matrix;
-
     /*
      *! \brief Zeroes the matrices associated with the Maptal object with the "empty tile" value of the tileSet.
      */

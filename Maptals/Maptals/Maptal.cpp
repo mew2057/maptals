@@ -17,7 +17,6 @@ Maptal::Maptal(int width, int height, TileSet tSet)
     setTileSet(tSet);
 
     matrix = std::vector<std::vector<int>>(height, std::vector<int>(width));
-    oid_matrix = std::vector<std::vector<int>>(height, std::vector<int>(width));
 
     zeroMatrix();
 }
@@ -50,8 +49,6 @@ void Maptal::zeroMatrix()
         for(unsigned int x=0; x< matrix[y].size(); x++)
         {
             matrix[y][x]=tileSet.getEmptyTile();
-
-            oid_matrix[y][x]=-1;
         }
     }
     
@@ -60,7 +57,6 @@ void Maptal::zeroMatrix()
 void Maptal::resizeMatrix()
 {
     matrix.resize(height, std::vector<int>(width));
-    oid_matrix.resize(height, std::vector<int>(width));
 }
 
 std::vector<std::vector<int>> Maptal::get2DMap()

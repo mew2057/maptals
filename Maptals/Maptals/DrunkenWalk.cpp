@@ -1,6 +1,35 @@
 #include "DrunkenWalk.h"
 #define doubleRate 2
 #include <iostream>
+#include <stack>
+
+void getRetryPosition(int * x,int * y,short direction)
+{
+    switch(direction)
+    {
+        // North - step up.
+        case north:
+             (*y)++;
+             break;
+          // East - step right.
+          case east:
+             (*x)--; 
+             break;
+         // South - step down.
+         case south:
+             (*y)--;  
+             break;
+         // West - step left.
+         case west:
+             (*x)++;  
+             break;
+         default:
+             break;
+        
+    }
+
+}
+
 
 std::vector<std::vector<int>> DrunkenWalk::generate2DMap()
 {
@@ -26,18 +55,20 @@ std::vector<std::vector<int>> DrunkenWalk::generate2DMap()
     //! Sets the starting y to the horizon (subtract from the height then offeset by one).
     int y = height - tileSet.getHorizon() -1;
 
-    int direction=-1;
+    int direction=-1,failDirection =-1,oldTile=-1;
+
+    std::stack<short> directions;
     
     //! The failure sentinel.
     bool failed = true;
 
  
     matrix[y][x]=tileID;
-
+    std::cout << tileSet <<std::endl;
 
     while (x < width-1){
         // Get a random number from 0-3 and react accordingly.
-        switch (direction=currentTile.getNextDirection()){
+        switch (direction=currentTile.getNextDirection(failDirection)){
             // North - step up.
             case north:
                 if(y > 0){
@@ -72,14 +103,46 @@ std::vector<std::vector<int>> DrunkenWalk::generate2DMap()
                 }
                 break;
             default:
+                do{
+                    failDirection=directions.top();
+
+                    oldTile=matrix[y][x];
+
+                    matrix[y][x]=tileSet.getEmptyTile();
+
+                    getRetryPosition(&x,&y,failDirection);
+                           
+                    tileID=matrix[y][x];
+
+                    currentTile=*tileSet.getTileID(tileID);
+
+                    tileID = currentTile.getNextTile(failDirection, oldTile);
+                             
+                    directions.pop();
+                }while(directions.size()>0 && tileID == INT_MIN);
+                
+                if (tileID == INT_MIN)
+                {
+                    std::cin >> tileID;
+                    exit(1); //This is a major violation and indicates a bad tile specification
+                }
+                directions.push(failDirection);
+
+                getRetryPosition(&x,&y,(failDirection+2)%4);
+
+                matrix[y][x]=tileID;
+
+                currentTile=*tileSet.getTileID(tileID);
+
                 break;
         }
-                std::cout << direction;
-
+        //! Reset the failure direction.
+        failDirection=-1;
+        
         //! If the new position is not out of bounds and the matrix at that point is empty add a new value there.
-        if(!failed && matrix[y][x] == tileSet.getEmptyTile()) {
+        if(!failed && matrix[y][x] == tileSet.getEmptyTile() && oldTile == -1) {
            try{ 
-               tileID = static_cast<TileSpec>(*tileSet.getTileID(tileID)).getNextTile(direction);
+               tileID = currentTile.getNextTile(direction);
 
                if (tileID == INT_MIN)
                  exit(0); //This is a major violation and indicates a bad tile specification
@@ -90,8 +153,14 @@ std::vector<std::vector<int>> DrunkenWalk::generate2DMap()
            }
            
            matrix[y][x] = tileID;
+           directions.push(direction);
+        } 
+        else if(failed && oldTile == -1)
+        {
+            failDirection=direction;
         }
 
+        oldTile = -1;
         failed = true;
     }
     return matrix;

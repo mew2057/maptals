@@ -2,31 +2,41 @@
 #include <iostream>
 
 //! This is evenly random, no weight on outcomes.
-int TileSpec::getNextTile(int direction, unsigned int seed){
+int TileSpec::getNextTile(int direction, unsigned int seed, int badTile){
     srand(seed);
-    return getNextTile(direction);  
+    return getNextTile(direction,badTile);  
 }
 
-int TileSpec::getNextTile(int direction){
+int TileSpec::getNextTile(int direction, int badTile){
     if(direction < succeedingTiles.size() && succeedingTiles[direction].size() > 0)
     {
-        return succeedingTiles[direction][rand() % succeedingTiles[direction].size()];
+        if(badTile!=-1)
+        {
+            int temp =  rand() % succeedingTiles[direction].size();
+
+            if(succeedingTiles[direction][temp] == badTile && succeedingTiles[direction].size() > 1)
+                return succeedingTiles[direction][(temp+1) % succeedingTiles[direction].size()];
+        }
+        else if (badTile ==-1)
+        {
+            return succeedingTiles[direction][rand() % succeedingTiles[direction].size()];
+        }
     }
-    else
-    {
-       return INT_MIN;
-    }
+    return INT_MIN;
 }
 
-int TileSpec::getNextDirection(){
-    if(validDirections.size()>0)
+int TileSpec::getNextDirection(int badDirection){
+    if(badDirection!=-1 && validDirections.size() > 1)
+    {
+        int index =rand()%validDirections.size();
+
+        return validDirections[index]!=badDirection?validDirections[index]:validDirections[(index+1)%validDirections.size()];
+    }
+    else if(badDirection==-1 && validDirections.size()>0)
     {
         return validDirections[rand()%validDirections.size()];
     }
-    else
-    {
-        return INT_MIN;
-    }
+    return INT_MIN;
 }
 
 int TileSpec::getOID()
