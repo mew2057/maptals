@@ -88,6 +88,7 @@ void Maptal::objectsFromVector(std::vector<MapObject> *objects,
         currentObject = objects->at(i);
         currentType = tileSet->getObjectType(currentObject.getOid());
         
+        //******************************************************* 
         subNodePtr=rootNodePtr->first_node("objectgroup");
 
         //XXX Is there a more efficient way to do this?
@@ -110,6 +111,7 @@ void Maptal::objectsFromVector(std::vector<MapObject> *objects,
             subNodePtr->append_attribute(tmx_doc->allocate_attribute("name", tmx_doc->allocate_string(currentType.group.c_str())));
             rootNodePtr->append_node(subNodePtr);
         }
+        //******************************************************* 
         
         tempNode=tmx_doc->allocate_node(rapidxml::node_element, "object");
 
@@ -268,7 +270,7 @@ std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>
    return objects;
 }
 
-std::string  Maptal::base64Encode(std::vector<std::vector<int>> matrix)
+std::string  Maptal::base64Encode(std::vector<std::vector<int>> matrix, int falseTile)
 {
     // Assumes the matrix is square.
     uLongf bufferSize = matrix.size() * matrix[0].size() * 4;
@@ -287,6 +289,11 @@ std::string  Maptal::base64Encode(std::vector<std::vector<int>> matrix)
             
             //Seems as though an offset is needed.
             currentId=matrix[y][x]+1;
+
+            if (currentId > falseTile)
+            {
+                currentId=falseTile;
+            }
 
             // This adds each byte of the integer to the tile buffer, the SLL is by byte intervals which are then masked by LAST_BYTE.
             bufferedTiles[offset] =   (currentId       & MAPTAL_LAST_BYTE);
@@ -378,7 +385,7 @@ void Maptal::toTMX(std::string fileDestination)
                 //**********************************
                 //! Map data encoding.
                 //**********************************
-                dataNodePtr->value(tmx.allocate_string(base64Encode(matrix).c_str()));
+                dataNodePtr->value(tmx.allocate_string(base64Encode(matrix,tileSet.getFalseTile()).c_str()));
 
                 //**********************************
 

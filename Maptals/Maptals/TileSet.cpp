@@ -84,6 +84,15 @@ void TileSet::appendTileSpec(int tileID, TileSpec specification)
 {
     tileMap.insert(std::pair<int,TileSpec>(tileID, specification));
 }
+void TileSet::setFalseTile(int tile)
+{
+    falseTile=tile;
+}
+
+int TileSet::getFalseTile()
+{
+    return falseTile;
+}
 
 std::map<int,TileSpec> TileSet::getTileMap()
 {
@@ -125,6 +134,7 @@ TileSet::TileSet()
     setTileHeight(0);
     setTileWidth(0);
     setImagePath("\\");
+    setFalseTile(-1);
     tileMap=std::map<int, TileSpec>();
     objectMap=std::map<int, ObjectType>();
 }

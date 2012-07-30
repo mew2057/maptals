@@ -69,6 +69,13 @@ public:
      */
     int getImageWidth();
 
+    /*
+     *! \brief The false tile that prevents object overwrite.
+     *! \return The falseTile field.
+     */
+    int getFalseTile();
+
+
     // XXX Should this get removed?
     /*
      *! \brief Retrieves the tile map associated with the TileSet.
@@ -139,6 +146,12 @@ public:
     void setImageHeight(int height);
 
     /*
+     *! \brief  A settor for the falseTile field.
+     *! \param tile The new falseTile field.
+     */
+    void setFalseTile(int tile);
+
+    /*
      *! \brief Adds the given tileID TileSpec pair to the tileMap.
      *! \param tileID The ID of the supplied TileSpec.
      *! \param specification The specification of one tile.
@@ -201,9 +214,15 @@ private:
     int imageHeight;
 
     /*
-     *! \briefThe width of the tileset image in pixels.
+     *! \brief The width of the tileset image in pixels.
      */
     int imageWidth;
+
+    /*
+     *! \brief A "fake" tile that's used to define objects, but prevent them from being overwritten by new tiles. 
+     *! All tiles with a tileID greater or equal to than this tile are considered "fake" and replaced with this tileID.
+     */
+    int falseTile;
 
     /*
      *! \brief A map of the objects associated with the TileSet.

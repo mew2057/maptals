@@ -12,6 +12,7 @@
 #define TILE_FACTORY_TILE_HEIGHT "tileHeight"
 #define TILE_FACTORY_IMAGE_HEIGHT "imageHeight"
 #define TILE_FACTORY_IMAGE_WIDTH "imageWidth"
+#define TILE_FACTORY_FALSE_TILE "falseTile"
 
 TileSet TileFactory::generateTileSet(std::string fileName){
     
@@ -53,9 +54,7 @@ TileSet TileFactory::generateTileSet(std::string fileName){
         objectGroup = parentNode->first_attribute("name")->value();
 
         objectNode=parentNode->first_node("object");
-        
-        std::cout << objectGroup <<std::endl;
-        
+                
         while(objectNode != 0)
         {
             std::istringstream(objectNode->first_attribute("oid")->value()) >> oid;
@@ -207,6 +206,10 @@ TileSet TileFactory::initializeTileSet(const rapidxml::xml_node<> *headerNode){
         else if(attributeName == TILE_FACTORY_IMAGE_WIDTH)
         {
             newSet.setImageWidth(attributeValue);
+        }
+        else if(attributeName == TILE_FACTORY_FALSE_TILE)
+        {
+            newSet.setFalseTile(attributeValue);
         }
 
         currentAttribute=currentAttribute->next_attribute();

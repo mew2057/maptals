@@ -5,9 +5,10 @@
 std::vector<std::vector<int>> DrunkenWalk::generate2DMap()
 {
     //! This grabs the first tile id listed in the tile map, this is the lowest numeric id in the tileset.
-    int tileID=4;
+    int tileID=tileSet.getStartTile();
 
     TileSpec currentTile=tileSet.getTileMap().find(tileID)->second;
+
     //! This clears the field (ensuring any height or width changes are reflected in the new map.
     //! The the freshly defined map is "zeroed", or each index is set to minValue-1.
     resizeMatrix();
