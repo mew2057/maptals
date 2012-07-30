@@ -57,9 +57,10 @@ public:
     /*
      *! \brief Generates a byte array of the supplied vector which is them compressed using the zlib library and encoded to a base64 encoded string.
      *! \param matrix The tileID matrix to encode, assumed to be rectangular.
+     *! \param falseTile The tile that splits so called "real tiles" and false tiles (oid based tiles).
      *! \return The base64 encoded string of the compressed map data.
      */
-    std::string base64Encode(std::vector<std::vector<int>> matrix);
+    std::string base64Encode(std::vector<std::vector<int>> matrix, int falseTile);
 
     /*
      *! \brief Generate a 2D map utilizing the Maptal supplied TileSet with the world building algorithm specified by sub classes.
