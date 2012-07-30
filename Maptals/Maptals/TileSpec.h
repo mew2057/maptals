@@ -35,17 +35,19 @@ class TileSpec {
      /*
       *! \brief randomly selects the next tile from the supplied direction.
       *! \param direction The direction the next tile should be (N,E,S,W).
+      *! \param badTile Defines a tile that results in infinite loops. [defaults to -1]
       *! \return The tileID of the next tile. If not found INT_MIN.
       */
-     int getNextTile(int direction);
+     int getNextTile(int direction, int badTile=-1);
 
      /*
       *! \brief randomly selects the next tile from the supplied direction.
       *! \param direction The direction the next tile should be (N,E,S,W).
       *! \param seed reseeds the random number generator (be aware this reseeds each time).
+      *! \param badTile Defines a tile that results in infinite loops.
       *! \return The tileID of the next tile. If not found INT_MIN.
       */
-     int getNextTile(int direction, unsigned int seed);
+     int getNextTile(int direction, unsigned int seed,int badTile=-1);
 
      /*
       *! \brief Adds a tile to the vector for the supplied direction.
@@ -56,9 +58,10 @@ class TileSpec {
 
      /*
       *! \brief Randomly gets the next direction from available directions.
+      *! \param badDirection If the world generation algorithm failed in a direction a bad direction may be specified to prevent infinite looping. (defaults to -1)
       *! \return The new direction if any are present, INT_MIN if none are present.
       */
-     int getNextDirection();
+     int getNextDirection(int badDirection=-1);
 
      /*
       *! \brief The gettor for the object identifier.
