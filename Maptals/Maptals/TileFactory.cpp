@@ -18,6 +18,7 @@ TileSet TileFactory::generateTileSet(std::string fileName){
     //! Placeholders.
     TileSpec currentSpec;
     int currentTile, oid;
+    std::string objectGroup="";
 
     //! The stream that reads the xml file.
     std::ifstream tileFile=std::ifstream(fileName);
@@ -26,9 +27,8 @@ TileSet TileFactory::generateTileSet(std::string fileName){
     //! The XML document that the parse operations are exeuted on.
     rapidxml::xml_document<> xmlTileSet;
 
-    //! Three nodes allows for the preservation of all levels and allows for fast access 
-    //! (retrieving the parent will be used for any levels deeper with expansion)
-    rapidxml::xml_node<> * rootNode, * tileNode, * objectNode;
+    //! Multiple Nodes allows for the preservation of all levels and allows for fast access 
+    rapidxml::xml_node<> * rootNode, * tileNode, * objectNode, *parentNode;
     
     //Creates a null terminated vector of the xml document that is then loaded into xmlDoc.
     std::vector<char> xmlDoc((std::istreambuf_iterator<char>(tileFile)), std::istreambuf_iterator<char>( ));  
@@ -46,15 +46,26 @@ TileSet TileFactory::generateTileSet(std::string fileName){
     TileSet tileSet = initializeTileSet(rootNode);
     
     //! Begin initialization of map of tileset objects.
-    objectNode=objectNode->first_node("object");
+    parentNode=objectNode->first_node("objectgroup");
 
-    while(objectNode != 0)
+    while(parentNode!=0)
     {
-        std::istringstream(objectNode->first_attribute("oid")->value()) >> oid;
+        objectGroup = parentNode->first_attribute("name")->value();
 
-        tileSet.addObjectType(oid, (std::string)objectNode->first_attribute("type")->value());
+        objectNode=parentNode->first_node("object");
+        
+        std::cout << objectGroup <<std::endl;
+        
+        while(objectNode != 0)
+        {
+            std::istringstream(objectNode->first_attribute("oid")->value()) >> oid;
 
-        objectNode=objectNode->next_sibling("object");
+            tileSet.addObjectType(oid, (std::string)objectNode->first_attribute("type")->value(),objectGroup);
+
+            objectNode=objectNode->next_sibling("object");
+        }
+
+        parentNode=parentNode->next_sibling("objectgroup");
     }
     //! End initialization of map of tileset objects.
 

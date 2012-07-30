@@ -11,6 +11,13 @@
 #include <string>
 #include <map>
 #include "rapidxml-1.13\rapidxml.hpp"
+
+struct ObjectType
+{
+    std::string type;
+    std::string group;
+};
+
 class TileSet
 {
 public:
@@ -79,9 +86,9 @@ public:
     /*
      *! \brief A gettor for the Map Object associated with a given oid.
      *! \param oid The Object IDentifier for a specific MapObject.
-     *! \return The object type if found, an empty string if not.
+     *! \return The object type if found, a new ObjectType if not.
      */
-    std::string getObjectType(int oid);
+    ObjectType getObjectType(int oid);
 
     /*
      *! \brief A settor for the tileWidth field.
@@ -142,8 +149,9 @@ public:
      *! \brief Adds the given oid and object type pair to the object map.
      *! \param oid The object identifier.
      *! \param objectType The user specified name for the oid.
+     *! \param group The user specified group for the oid.
      */
-    void addObjectType(int oid, std::string objectType);
+    void addObjectType(int oid, std::string objectType, std::string group="");
 
     TileSet();
 
@@ -200,7 +208,7 @@ private:
     /*
      *! \brief A map of the objects associated with the TileSet.
      */
-    std::map<int, std::string> objectMap;
+    std::map<int, ObjectType> objectMap;
 
     
 };

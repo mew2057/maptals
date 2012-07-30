@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <tileset emptyTile="6" startTile="4" imagePath="TestTile.png" tileWidth="32" tileHeight="32" horizon="1" imageWidth="64" imageHeight="128">
+  
   <objects>
-    <object type="AllCollide" oid="0" />
-    <object type="TopCollide" oid="1" />
+  
+    <objectgroup name="collisions">
+      <object type="AllCollide" oid="0"/>
+      <object type="TopCollide" oid="1"/>
+    </objectgroup>
+    
+    <objectgroup name="spawns">
+      <object type="Player" oid="3"/>
+    </objectgroup>
+  
   </objects>
-    <tile id="0" oid="0">
+  
+  <tile id="0" oid="0">
     <north>
       <nextTile>0</nextTile>
       <nextTile>1</nextTile>

@@ -99,18 +99,22 @@ TileSpec * TileSet::getTileID(int tileID)
         return nullptr;
 }
 
-std::string TileSet::getObjectType(int oid)
+ObjectType TileSet::getObjectType(int oid)
 {
-    std::map<int, std::string>::iterator it = objectMap.find(oid);
+    std::map<int, ObjectType>::iterator it = objectMap.find(oid);
     if (it != objectMap.end())
         return objectMap.find(oid)->second;
     else
-        return "";
+        return ObjectType();
 }
 
-void TileSet::addObjectType(int oid, std::string objectType)
+void TileSet::addObjectType(int oid, std::string objectType, std::string group)
 {
-    objectMap.insert(std::pair<int,std::string>(oid, objectType));
+    ObjectType temp;
+    temp.type = objectType;
+    temp.group = group;
+
+    objectMap.insert(std::pair<int,ObjectType>(oid, temp));
 }
 
 TileSet::TileSet()
@@ -122,7 +126,7 @@ TileSet::TileSet()
     setTileWidth(0);
     setImagePath("\\");
     tileMap=std::map<int, TileSpec>();
-    objectMap=std::map<int, std::string>();
+    objectMap=std::map<int, ObjectType>();
 }
 
 std::ostream& operator<< ( std::ostream& outputStream, TileSet& set ){
