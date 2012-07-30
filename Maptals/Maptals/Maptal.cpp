@@ -78,15 +78,42 @@ void Maptal::objectsFromVector(std::vector<MapObject> *objects,
 
     // Placeholders.
     MapObject currentObject;
-    rapidxml::xml_node<char> * tempNode;
+    rapidxml::xml_node<char> * tempNode,*subNodePtr;
+    ObjectType currentType;
 
     // Iterates over the map objects and writes their contents to the supplied xml node.
     for (unsigned int i = 0; i < objects->size();i++)
     {
+        
         currentObject = objects->at(i);
+        currentType = tileSet->getObjectType(currentObject.getOid());
+        
+        subNodePtr=rootNodePtr->first_node("objectgroup");
+
+        //XXX Is there a more efficient way to do this?
+        //! rapidxml has no xpath query support so I have to include this to allow for multiple object groups.
+        while (subNodePtr !=0)
+        {         
+            if(subNodePtr->first_attribute("name") == 0 || 
+                subNodePtr->first_attribute("name")->value() != currentType.group)
+            {
+                subNodePtr=subNodePtr->next_sibling("objectgroup");
+                continue;
+            }
+            break;
+        }
+        
+        //! Generates an object group as needed.
+        if(subNodePtr==0)
+        {
+            subNodePtr=tmx_doc->allocate_node(rapidxml::node_element, "objectgroup");
+            subNodePtr->append_attribute(tmx_doc->allocate_attribute("name", tmx_doc->allocate_string(currentType.group.c_str())));
+            rootNodePtr->append_node(subNodePtr);
+        }
+        
         tempNode=tmx_doc->allocate_node(rapidxml::node_element, "object");
 
-        tempNode->append_attribute(tmx_doc->allocate_attribute("Type",tmx_doc->allocate_string(tileSet->getObjectType(currentObject.getOid()).c_str())));
+        tempNode->append_attribute(tmx_doc->allocate_attribute("Type",tmx_doc->allocate_string(currentType.type.c_str())));
 
         tempNode->append_attribute(tmx_doc->allocate_attribute("x",intToString((currentObject.getStartX())*tileSet->getTileWidth())));
         tempNode->append_attribute(tmx_doc->allocate_attribute("y",intToString((currentObject.getStartY())*tileSet->getTileHeight())));
@@ -95,7 +122,7 @@ void Maptal::objectsFromVector(std::vector<MapObject> *objects,
         tempNode->append_attribute(tmx_doc->allocate_attribute("width",intToString((currentObject.getEndX()+1 -currentObject.getStartX())*tileSet->getTileWidth())));
         tempNode->append_attribute(tmx_doc->allocate_attribute("height",intToString((currentObject.getEndY()+1-currentObject.getStartY())*tileSet->getTileHeight())));
 
-        rootNodePtr->append_node(tempNode);
+        subNodePtr->append_node(tempNode);
     }    
 }
 
@@ -330,14 +357,7 @@ void Maptal::toTMX(std::string fileDestination)
         //**********************************
     rootNodePtr->append_node(subNodePtr);
 
-    
-    subNodePtr = tmx.allocate_node(rapidxml::node_element, "objectgroup");
-    
-    subNodePtr->append_attribute(tmx.allocate_attribute("name", "collisions"));
-
-    objectsFromVector(&generateObjectVector(matrix, tileSet), &tileSet, subNodePtr,&tmx);
-
-    rootNodePtr->append_node(subNodePtr);
+    objectsFromVector(&generateObjectVector(matrix, tileSet), &tileSet, rootNodePtr,&tmx);
 
     //**********************************
     //! Layer node creation.
