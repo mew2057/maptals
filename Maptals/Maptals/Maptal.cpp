@@ -71,7 +71,7 @@ std::vector<std::vector<int> > Maptal::get2DMap()
     return matrix;
 }
 
-void Maptal::objectsFromVector(std::vector<MapObject> *objects, 
+void Maptal::objectsFromVector(std::vector<MapObject> objects, 
                             TileSet *tileSet,
                             rapidxml::xml_node<char> * rootNodePtr,
                             rapidxml::xml_document<char> * tmx_doc)
@@ -82,10 +82,10 @@ void Maptal::objectsFromVector(std::vector<MapObject> *objects,
     ObjectType currentType;
 
     // Iterates over the map objects and writes their contents to the supplied xml node.
-    for (unsigned int i = 0; i < objects->size();i++)
+    for (unsigned int i = 0; i < objects.size();i++)
     {
         
-        currentObject = objects->at(i);
+        currentObject = objects[i];
         currentType = tileSet->getObjectType(currentObject.getOid());
         
         //******************************************************* 
@@ -128,7 +128,7 @@ void Maptal::objectsFromVector(std::vector<MapObject> *objects,
     }    
 }
 
-std::vector<MapObject> * Maptal::generateObjectVector(std::vector<std::vector<int> > matrix,TileSet tiles)
+std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int> > matrix,TileSet tiles)
 {
     //! The tile id to be ignored in searching for objects.
    int empty = tiles.getEmptyTile();
@@ -267,7 +267,7 @@ std::vector<MapObject> * Maptal::generateObjectVector(std::vector<std::vector<in
        }
    }
 
-   return & objects;
+   return objects;
 }
 
 std::string  Maptal::base64Encode(std::vector<std::vector<int> > matrix, int falseTile)
