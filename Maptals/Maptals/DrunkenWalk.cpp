@@ -26,7 +26,6 @@ void getRetryPosition(int * x,int * y,short direction)
              break;
         
     }
-
 }
 
 
@@ -44,9 +43,6 @@ std::vector<std::vector<int> > DrunkenWalk::generate2DMap()
 
     //! Seed the random number generator.
     srand(time(NULL));
-    
-    //! Set the step related values: zeroes the step count.
-    int stepsTaken = 0;
 
     //! Randomly set the x start point.
     int x = 0;

@@ -25,7 +25,8 @@ TileSet TileFactory::generateTileSet(std::string fileName){
     std::string objectGroup="";
 
     //! The stream that reads the xml file.
-    std::ifstream tileFile=std::ifstream(fileName);
+    std::ifstream tileFile;
+    tileFile.open(fileName.c_str());
 
     //! Start xml initialization.
     //! The XML document that the parse operations are exeuted on.
