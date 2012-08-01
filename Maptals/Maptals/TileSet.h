@@ -10,7 +10,7 @@
 #include "TileSpec.h"
 #include <string>
 #include <map>
-#include "rapidxml-1.13\rapidxml.hpp"
+#include "rapidxml/rapidxml.hpp"
 
 struct ObjectType
 {
@@ -85,7 +85,7 @@ public:
     /*
      *! \brief A gettor for the TileSpec associated with a given tile id.
      *! \param tileID The tile identifier for a specific tile specification.
-     *! \return The TileSpec if the tileID was found, nullptr if not.
+     *! \return The TileSpec if the tileID was found, 0 if not.
      */
     TileSpec * getTileID(int tileID);
     
@@ -180,11 +180,7 @@ public:
      */
     void addObjectType(int oid, std::string objectType, std::string group="");
 
-    TileSet();
-
-    //! A function for ostream output convenience in debugging.
-    friend std::ostream& operator<< ( std::ostream& outputStream, TileSet& set );
-    
+    TileSet();   
 
 private:
     /*

@@ -127,21 +127,21 @@
     <ClCompile Include="TileFactory.cpp" />
     <ClCompile Include="TileSet.cpp" />
     <ClCompile Include="TileSpec.cpp" />
-    <ClCompile Include="zlib-1.2.7\adler32.c" />
-    <ClCompile Include="zlib-1.2.7\compress.c" />
-    <ClCompile Include="zlib-1.2.7\crc32.c" />
-    <ClCompile Include="zlib-1.2.7\deflate.c" />
-    <ClCompile Include="zlib-1.2.7\gzclose.c" />
-    <ClCompile Include="zlib-1.2.7\gzlib.c" />
-    <ClCompile Include="zlib-1.2.7\gzread.c" />
-    <ClCompile Include="zlib-1.2.7\gzwrite.c" />
-    <ClCompile Include="zlib-1.2.7\infback.c" />
-    <ClCompile Include="zlib-1.2.7\inffast.c" />
-    <ClCompile Include="zlib-1.2.7\inflate.c" />
-    <ClCompile Include="zlib-1.2.7\inftrees.c" />
-    <ClCompile Include="zlib-1.2.7\trees.c" />
-    <ClCompile Include="zlib-1.2.7\uncompr.c" />
-    <ClCompile Include="zlib-1.2.7\zutil.c" />
+    <ClCompile Include="zlib\adler32.c" />
+    <ClCompile Include="zlib\compress.c" />
+    <ClCompile Include="zlib\crc32.c" />
+    <ClCompile Include="zlib\deflate.c" />
+    <ClCompile Include="zlib\gzclose.c" />
+    <ClCompile Include="zlib\gzlib.c" />
+    <ClCompile Include="zlib\gzread.c" />
+    <ClCompile Include="zlib\gzwrite.c" />
+    <ClCompile Include="zlib\infback.c" />
+    <ClCompile Include="zlib\inffast.c" />
+    <ClCompile Include="zlib\inflate.c" />
+    <ClCompile Include="zlib\inftrees.c" />
+    <ClCompile Include="zlib\trees.c" />
+    <ClCompile Include="zlib\uncompr.c" />
+    <ClCompile Include="zlib\zutil.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include=".\DrunkenWalk.h" />
@@ -149,27 +149,26 @@
     <ClInclude Include=".\TileFactory.h" />
     <ClInclude Include="MapObject.h" />
     <ClInclude Include="Maptals.h" />
-    <ClInclude Include="rapidxml-1.13\rapidxml.hpp" />
-    <ClInclude Include="rapidxml-1.13\rapidxml_iterators.hpp" />
-    <ClInclude Include="rapidxml-1.13\rapidxml_print.hpp" />
-    <ClInclude Include="rapidxml-1.13\rapidxml_utils.hpp" />
+    <ClInclude Include="rapidxml\rapidxml.hpp" />
+    <ClInclude Include="rapidxml\rapidxml_iterators.hpp" />
+    <ClInclude Include="rapidxml\rapidxml_print.hpp" />
+    <ClInclude Include="rapidxml\rapidxml_utils.hpp" />
     <ClInclude Include="TileSet.h" />
     <ClInclude Include="TileSpec.h" />
-    <ClInclude Include="zlib-1.2.7\crc32.h" />
-    <ClInclude Include="zlib-1.2.7\deflate.h" />
-    <ClInclude Include="zlib-1.2.7\gzguts.h" />
-    <ClInclude Include="zlib-1.2.7\inffast.h" />
-    <ClInclude Include="zlib-1.2.7\inffixed.h" />
-    <ClInclude Include="zlib-1.2.7\inflate.h" />
-    <ClInclude Include="zlib-1.2.7\inftrees.h" />
-    <ClInclude Include="zlib-1.2.7\trees.h" />
-    <ClInclude Include="zlib-1.2.7\zconf.h" />
-    <ClInclude Include="zlib-1.2.7\zlib.h" />
-    <ClInclude Include="zlib-1.2.7\zutil.h" />
+    <ClInclude Include="zlib\crc32.h" />
+    <ClInclude Include="zlib\deflate.h" />
+    <ClInclude Include="zlib\gzguts.h" />
+    <ClInclude Include="zlib\inffast.h" />
+    <ClInclude Include="zlib\inffixed.h" />
+    <ClInclude Include="zlib\inflate.h" />
+    <ClInclude Include="zlib\inftrees.h" />
+    <ClInclude Include="zlib\trees.h" />
+    <ClInclude Include="zlib\zconf.h" />
+    <ClInclude Include="zlib\zlib.h" />
+    <ClInclude Include="zlib\zutil.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="rapidxml-1.13\license.txt" />
-    <Text Include="Text.txt" />
+    <Text Include="rapidxml\license.txt" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include=".\tileset.xml">
