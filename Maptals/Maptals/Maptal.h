@@ -111,7 +111,7 @@ private:
      *! \param rootNodePrt The parent node for objects in the XML (TMX) document. [should be objectGroup]
      *! \param tmx_doc The XML document, used for string and node allocation.
      */
-    void objectsFromVector(std::vector<MapObject> *objects, 
+    void objectsFromVector(std::vector<MapObject> objects, 
                             TileSet *tileSet,
                             rapidxml::xml_node<char> * rootNodePtr, 
                             rapidxml::xml_document<char> * tmx_doc);
@@ -122,7 +122,7 @@ private:
      *! \param tiles Contains the tile specifications that are referenced by the contents of the matrix.
      *! \return A vector containing MapObjects that contain the oid, start x and y and the end x and y.
      */
-    std::vector<MapObject> * generateObjectVector(std::vector<std::vector<int> > matrix,TileSet tiles);
+    std::vector<MapObject> generateObjectVector(std::vector<std::vector<int> > matrix,TileSet tiles);
 };
 
 #endif
