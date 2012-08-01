@@ -125,7 +125,7 @@ TileSpec * TileSet::getTileID(int tileID)
     if (it != tileMap.end())
         return &(tileMap.find(tileID)->second);
     else
-        return nullptr;
+        return 0;
 }
 
 ObjectType TileSet::getObjectType(int oid)
@@ -159,12 +159,4 @@ TileSet::TileSet()
     setLayerName("default");
     tileMap=std::map<int, TileSpec>();
     objectMap=std::map<int, ObjectType>();
-}
-
-std::ostream& operator<< ( std::ostream& outputStream, TileSet& set ){
-    return outputStream << "Tile Path: " << set.getImagePath() <<"\n"
-                        << "Tile Dimensions: (" << set.getTileWidth() << "x" << set.getTileHeight() << ")\n"
-                        << "Horizon: " << set.getHorizon() << "\n" 
-                        << "Empty Tile: " << set.getEmptyTile() << "\n"
-                        << "Start Tile: " << set.getStartTile() << "\n";
 }

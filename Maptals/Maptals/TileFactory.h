@@ -24,7 +24,7 @@
 
 #include "TileSpec.h"
 #include "TileSet.h"
-#include "rapidxml-1.13\rapidxml.hpp"
+#include "rapidxml/rapidxml.hpp"
 #include <string>
 #include <map>
 

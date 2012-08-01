@@ -1,14 +1,19 @@
 #include "Maptal.h"
-#include "rapidxml-1.13\rapidxml.hpp"
-#include "rapidxml-1.13\rapidxml_print.hpp"
+#include "rapidxml/rapidxml.hpp"
+#include "rapidxml/rapidxml_print.hpp"
 #include <sstream>
 #include <istream>
 #include <fstream>
-#include "base64\Base64.h"
-#include "zlib-1.2.7/zlib.h"
+#include "base64/Base64.h"
+#include "zlib/zlib.h"
 
 // A masking tool for base 64 encoding.
 #define MAPTAL_LAST_BYTE 0xFF
+
+const char * intToString(int x, rapidxml::xml_document<char> * tmx_doc)
+{
+    return const_cast<const char *>(tmx_doc->allocate_string(std::to_string(x).c_str()));
+};
 
 Maptal::Maptal(int width, int height, TileSet tSet)
 {
@@ -69,9 +74,6 @@ void Maptal::objectsFromVector(std::vector<MapObject> *objects,
                             rapidxml::xml_node<char> * rootNodePtr,
                             rapidxml::xml_document<char> * tmx_doc)
 {
-    // Anonymous function for int conversion.
-    auto intToString = [&tmx_doc](int x){return const_cast<const char *>(tmx_doc->allocate_string(std::to_string(x).c_str()));};
-
     // Placeholders.
     MapObject currentObject;
     rapidxml::xml_node<char> * tempNode,*subNodePtr;
@@ -113,12 +115,12 @@ void Maptal::objectsFromVector(std::vector<MapObject> *objects,
 
         tempNode->append_attribute(tmx_doc->allocate_attribute("Type",tmx_doc->allocate_string(currentType.type.c_str())));
 
-        tempNode->append_attribute(tmx_doc->allocate_attribute("x",intToString((currentObject.getStartX())*tileSet->getTileWidth())));
-        tempNode->append_attribute(tmx_doc->allocate_attribute("y",intToString((currentObject.getStartY())*tileSet->getTileHeight())));
+        tempNode->append_attribute(tmx_doc->allocate_attribute("x",intToString((currentObject.getStartX())*tileSet->getTileWidth(),tmx_doc)));
+        tempNode->append_attribute(tmx_doc->allocate_attribute("y",intToString((currentObject.getStartY())*tileSet->getTileHeight(),tmx_doc)));
 
 
-        tempNode->append_attribute(tmx_doc->allocate_attribute("width",intToString((currentObject.getEndX()+1 -currentObject.getStartX())*tileSet->getTileWidth())));
-        tempNode->append_attribute(tmx_doc->allocate_attribute("height",intToString((currentObject.getEndY()+1-currentObject.getStartY())*tileSet->getTileHeight())));
+        tempNode->append_attribute(tmx_doc->allocate_attribute("width",intToString((currentObject.getEndX()+1 -currentObject.getStartX())*tileSet->getTileWidth(),tmx_doc)));
+        tempNode->append_attribute(tmx_doc->allocate_attribute("height",intToString((currentObject.getEndY()+1-currentObject.getStartY())*tileSet->getTileHeight(),tmx_doc)));
 
         subNodePtr->append_node(tempNode);
     }    
@@ -306,9 +308,6 @@ std::string  Maptal::base64Encode(std::vector<std::vector<int> > matrix, int fal
 void Maptal::toTMX(std::string fileDestination)
 {
     rapidxml::xml_document<char> tmx;   
-
-    // A quick and dirty anonymous function to convert the attributes to a valid string.
-    auto intToString = [&tmx](int x){return const_cast<const char *>(tmx.allocate_string(std::to_string(x).c_str()));};
     
     //**********************************
     //! Declaration node creation.
@@ -328,10 +327,10 @@ void Maptal::toTMX(std::string fileDestination)
     rootNodePtr = tmx.allocate_node(rapidxml::node_element, "map");
     rootNodePtr->append_attribute(tmx.allocate_attribute("version", "1.0"));
     rootNodePtr->append_attribute(tmx.allocate_attribute("orientation", "orthogonal")); 
-    rootNodePtr->append_attribute(tmx.allocate_attribute("width", intToString(width)));
-    rootNodePtr->append_attribute(tmx.allocate_attribute("height",  intToString(height)));    
-    rootNodePtr->append_attribute(tmx.allocate_attribute("tilewidth", intToString(tileSet.getTileWidth()) ));
-    rootNodePtr->append_attribute(tmx.allocate_attribute("tileheight",  intToString(tileSet.getTileHeight()) ));
+    rootNodePtr->append_attribute(tmx.allocate_attribute("width", intToString(width,&tmx)));
+    rootNodePtr->append_attribute(tmx.allocate_attribute("height",  intToString(height,&tmx)));    
+    rootNodePtr->append_attribute(tmx.allocate_attribute("tilewidth", intToString(tileSet.getTileWidth(),&tmx) ));
+    rootNodePtr->append_attribute(tmx.allocate_attribute("tileheight",  intToString(tileSet.getTileHeight(),&tmx) ));
     //**********************************
 
     tmx.append_node(rootNodePtr);
@@ -344,8 +343,8 @@ void Maptal::toTMX(std::string fileDestination)
     
         subNodePtr->append_attribute(tmx.allocate_attribute("name",tmx.allocate_string(tileSet.getImagePath().c_str())));
         subNodePtr->append_attribute(tmx.allocate_attribute("firstgid", "1"));
-        subNodePtr->append_attribute(tmx.allocate_attribute("tilewidth", intToString(tileSet.getTileWidth())));
-        subNodePtr->append_attribute(tmx.allocate_attribute("tileheight",  intToString(tileSet.getTileHeight())));
+        subNodePtr->append_attribute(tmx.allocate_attribute("tilewidth", intToString(tileSet.getTileWidth(),&tmx)));
+        subNodePtr->append_attribute(tmx.allocate_attribute("tileheight",  intToString(tileSet.getTileHeight(),&tmx)));
 
             //**********************************
             //! Image node creation.
@@ -353,8 +352,8 @@ void Maptal::toTMX(std::string fileDestination)
             rapidxml::xml_node<char> * imageNodePtr = tmx.allocate_node(rapidxml::node_element, "image");
 
             imageNodePtr->append_attribute(tmx.allocate_attribute("source",tmx.allocate_string(tileSet.getImagePath().c_str())));
-            imageNodePtr->append_attribute(tmx.allocate_attribute("width", intToString(tileSet.getImageWidth())));
-            imageNodePtr->append_attribute(tmx.allocate_attribute("height",  intToString(tileSet.getImageHeight())));
+            imageNodePtr->append_attribute(tmx.allocate_attribute("width", intToString(tileSet.getImageWidth(),&tmx)));
+            imageNodePtr->append_attribute(tmx.allocate_attribute("height",  intToString(tileSet.getImageHeight(),&tmx)));
             //**********************************
         subNodePtr->append_node(imageNodePtr);
         //**********************************
@@ -367,8 +366,8 @@ void Maptal::toTMX(std::string fileDestination)
     //**********************************
     subNodePtr = tmx.allocate_node(rapidxml::node_element, "layer");
     subNodePtr->append_attribute(tmx.allocate_attribute("name",tmx.allocate_string(tileSet.getLayerName().c_str())));
-    subNodePtr->append_attribute(tmx.allocate_attribute("width", intToString(width)));
-    subNodePtr->append_attribute(tmx.allocate_attribute("height",  intToString(height)));  
+    subNodePtr->append_attribute(tmx.allocate_attribute("width", intToString(width,&tmx)));
+    subNodePtr->append_attribute(tmx.allocate_attribute("height",  intToString(height,&tmx)));  
 
             //**********************************
             //! Data node creation.
