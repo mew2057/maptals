@@ -1,5 +1,4 @@
 #include "TileSpec.h" 
-#include <iostream>
 
 //! This is evenly random, no weight on outcomes.
 int TileSpec::getNextTile(int direction, unsigned int seed, int badTile){
@@ -62,16 +61,8 @@ void TileSpec::appendTile(int direction, int tile){
 }
 
 TileSpec::TileSpec(int _oid){
-    succeedingTiles = std::vector<std::vector<int>>(4, std::vector<int>(0));
+    succeedingTiles = std::vector<std::vector<int> >(4, std::vector<int>(0));
     validDirections = std::vector<int>(0);
     oid=_oid;
     srand(time(NULL));
-}
-
-std::ostream& operator<< ( std::ostream& outputStream, TileSpec& specification ){
-    return outputStream << " North : \n" 
-                        << specification.succeedingTiles[0].size() << "\n East: \n"
-                        << specification.succeedingTiles[1].size() << "\n West: \n"
-                        << specification.succeedingTiles[2].size() << "\n South: \n"
-                        << specification.succeedingTiles[3].size() << "\n";
 }

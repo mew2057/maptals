@@ -8,7 +8,7 @@
 #ifndef MAPTALS_MAPTAL_H
 #define MAPTALS_MAPTAL_H
 
-#include <cstdlib>
+#include <vector>
 #include <time.h>
 #include "TileSet.h"
 #include "MapObject.h"
@@ -60,19 +60,19 @@ public:
      *! \param falseTile The tile that splits so called "real tiles" and false tiles (oid based tiles).
      *! \return The base64 encoded string of the compressed map data.
      */
-    std::string base64Encode(std::vector<std::vector<int>> matrix, int falseTile);
+    std::string base64Encode(std::vector<std::vector<int> > matrix, int falseTile);
 
     /*
      *! \brief Generate a 2D map utilizing the Maptal supplied TileSet with the world building algorithm specified by sub classes.
      *! \return The matrix containg the map details produced by the world building algorithm. Default behavior returns the unaltered matrix field.
      */
-    virtual std::vector<std::vector<int>> generate2DMap(){return matrix;};        
+    virtual std::vector<std::vector<int> > generate2DMap(){return matrix;};        
 
     /*!
      * \brief The gettor for the matrix, ideal for reusing the map for respawn. 
      * \return The map matrix, performs no procedural operation to recieve the map.
      */
-    std::vector<std::vector<int>> get2DMap();  
+    std::vector<std::vector<int> > get2DMap();  
 protected:
     /*
      *! \brief The height of the map in tiles.
@@ -92,7 +92,7 @@ protected:
     /*
      *! \brief A matrix with dimensions height by width or matrix[height][width], containing a mapping of tileIDs.
      */
-    std::vector<std::vector<int>> matrix;
+    std::vector<std::vector<int> > matrix;
 
     /*
      *! \brief Zeroes the matrices associated with the Maptal object with the "empty tile" value of the tileSet.
@@ -122,7 +122,7 @@ private:
      *! \param tiles Contains the tile specifications that are referenced by the contents of the matrix.
      *! \return A vector containing MapObjects that contain the oid, start x and y and the end x and y.
      */
-    std::vector<MapObject> generateObjectVector(std::vector<std::vector<int>> matrix,TileSet tiles);
+    std::vector<MapObject> generateObjectVector(std::vector<std::vector<int> > matrix,TileSet tiles);
 };
 
 #endif

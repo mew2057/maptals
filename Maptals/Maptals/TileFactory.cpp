@@ -5,6 +5,7 @@
 #include <vector>
 
 #define TILE_FACTORY_HORIZON "horizon"
+#define TILE_FACTORY_HORIZONTAL "horizontal"
 #define TILE_FACTORY_EMPTY_TILE "emptyTile"
 #define TILE_FACTORY_START_TILE "startTile"
 #define TILE_FACTORY_IMAGE_PATH "imagePath"
@@ -13,6 +14,8 @@
 #define TILE_FACTORY_IMAGE_HEIGHT "imageHeight"
 #define TILE_FACTORY_IMAGE_WIDTH "imageWidth"
 #define TILE_FACTORY_FALSE_TILE "falseTile"
+#define TILE_FACTORY_LAYER_NAME "layerName"
+
 
 TileSet TileFactory::generateTileSet(std::string fileName){
     
@@ -179,6 +182,10 @@ TileSet TileFactory::initializeTileSet(const rapidxml::xml_node<> *headerNode){
         {
             newSet.setHorizon(attributeValue);
         }
+        else if(attributeName == TILE_FACTORY_HORIZONTAL)
+        {
+            newSet.setHorizontal((bool)attributeValue);
+        }
         else if (attributeName == TILE_FACTORY_EMPTY_TILE)
         {
             newSet.setEmptyTile(attributeValue);
@@ -211,7 +218,11 @@ TileSet TileFactory::initializeTileSet(const rapidxml::xml_node<> *headerNode){
         {
             newSet.setFalseTile(attributeValue);
         }
-
+        else if (attributeName == TILE_FACTORY_LAYER_NAME)
+        {
+            newSet.setLayerName(currentAttribute->value());
+        }
+        
         currentAttribute=currentAttribute->next_attribute();
     }
 

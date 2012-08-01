@@ -75,7 +75,6 @@ public:
      */
     int getFalseTile();
 
-
     // XXX Should this get removed?
     /*
      *! \brief Retrieves the tile map associated with the TileSet.
@@ -96,6 +95,21 @@ public:
      *! \return The object type if found, a new ObjectType if not.
      */
     ObjectType getObjectType(int oid);
+    
+    /*
+     *! \brief Return whether this tileset is to be used with horizontal or vertical maps.
+     *! \return True if the map should be horizontal false if vertical.
+     */
+    bool getHorizontal();
+
+    std::string getLayerName();
+    
+    void setLayerName(std::string _layerName);
+        /*
+     *! \brief The settor for the horizontal field. True indicates a horizontally oriented tileset.
+     *! \param _horizontal The tileset preference for map generation.
+     */
+    void setHorizontal(bool _horizontal);
 
     /*
      *! \brief A settor for the tileWidth field.
@@ -225,11 +239,19 @@ private:
     int falseTile;
 
     /*
+     *! \brief Specifies whether or not the map should have a horizontal bulding preference. [defaults to true]
+     */
+    bool horizontal;
+
+
+    /*
      *! \brief A map of the objects associated with the TileSet.
      */
     std::map<int, ObjectType> objectMap;
 
+    std::string layerName;
     
 };
+
 
 #endif // !MAPTALS_TILE_SET_H

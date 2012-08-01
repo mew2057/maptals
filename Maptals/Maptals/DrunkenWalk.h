@@ -22,9 +22,9 @@
 #define MAPTALS_DRUNKEN_WALK_H
 
 #include "Maptal.h"
-#include <map>
 #include "TileSpec.h"
 #include "TileSet.h"
+
 class DrunkenWalk: public Maptal{
 public:
    /*
@@ -34,7 +34,7 @@ public:
     *! \param height The height of the map to be generated. [defaults to 0]
     *! \param tileSet The tileSet the walk will be generated from. [defaults to the generic TileSet]
     */
-    DrunkenWalk(int width=0, int height=0,TileSet tileSet=TileSet()):Maptal(width, height, tileSet){}
+    DrunkenWalk(int width=0, int height=0,TileSet tileSet=TileSet()):Maptal(width, height, tileSet){};
 
    /*
     *! \brief Generate a 2D map utilizing the Maptal supplied TileSet with the DrunkenWalk world building algorithm.
@@ -46,7 +46,7 @@ public:
     *!
     *! \return The matrix containg the map details produced by the DrunkenWalk world building algorithm.
     */
-    std::vector<std::vector<int>> generate2DMap();     
+    std::vector<std::vector<int> > generate2DMap();     
 };
 
 #endif
