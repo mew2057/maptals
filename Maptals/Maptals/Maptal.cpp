@@ -307,7 +307,7 @@ std::string  Maptal::base64Encode(std::vector<std::vector<int> > matrix, int fal
     return Base64::base64_encode(compressedTiles,destinationSize);
 }
 
-void Maptal::toTMX(std::string fileDestination)
+void Maptal::toTMX(const char * fileDestination)
 {
     rapidxml::xml_document<char> tmx;   
     
@@ -393,7 +393,7 @@ void Maptal::toTMX(std::string fileDestination)
 
    
     std::ofstream tmxFile;
-    tmxFile.open(fileDestination.c_str());
+    tmxFile.open(fileDestination);
 
     tmxFile<<tmx;
         

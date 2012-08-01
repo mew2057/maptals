@@ -43,10 +43,8 @@ public:
     *! After zeroing and getting the initial details from the tileSet the algorithm procedes to randomly determine the next direction to take 
     *! (as limited by the current tile specification) and randomly retrieves the next valid tile specification from the tileset. This process loops
     *! until the bounding condition is reached.
-    *!
-    *! \return The matrix containg the map details produced by the DrunkenWalk world building algorithm.
     */
-    std::vector<std::vector<int> > generate2DMap();     
+    void generate2DMap();     
 };
 
 #endif

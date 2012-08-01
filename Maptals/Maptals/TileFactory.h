@@ -36,7 +36,7 @@ public:
     * \param fileName The name of the file to be converted.
     * \return The tileset generated from the file.
     */
-    static TileSet generateTileSet(std::string fileName);
+    static TileSet generateTileSet(const char * fileName);
 
 private:
     /*!

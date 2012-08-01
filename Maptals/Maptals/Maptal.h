@@ -51,7 +51,7 @@ public:
      *! \brief generates and writes the 2DMap to a tmx file.
      *! \param fileDestination The path/filename of the tmx file to be output.
      */
-    void toTMX(std::string fileDestination);
+    void toTMX(const char * fileDestination);
 
 
     /*
@@ -64,9 +64,8 @@ public:
 
     /*
      *! \brief Generate a 2D map utilizing the Maptal supplied TileSet with the world building algorithm specified by sub classes.
-     *! \return The matrix containg the map details produced by the world building algorithm. Default behavior returns the unaltered matrix field.
      */
-    virtual std::vector<std::vector<int> > generate2DMap(){return matrix;};        
+    virtual void generate2DMap()=0;        
 
     /*!
      * \brief The gettor for the matrix, ideal for reusing the map for respawn. 
