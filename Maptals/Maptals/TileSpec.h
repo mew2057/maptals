@@ -15,11 +15,8 @@
 #define south 2
 #define west 3
 
-
-#include <cstdlib>
 #include <time.h>
 #include <vector>
-#include <iostream>
 
 
 // TODO
@@ -75,16 +72,12 @@ class TileSpec {
       */
      void setOID(int objectID);
 
-     /*
-      *! \brief A convience function used to check vector sizes.
-      */
-     friend std::ostream& operator<< ( std::ostream& outputStream, TileSpec& specification );
 private:
     
     /*
      *! \brief Holds the valid adjacent tiles.
      */
-    std::vector<std::vector<int>> succeedingTiles;
+    std::vector<std::vector<int> > succeedingTiles;
     
     /*
      *! \brief A vector of directions that may be easily selected at random.

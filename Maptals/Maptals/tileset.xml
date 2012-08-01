@@ -2,7 +2,7 @@
 
 <tileset emptyTile="6" falseTile="7" startTile="8" imagePath="TestTile.png" 
          tileWidth="32" tileHeight="32" horizon="2" imageWidth="64" 
-         imageHeight="128" >
+         imageHeight="128" horizontal="1" layerName="foreground">
   
   <objects>
   

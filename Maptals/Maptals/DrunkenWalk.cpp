@@ -1,6 +1,5 @@
 #include "DrunkenWalk.h"
 #define doubleRate 2
-#include <iostream>
 #include <stack>
 
 void getRetryPosition(int * x,int * y,short direction)
@@ -31,7 +30,7 @@ void getRetryPosition(int * x,int * y,short direction)
 }
 
 
-std::vector<std::vector<int>> DrunkenWalk::generate2DMap()
+std::vector<std::vector<int> > DrunkenWalk::generate2DMap()
 {
     //! This grabs the first tile id listed in the tile map, this is the lowest numeric id in the tileset.
     int tileID=tileSet.getStartTile();
@@ -62,9 +61,7 @@ std::vector<std::vector<int>> DrunkenWalk::generate2DMap()
     //! The failure sentinel.
     bool failed = true;
 
- 
     matrix[y][x]=tileID;
-    std::cout << tileSet <<std::endl;
 
     while (x < width-1){
         // Get a random number from 0-3 and react accordingly.
@@ -123,7 +120,6 @@ std::vector<std::vector<int>> DrunkenWalk::generate2DMap()
                 
                 if (tileID == INT_MIN)
                 {
-                    std::cin >> tileID;
                     exit(1); //This is a major violation and indicates a bad tile specification
                 }
                 directions.push(failDirection);

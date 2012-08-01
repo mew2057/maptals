@@ -16,7 +16,7 @@ Maptal::Maptal(int width, int height, TileSet tSet)
     setHeight(height);
     setTileSet(tSet);
 
-    matrix = std::vector<std::vector<int>>(height, std::vector<int>(width));
+    matrix = std::vector<std::vector<int> >(height, std::vector<int>(width));
 
     zeroMatrix();
 }
@@ -59,7 +59,7 @@ void Maptal::resizeMatrix()
     matrix.resize(height, std::vector<int>(width));
 }
 
-std::vector<std::vector<int>> Maptal::get2DMap()
+std::vector<std::vector<int> > Maptal::get2DMap()
 {
     return matrix;
 }
@@ -124,7 +124,7 @@ void Maptal::objectsFromVector(std::vector<MapObject> *objects,
     }    
 }
 
-std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>> matrix,TileSet tiles)
+std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int> > matrix,TileSet tiles)
 {
     //! The tile id to be ignored in searching for objects.
    int empty = tiles.getEmptyTile();
@@ -142,7 +142,7 @@ std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>
    std::vector<MapObject> objects;
    
    //! The matrix of objects that may benefit from vertical grouping.
-   std::vector<std::vector<MapObject>> singularObjects= std::vector<std::vector<MapObject>>(matrix[0].size());
+   std::vector<std::vector<MapObject> > singularObjects= std::vector<std::vector<MapObject> >(matrix[0].size());
 
    // Generate tile collisions.
    for(unsigned int y=0, offset=0; y < matrix.size();y++)
@@ -266,7 +266,7 @@ std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>
    return objects;
 }
 
-std::string  Maptal::base64Encode(std::vector<std::vector<int>> matrix, int falseTile)
+std::string  Maptal::base64Encode(std::vector<std::vector<int> > matrix, int falseTile)
 {
     // Assumes the matrix is square.
     uLongf bufferSize = matrix.size() * matrix[0].size() * 4;
@@ -366,7 +366,7 @@ void Maptal::toTMX(std::string fileDestination)
     //! Layer node creation.
     //**********************************
     subNodePtr = tmx.allocate_node(rapidxml::node_element, "layer");
-    subNodePtr->append_attribute(tmx.allocate_attribute("name","default"));
+    subNodePtr->append_attribute(tmx.allocate_attribute("name",tmx.allocate_string(tileSet.getLayerName().c_str())));
     subNodePtr->append_attribute(tmx.allocate_attribute("width", intToString(width)));
     subNodePtr->append_attribute(tmx.allocate_attribute("height",  intToString(height)));  
 

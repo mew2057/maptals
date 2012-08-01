@@ -93,6 +93,26 @@ int TileSet::getFalseTile()
 {
     return falseTile;
 }
+bool TileSet::getHorizontal()    
+{
+    return horizontal;
+}
+
+std::string TileSet::getLayerName()    
+{
+    return layerName;
+}
+    
+void TileSet::setLayerName(std::string _layerName)
+{
+    layerName=_layerName;
+}
+
+void TileSet::setHorizontal(bool _horizontal)
+{
+    horizontal=_horizontal;
+}
+
 
 std::map<int,TileSpec> TileSet::getTileMap()
 {
@@ -135,6 +155,8 @@ TileSet::TileSet()
     setTileWidth(0);
     setImagePath("\\");
     setFalseTile(-1);
+    setHorizontal(true);
+    setLayerName("default");
     tileMap=std::map<int, TileSpec>();
     objectMap=std::map<int, ObjectType>();
 }
