@@ -12,7 +12,9 @@
 
 const char * intToString(int x, rapidxml::xml_document<char> * tmx_doc)
 {
-    return const_cast<const char *>(tmx_doc->allocate_string(std::to_string(x).c_str()));
+    std::ostringstream intstream;
+    intstream << x;
+    return const_cast<const char *>(tmx_doc->allocate_string(intstream.str().c_str()));
 };
 
 Maptal::Maptal(int width, int height, TileSet tSet)
@@ -126,7 +128,7 @@ void Maptal::objectsFromVector(std::vector<MapObject> *objects,
     }    
 }
 
-std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int> > matrix,TileSet tiles)
+std::vector<MapObject> * Maptal::generateObjectVector(std::vector<std::vector<int> > matrix,TileSet tiles)
 {
     //! The tile id to be ignored in searching for objects.
    int empty = tiles.getEmptyTile();
@@ -265,7 +267,7 @@ std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>
        }
    }
 
-   return objects;
+   return & objects;
 }
 
 std::string  Maptal::base64Encode(std::vector<std::vector<int> > matrix, int falseTile)
@@ -359,7 +361,7 @@ void Maptal::toTMX(std::string fileDestination)
         //**********************************
     rootNodePtr->append_node(subNodePtr);
 
-    objectsFromVector(&generateObjectVector(matrix, tileSet), &tileSet, rootNodePtr,&tmx);
+    objectsFromVector(generateObjectVector(matrix, tileSet), &tileSet, rootNodePtr,&tmx);
 
     //**********************************
     //! Layer node creation.
@@ -391,7 +393,7 @@ void Maptal::toTMX(std::string fileDestination)
 
    
     std::ofstream tmxFile;
-    tmxFile.open(fileDestination);
+    tmxFile.open(fileDestination.c_str());
 
     tmxFile<<tmx;
         
