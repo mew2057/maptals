@@ -17,7 +17,7 @@
 #define TILE_FACTORY_LAYER_NAME "layerName"
 
 
-TileSet TileFactory::generateTileSet(std::string fileName){
+TileSet TileFactory::generateTileSet(const char * fileName){
     
     //! Placeholders.
     TileSpec currentSpec;
@@ -26,7 +26,7 @@ TileSet TileFactory::generateTileSet(std::string fileName){
 
     //! The stream that reads the xml file.
     std::ifstream tileFile;
-    tileFile.open(fileName.c_str());
+    tileFile.open(fileName);
 
     //! Start xml initialization.
     //! The XML document that the parse operations are exeuted on.

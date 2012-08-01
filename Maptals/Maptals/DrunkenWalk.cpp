@@ -29,7 +29,7 @@ void getRetryPosition(int * x,int * y,short direction)
 }
 
 
-std::vector<std::vector<int> > DrunkenWalk::generate2DMap()
+void DrunkenWalk::generate2DMap()
 {
     //! This grabs the first tile id listed in the tile map, this is the lowest numeric id in the tileset.
     int tileID=tileSet.getStartTile();
@@ -155,5 +155,4 @@ std::vector<std::vector<int> > DrunkenWalk::generate2DMap()
         oldTile = -1;
         failed = true;
     }
-    return matrix;
 }
