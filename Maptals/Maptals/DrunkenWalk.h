@@ -43,8 +43,16 @@ public:
     *! After zeroing and getting the initial details from the tileSet the algorithm procedes to randomly determine the next direction to take 
     *! (as limited by the current tile specification) and randomly retrieves the next valid tile specification from the tileset. This process loops
     *! until the bounding condition is reached.
+    *!
+    *! \param maxDeviation The distance from the largest possible height or width. For example if one were to make a 6 tile high horizontal map and wanted 
+    *!                     to keep the top 2 slots open this field would be set to 2. [defaults to 0]
+    *!
+    *! \param minDeviation The distance from the smallest possible height or width. For example if one were to make a 6 tile high horizontal map and wanted 
+    *!                     to keep the bottom 2 slots open this field would be set to 2. [defaults to 0] 
+    *! *Programmer's note: When selecting these deviations please ensure that you select a range conducive to your tileset and avoid making the bottom equivalent to your horizon.
+    *!                     I'm still developing recovery for failed executions, so please tread lightly on this feature.
     */
-    void generate2DMap();     
+    void generate2DMap(int maxDeviation=0, int minDeviation=0);     
 };
 
 #endif

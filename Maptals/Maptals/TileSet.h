@@ -100,7 +100,7 @@ public:
      *! \brief Return whether this tileset is to be used with horizontal or vertical maps.
      *! \return True if the map should be horizontal false if vertical.
      */
-    bool getHorizontal();
+    bool isHorizontal();
 
     std::string getLayerName();
     

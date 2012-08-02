@@ -64,8 +64,17 @@ public:
 
     /*
      *! \brief Generate a 2D map utilizing the Maptal supplied TileSet with the world building algorithm specified by sub classes.
+     *!
+     *! \param maxDeviation The distance from the largest possible height or width. For example if one were to make a 6 tile high horizontal map and wanted 
+     *!                     to keep the top 2 slots open this field would be set to 2. [defaults to 0]
+     *!
+     *! \param minDeviation The distance from the smallest possible height or width. For example if one were to make a 6 tile high horizontal map and wanted 
+     *!                     to keep the bottom 2 slots open this field would be set to 2. [defaults to 0] 
+     *!
+     *! *Programmer's note: When selecting these deviations please ensure that you select a range conducive to your tileset and avoid making the bottom equivalent to your horizon.
+     *!                     I'm still developing recovery for failed executions, so please tread lightly on this feature.
      */
-    virtual void generate2DMap()=0;        
+    virtual void generate2DMap(int maxDeviation=0, int minDeviation=0)=0;        
 
     /*!
      * \brief The gettor for the matrix, ideal for reusing the map for respawn. 
@@ -73,6 +82,9 @@ public:
      */
     std::vector<std::vector<int> > get2DMap();  
 protected:
+
+    static int failCount; 
+    
     /*
      *! \brief The height of the map in tiles.
      */
