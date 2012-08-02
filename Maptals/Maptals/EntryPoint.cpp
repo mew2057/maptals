@@ -7,7 +7,7 @@ using namespace std;
 #include "TileFactory.h"
 int main(){
 	int height = 6;
-    int width = 20;
+    int width = 1000;
     int minValue = 1;
     int maxValue = 1;
     string temp;
@@ -19,7 +19,7 @@ int main(){
         std::cout << endl << "==========Tile Set==========" << endl;
         
         DrunkenWalk dwalk = DrunkenWalk(width,height, tSet);
-        dwalk.generate2DMap();
+        dwalk.generate2DMap(2);
         
         std::vector<std::vector<int> > matrix4 = dwalk.get2DMap();
         cout << endl;

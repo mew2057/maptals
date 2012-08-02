@@ -1,7 +1,7 @@
 #include "DrunkenWalk.h"
 #define doubleRate 2
 #include <stack>
-#include <iostream>
+
 void getRetryPosition(int * x,int * y,short direction)
 {
     switch(direction)

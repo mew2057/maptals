@@ -39,7 +39,7 @@
     </south>
   </tile>
 
-  <tile id="3" oid="1">
+  <tile id="3" oid="0">
     <east>
       <nextTile>5</nextTile>
     </east>
