@@ -93,7 +93,7 @@ int TileSet::getFalseTile()
 {
     return falseTile;
 }
-bool TileSet::getHorizontal()    
+bool TileSet::isHorizontal()    
 {
     return horizontal;
 }

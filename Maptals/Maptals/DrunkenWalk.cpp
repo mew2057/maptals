@@ -1,7 +1,7 @@
 #include "DrunkenWalk.h"
 #define doubleRate 2
 #include <stack>
-
+#include <iostream>
 void getRetryPosition(int * x,int * y,short direction)
 {
     switch(direction)
@@ -29,9 +29,51 @@ void getRetryPosition(int * x,int * y,short direction)
 }
 
 
-void DrunkenWalk::generate2DMap()
+void DrunkenWalk::generate2DMap(int maxDeviation, int minDeviation)
 {
-    //! This grabs the first tile id listed in the tile map, this is the lowest numeric id in the tileset.
+    // The guardians of valid space for tiles to spawn on the map.
+    int maxDeviationX, minDeviationX,maxDeviationY, minDeviationY;
+
+
+    if(tileSet.isHorizontal())
+    {
+        maxDeviationX = width-1;
+        minDeviationX = 0;
+
+        maxDeviationY = 0 + maxDeviation;
+        maxDeviationY = maxDeviationY >= height ? 0 : maxDeviationY;
+        maxDeviationY = maxDeviationY < 0 ? 0 : maxDeviationY;
+
+        minDeviationY = height - 1 - minDeviation;
+        minDeviationY = minDeviationY < 0 ? height-1 : minDeviationY;
+        minDeviationY = minDeviationY >= height ? height-1 : minDeviationY;
+
+    }
+    else
+    {
+        //TODO TEST!!!
+        maxDeviationY = 0;
+        minDeviationY = height - 1;
+
+        maxDeviationX = width - maxDeviation;
+        maxDeviationX = maxDeviationX >= width ? width-1 : maxDeviationX;
+        maxDeviationX = maxDeviationX < 0 ? width-1 : maxDeviationX;
+
+        minDeviationX = 0 + minDeviation;
+        minDeviationX = minDeviationX >= width ? 0 : minDeviationX;
+        minDeviationX = minDeviationX < 0 ? 0 : minDeviationX;
+    }
+
+    //! Prevents crashing due to garbage input.
+    if(minDeviationX >= maxDeviationX || minDeviationY <= maxDeviationY)
+    {
+        maxDeviationY = 0;
+        minDeviationY = height - 1;
+        maxDeviationX = width-1;
+        minDeviationX = 0;
+    }
+
+    //! This grabs the first tile id listed in the tile map, this is specified id in tileset.
     int tileID=tileSet.getStartTile();
 
     TileSpec currentTile=tileSet.getTileMap().find(tileID)->second;
@@ -59,30 +101,34 @@ void DrunkenWalk::generate2DMap()
 
     matrix[y][x]=tileID;
 
-    while (x < width-1){
+    while ((x < width-1 && tileSet.isHorizontal()) || (y >0 && !tileSet.isHorizontal())){
         // Get a random number from 0-3 and react accordingly.
         switch (direction=currentTile.getNextDirection(failDirection)){
             // North - step up.
             case north:
-                if(y > 0){
+                if(y > maxDeviationY){
                     y--;
                     failed = false;
+                }
+                else if(!tileSet.isHorizontal()){
+                    y--;
+                    continue;
                 }
                 break;
             // East - step right.
             case east:
-                if(x < width-1){
+                if(x < maxDeviationX){
                     x++;
                     failed = false;
                 }
-                else{
+                else if(tileSet.isHorizontal()){
                     x++;
                     continue;
                 }
                 break;
             // South - step down.
             case south:
-                if(y < height-1){
+                if(y < minDeviationY){
                     y++;
                     failed = false;
                 }
@@ -90,13 +136,20 @@ void DrunkenWalk::generate2DMap()
                 break;
             // West - step left.
             case west:
-                if(x > 0){
+                if(x > minDeviationX){
                     x--;
                     failed = false;
                 }
                 break;
             default:
+
                 do{
+                    if(directions.size()==0)
+                    {
+                        tileID=INT_MIN;
+                        continue;
+                    }
+
                     failDirection=directions.top();
 
                     oldTile=matrix[y][x];
@@ -110,14 +163,21 @@ void DrunkenWalk::generate2DMap()
                     currentTile=*tileSet.getTileID(tileID);
 
                     tileID = currentTile.getNextTile(failDirection, oldTile);
-                             
+
                     directions.pop();
-                }while(directions.size()>0 && tileID == INT_MIN);
+                }while( tileID == INT_MIN);
                 
-                if (tileID == INT_MIN)
+                // IF fails is less than 5 Rerun the map generator. else exit.
+                if (tileID == INT_MIN && ++Maptal::failCount < 5)
+                {                   
+                    generate2DMap(maxDeviation,minDeviation);
+                    return;
+                }
+                else if(tileID == INT_MIN)
                 {
                     exit(1); //This is a major violation and indicates a bad tile specification
                 }
+
                 directions.push(failDirection);
 
                 getRetryPosition(&x,&y,(failDirection+2)%4);
@@ -128,6 +188,7 @@ void DrunkenWalk::generate2DMap()
 
                 break;
         }
+
         //! Reset the failure direction.
         failDirection=-1;
         
@@ -136,8 +197,16 @@ void DrunkenWalk::generate2DMap()
            try{ 
                tileID = currentTile.getNextTile(direction);
 
-               if (tileID == INT_MIN)
-                 exit(0); //This is a major violation and indicates a bad tile specification
+                // IF fails is less than 5 Rerun the map generator. else exit.
+                if (tileID == INT_MIN && ++Maptal::failCount < 5)
+                {                   
+                    generate2DMap(maxDeviation,minDeviation);
+                    return;
+                }
+                else if (tileID == INT_MIN)
+                {
+                    exit(1); //This is a major violation and indicates a bad tile specification
+                }
 
                currentTile=*tileSet.getTileID(tileID);
            }

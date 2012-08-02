@@ -10,6 +10,8 @@
 // A masking tool for base 64 encoding.
 #define MAPTAL_LAST_BYTE 0xFF
 
+int Maptal::failCount=0;
+
 const char * intToString(int x, rapidxml::xml_document<char> * tmx_doc)
 {
     std::ostringstream intstream;
