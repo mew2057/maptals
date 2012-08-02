@@ -117,7 +117,7 @@ void Maptal::objectsFromVector(std::vector<MapObject> objects,
         
         tempNode=tmx_doc->allocate_node(rapidxml::node_element, "object");
 
-        tempNode->append_attribute(tmx_doc->allocate_attribute("Type",tmx_doc->allocate_string(currentType.type.c_str())));
+        tempNode->append_attribute(tmx_doc->allocate_attribute("type",tmx_doc->allocate_string(currentType.type.c_str())));
 
         tempNode->append_attribute(tmx_doc->allocate_attribute("x",intToString((currentObject.getStartX())*tileSet->getTileWidth(),tmx_doc)));
         tempNode->append_attribute(tmx_doc->allocate_attribute("y",intToString((currentObject.getStartY())*tileSet->getTileHeight(),tmx_doc)));
@@ -304,6 +304,7 @@ std::string  Maptal::base64Encode(std::vector<std::vector<int> > matrix, int fal
             bufferedTiles[offset+3] = (currentId >> 24 & MAPTAL_LAST_BYTE);
         }
     }
+    
     compress(compressedTiles, &destinationSize,bufferedTiles, bufferSize);
 
     return Base64::base64_encode(compressedTiles,destinationSize);
