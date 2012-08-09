@@ -59,14 +59,17 @@ void Maptal::setWidth(int _width)
 void Maptal::zeroMatrices()
 {
     int emptyTile;
+    std::vector<std::vector<int> > * currentMatrix;
     for(int i=0; i<matrices.size(); i++)
     {
         emptyTile = tileSet.getLayer(i).getEmptyTile();
-        for (unsigned int y =0; y<matrices[i].size();y++)
+        currentMatrix = &matrices[i];
+
+        for (unsigned int y =0; y<currentMatrix->size();y++)
         {
-            for(unsigned int x=0; x< matrices[i][y].size(); x++)
+            for(unsigned int x=0; x< currentMatrix->operator[](y).size(); x++)
             {
-                matrices[i][y][x]=emptyTile;
+                currentMatrix->operator[](y)[x]=emptyTile;
             }
         }
     }
