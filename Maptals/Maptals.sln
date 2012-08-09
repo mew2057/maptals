@@ -9,12 +9,18 @@ Global
 		Svn-Managed = True
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
 		Debug|Win32 = Debug|Win32
+		Release|ARM = Release|ARM
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A540DF97-6B18-4B14-AC64-F4DDC28D7D73}.Debug|ARM.ActiveCfg = Debug|ARM
+		{A540DF97-6B18-4B14-AC64-F4DDC28D7D73}.Debug|ARM.Build.0 = Debug|ARM
 		{A540DF97-6B18-4B14-AC64-F4DDC28D7D73}.Debug|Win32.ActiveCfg = Debug|Win32
 		{A540DF97-6B18-4B14-AC64-F4DDC28D7D73}.Debug|Win32.Build.0 = Debug|Win32
+		{A540DF97-6B18-4B14-AC64-F4DDC28D7D73}.Release|ARM.ActiveCfg = Release|Win32
+		{A540DF97-6B18-4B14-AC64-F4DDC28D7D73}.Release|ARM.Build.0 = Release|Win32
 		{A540DF97-6B18-4B14-AC64-F4DDC28D7D73}.Release|Win32.ActiveCfg = Release|Win32
 		{A540DF97-6B18-4B14-AC64-F4DDC28D7D73}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection

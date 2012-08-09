@@ -14,6 +14,8 @@
 #define TILE_FACTORY_IMAGE_HEIGHT "imageHeight"
 #define TILE_FACTORY_IMAGE_WIDTH "imageWidth"
 #define TILE_FACTORY_FALSE_TILE "falseTile"
+#define TILE_FACTORY_SKY_ID "skyid"
+#define TILE_FACTORY_GROUND_ID "groundid"
 #define TILE_FACTORY_LAYER_NAME "name"
 
 
@@ -259,9 +261,15 @@ TileSet TileFactory::initializeTileSet(const rapidxml::xml_node<> *headerNode){
         {
             newSet.setImageWidth(attributeValue);
         }
-
-        
-        
+        else if(attributeName == TILE_FACTORY_SKY_ID)
+        {
+            newSet.setSkyID(attributeValue);    
+        }
+        else if(attributeName == TILE_FACTORY_GROUND_ID)
+        {
+            newSet.setGroundID(attributeValue);
+        }         
+    
         currentAttribute=currentAttribute->next_attribute();
     }
 
