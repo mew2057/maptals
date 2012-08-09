@@ -112,6 +112,25 @@ int TileSet::getNumLayers()
     return layers.size();
 }
 
+int TileSet::getSkyID()
+{
+    return skyid;
+}
+
+void TileSet::setSkyID(int sky)
+{
+    skyid = sky;
+}
+
+int TileSet::getGroundID()
+{
+    return groundid;
+}
+
+void TileSet::setGroundID(int ground)
+{
+    groundid = ground;
+}
 
 
 TileSet::TileSet()
@@ -119,6 +138,8 @@ TileSet::TileSet()
     setHorizon(0);    
     setTileHeight(0);
     setTileWidth(0);
+    setGroundID(0);
+    setSkyID(0);
     setImagePath("\\");
     setHorizontal(true);
     objectMap=std::map<int, ObjectType>();

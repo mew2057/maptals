@@ -7,6 +7,7 @@
 #include "base64/Base64.h"
 #include "zlib/zlib.h"
 
+#include <iostream>
 // A masking tool for base 64 encoding.
 #define MAPTAL_LAST_BYTE 0xFF
 
@@ -299,6 +300,44 @@ void Maptal::generateObjectVector(std::vector<std::vector<int> > matrix,std::vec
 
 
 
+std::string  Maptal::backgroundEncode(TileSet tSet,int height, int width)
+{
+    uLongf bufferSize = height * width * 4;
+
+     // This is per the zlib standardization.
+    uLongf destinationSize = (uLongf)(bufferSize + (bufferSize * 0.1) + 12);
+    
+    //! The data buffers.
+    Bytef * bufferedTiles = (Bytef*)malloc(bufferSize);
+    Bytef * compressedTiles = (Bytef*) malloc(destinationSize);
+
+    for(unsigned int y=0, offset=0, currentId =0; y < height;y++)
+    {
+        if(tSet.isHorizontal())
+        {
+            currentId = (y < height - tSet.getHorizon()?tSet.getSkyID():tSet.getGroundID()) + 1;
+        }
+
+        for(unsigned int x=0; x < width;x++,offset+=4)
+        {
+            if(!tSet.isHorizontal())
+            {
+                currentId =( x > width - tSet.getHorizon()?tSet.getSkyID():tSet.getGroundID())+1;
+            }
+            
+             // This adds each byte of the integer to the tile buffer, the SLL is by byte intervals which are then masked by LAST_BYTE.
+            bufferedTiles[offset] =   (currentId       & MAPTAL_LAST_BYTE);
+            bufferedTiles[offset+1] = (currentId >> 8  & MAPTAL_LAST_BYTE);
+            bufferedTiles[offset+2] = (currentId >> 16 & MAPTAL_LAST_BYTE);
+            bufferedTiles[offset+3] = (currentId >> 24 & MAPTAL_LAST_BYTE);
+        }
+    }
+        
+    compress(compressedTiles, &destinationSize,bufferedTiles, bufferSize);
+
+    return Base64::base64_encode(compressedTiles,destinationSize);
+
+}
 
 
 std::string  Maptal::base64Encode(std::vector<std::vector<int> > matrix, int falseTile)
@@ -342,7 +381,8 @@ std::string  Maptal::base64Encode(std::vector<std::vector<int> > matrix, int fal
 void Maptal::toTMX(const char * fileDestination)
 {
     rapidxml::xml_document<char> tmx;   
-    
+    rapidxml::xml_node<char> * dataNodePtr;
+
     //**********************************
     //! Declaration node creation.
     //**********************************
@@ -393,12 +433,37 @@ void Maptal::toTMX(const char * fileDestination)
         //**********************************
     rootNodePtr->append_node(subNodePtr);
 
-    objectsFromVector(generateObjectVector(matrices, tileSet), &tileSet, rootNodePtr,&tmx);
-
     //**********************************
     //! Layer node creation.
     //**********************************
+    subNodePtr = tmx.allocate_node(rapidxml::node_element, "layer");
+    subNodePtr->append_attribute(tmx.allocate_attribute("name",tmx.allocate_string("background")));
+    subNodePtr->append_attribute(tmx.allocate_attribute("width", intToString(width,&tmx)));
+    subNodePtr->append_attribute(tmx.allocate_attribute("height",  intToString(height,&tmx)));  
 
+    //**********************************
+    //! Data node creation.
+    //**********************************
+    dataNodePtr = tmx.allocate_node(rapidxml::node_element, "data");
+
+    dataNodePtr->append_attribute(tmx.allocate_attribute("encoding","base64"));
+    dataNodePtr->append_attribute(tmx.allocate_attribute("compression","zlib"));
+            
+    //**********************************
+    //! Map data encoding.
+    //**********************************
+     dataNodePtr->value(tmx.allocate_string(backgroundEncode(tileSet,height, width).c_str()));
+
+    //**********************************
+    //**********************************
+    subNodePtr->append_node(dataNodePtr);
+    //**********************************
+    rootNodePtr->append_node(subNodePtr);
+
+    //Objects
+    objectsFromVector(generateObjectVector(matrices, tileSet), &tileSet, rootNodePtr,&tmx);
+    
+    
     for(int layer=0;layer<matrices.size();layer++)
     {
         subNodePtr = tmx.allocate_node(rapidxml::node_element, "layer");
@@ -409,7 +474,7 @@ void Maptal::toTMX(const char * fileDestination)
         //**********************************
         //! Data node creation.
         //**********************************
-        rapidxml::xml_node<char> * dataNodePtr = tmx.allocate_node(rapidxml::node_element, "data");
+        dataNodePtr = tmx.allocate_node(rapidxml::node_element, "data");
 
         dataNodePtr->append_attribute(tmx.allocate_attribute("encoding","base64"));
         dataNodePtr->append_attribute(tmx.allocate_attribute("compression","zlib"));
@@ -427,6 +492,9 @@ void Maptal::toTMX(const char * fileDestination)
         //**********************************
         rootNodePtr->append_node(subNodePtr);
     }
+
+
+    
    
     std::ofstream tmxFile;
     tmxFile.open(fileDestination);

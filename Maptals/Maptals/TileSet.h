@@ -61,7 +61,6 @@ public:
     int getNumLayers();
 
     TileLayer getLayer(int lid);
-
     
     /*
      *! \brief A gettor for the Map Object associated with a given oid.
@@ -132,6 +131,14 @@ public:
 
     void addTileLayer(int lid, TileLayer layer);
 
+    int getSkyID();
+
+    void setSkyID(int sky);
+
+    int getGroundID();
+
+    void setGroundID(int ground);
+
     TileSet();   
 
 private:  
@@ -159,6 +166,10 @@ private:
      *! \brief The height of the tileset image in pixels.
      */
     int imageHeight;
+
+    int skyid;
+
+    int groundid;
 
     /*
      *! \brief The width of the tileset image in pixels.

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<tileset  imagePath="TestTile.png" tileWidth="32" tileHeight="32" horizon="2" imageWidth="64" imageHeight="128" horizontal="1">
+<tileset  imagePath="TestTile.png" tileWidth="32" tileHeight="32" horizon="2" imageWidth="64" imageHeight="128" horizontal="1"
+          skyid="5" groundid="7">
 
   <objects>
     <objectgroup name="collisions">
@@ -14,9 +15,15 @@
 
   </objects>
 
-  <!--<layer name="terrain" emptyTile="6">
-    
-    
+  <!--The earlier a layer is in the file, the farther back it will be in the map.-->  
+  
+  <!--<layer name="terrain" emptyTile="6" startTile="4">
+    <tile id="4" oid="0">
+      <east>
+        <nextTile>4</nextTile>
+      </east>
+    </tile>
+
   </layer>-->
   
   <layer name="foreground" emptyTile="6" falseTile="7" startTile="8">
@@ -89,5 +96,6 @@
       </east>
     </tile>
   </layer>
+  
   
 </tileset>
