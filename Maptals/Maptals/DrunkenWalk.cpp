@@ -28,8 +28,20 @@ void getRetryPosition(int * x,int * y,short direction)
     }
 }
 
-
 void DrunkenWalk::generate2DMap(int maxDeviation, int minDeviation)
+{
+    //! This clears the field (ensuring any height or width changes are reflected in the new map.
+    //! The the freshly defined map is "zeroed", or each index is set to minValue-1.
+    resizeMatrices();
+    zeroMatrices();
+
+    for(int layer =0; layer < matrices.size();layer++)
+    {
+        if(tileSet.getLayer(layer).getTileMap().size() != 0)
+            generate2DMap(&matrices[layer],tileSet.getLayer(layer),maxDeviation,minDeviation);  
+    }
+}
+void DrunkenWalk::generate2DMap(std::vector<std::vector<int> > * matrix, TileLayer layer,int maxDeviation, int minDeviation)
 {
     // The guardians of valid space for tiles to spawn on the map.
     int maxDeviationX, minDeviationX,maxDeviationY, minDeviationY;
@@ -74,14 +86,9 @@ void DrunkenWalk::generate2DMap(int maxDeviation, int minDeviation)
     }
 
     //! This grabs the first tile id listed in the tile map, this is specified id in tileset.
-    int tileID=tileSet.getStartTile();
+    int tileID=layer.getStartTile();
 
-    TileSpec currentTile=tileSet.getTileMap().find(tileID)->second;
-
-    //! This clears the field (ensuring any height or width changes are reflected in the new map.
-    //! The the freshly defined map is "zeroed", or each index is set to minValue-1.
-    resizeMatrix();
-    zeroMatrix();
+    TileSpec currentTile=layer.getTileMap().find(tileID)->second;
 
     //! Seed the random number generator.
     srand(time(NULL));
@@ -99,7 +106,7 @@ void DrunkenWalk::generate2DMap(int maxDeviation, int minDeviation)
     //! The failure sentinel.
     bool failed = true;
 
-    matrix[y][x]=tileID;
+    matrix->operator[](y)[x] = tileID;
 
     while ((x < width-1 && tileSet.isHorizontal()) || (y >0 && !tileSet.isHorizontal())){
         // Get a random number from 0-3 and react accordingly.
@@ -152,15 +159,15 @@ void DrunkenWalk::generate2DMap(int maxDeviation, int minDeviation)
 
                     failDirection=directions.top();
 
-                    oldTile=matrix[y][x];
+                    oldTile=matrix->operator[](y)[x];
 
-                    matrix[y][x]=tileSet.getEmptyTile();
+                    matrix->operator[](y)[x]=layer.getEmptyTile();
 
                     getRetryPosition(&x,&y,failDirection);
                            
-                    tileID=matrix[y][x];
+                    tileID=matrix->operator[](y)[x];
 
-                    currentTile=*tileSet.getTileID(tileID);
+                    currentTile=*layer.getTileID(tileID);
 
                     tileID = currentTile.getNextTile(failDirection, oldTile);
 
@@ -182,9 +189,9 @@ void DrunkenWalk::generate2DMap(int maxDeviation, int minDeviation)
 
                 getRetryPosition(&x,&y,(failDirection+2)%4);
 
-                matrix[y][x]=tileID;
+                matrix->operator[](y)[x]=tileID;
 
-                currentTile=*tileSet.getTileID(tileID);
+                currentTile=*layer.getTileID(tileID);
 
                 break;
         }
@@ -193,7 +200,7 @@ void DrunkenWalk::generate2DMap(int maxDeviation, int minDeviation)
         failDirection=-1;
         
         //! If the new position is not out of bounds and the matrix at that point is empty add a new value there.
-        if(!failed && matrix[y][x] == tileSet.getEmptyTile() && oldTile == -1) {
+        if(!failed && matrix->operator[](y)[x] == layer.getEmptyTile() && oldTile == -1) {
            try{ 
                tileID = currentTile.getNextTile(direction);
 
@@ -208,12 +215,12 @@ void DrunkenWalk::generate2DMap(int maxDeviation, int minDeviation)
                     exit(1); //This is a major violation and indicates a bad tile specification
                 }
 
-               currentTile=*tileSet.getTileID(tileID);
+               currentTile=*layer.getTileID(tileID);
            }
            catch(...){
            }
            
-           matrix[y][x] = tileID;
+           matrix->operator[](y)[x] = tileID;
            directions.push(direction);
         } 
         else if(failed && oldTile == -1)
@@ -225,3 +232,4 @@ void DrunkenWalk::generate2DMap(int maxDeviation, int minDeviation)
         failed = true;
     }
 }
+

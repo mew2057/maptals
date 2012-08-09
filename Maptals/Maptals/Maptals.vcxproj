@@ -125,6 +125,7 @@
     <ClCompile Include="MapObject.cpp" />
     <ClCompile Include="Maptal.cpp" />
     <ClCompile Include="TileFactory.cpp" />
+    <ClCompile Include="TileLayer.cpp" />
     <ClCompile Include="TileSet.cpp" />
     <ClCompile Include="TileSpec.cpp" />
     <ClCompile Include="zlib\adler32.c" />
@@ -153,6 +154,7 @@
     <ClInclude Include="rapidxml\rapidxml_iterators.hpp" />
     <ClInclude Include="rapidxml\rapidxml_print.hpp" />
     <ClInclude Include="rapidxml\rapidxml_utils.hpp" />
+    <ClInclude Include="TileLayer.h" />
     <ClInclude Include="TileSet.h" />
     <ClInclude Include="TileSpec.h" />
     <ClInclude Include="zlib\crc32.h" />

@@ -14,14 +14,13 @@
 #define TILE_FACTORY_IMAGE_HEIGHT "imageHeight"
 #define TILE_FACTORY_IMAGE_WIDTH "imageWidth"
 #define TILE_FACTORY_FALSE_TILE "falseTile"
-#define TILE_FACTORY_LAYER_NAME "layerName"
+#define TILE_FACTORY_LAYER_NAME "name"
 
 
 TileSet TileFactory::generateTileSet(const char * fileName){
     
     //! Placeholders.
-    TileSpec currentSpec;
-    int currentTile, oid;
+    int id;
     std::string objectGroup="";
 
     //! The stream that reads the xml file.
@@ -33,7 +32,7 @@ TileSet TileFactory::generateTileSet(const char * fileName){
     rapidxml::xml_document<> xmlTileSet;
 
     //! Multiple Nodes allows for the preservation of all levels and allows for fast access 
-    rapidxml::xml_node<> * rootNode, * tileNode, * objectNode, *parentNode;
+    rapidxml::xml_node<> * rootNode, *tileNode,* objectNode, *parentNode;
     
     //Creates a null terminated vector of the xml document that is then loaded into xmlDoc.
     std::vector<char> xmlDoc((std::istreambuf_iterator<char>(tileFile)), std::istreambuf_iterator<char>( ));  
@@ -61,9 +60,9 @@ TileSet TileFactory::generateTileSet(const char * fileName){
                 
         while(objectNode != 0)
         {
-            std::istringstream(objectNode->first_attribute("oid")->value()) >> oid;
+            std::istringstream(objectNode->first_attribute("oid")->value()) >> id;
 
-            tileSet.addObjectType(oid, (std::string)objectNode->first_attribute("type")->value(),objectGroup);
+            tileSet.addObjectType(id, (std::string)objectNode->first_attribute("type")->value(),objectGroup);
 
             objectNode=objectNode->next_sibling("object");
         }
@@ -73,31 +72,16 @@ TileSet TileFactory::generateTileSet(const char * fileName){
     //! End initialization of map of tileset objects.
 
     //! Begin initialization of TileSpec Map.
-    tileNode=rootNode->first_node("tile");
+    tileNode=rootNode->first_node("layer");
+    id=0;
 
     while(tileNode !=0)
     {
-        //! Get tile id.
-        std::istringstream(tileNode->first_attribute("id")->value()) >> currentTile;
-
-        //! Get oid.
-        if(tileNode->first_attribute("oid"))
-        {
-            std::istringstream(tileNode->first_attribute("oid")->value()) >> oid;
-        }
-        else
-        {
-            oid=-1;
-        }
-       
-        //! Generate the TileSpec, add the oid and append the TileSpec and tileID to the tileSet.
-        currentSpec = appendCardinality(tileNode->first_node());   
-        currentSpec.setOID(oid);
-
-        tileSet.appendTileSpec(currentTile, currentSpec);
+        tileSet.addTileLayer(id, makeTileLayer(tileNode));
 
         //! Advance
-        tileNode=tileNode->next_sibling("tile");
+        tileNode=tileNode->next_sibling("layer");
+        id++;
     }
     //! End initialization of TileSpec Map.
 
@@ -162,6 +146,74 @@ TileSpec TileFactory::appendCardinality(rapidxml::xml_node<> *tileNode){
     return specification;
 }
 
+TileLayer TileFactory::makeTileLayer(const rapidxml::xml_node<> *headerNode)
+{
+    //! Some variables that keep track of data throughout the iteration.
+    rapidxml::xml_attribute<char> *currentAttribute = headerNode->first_attribute();   
+    rapidxml::xml_node<> * iterableNode;
+    std::string attributeName;    
+    int attributeValue, currentTile, oid;
+    TileSpec currentSpec;
+    TileLayer currentLayer;
+
+    while(currentAttribute != 0){
+        //! Get the attribute name.
+        attributeName=currentAttribute->name();
+        
+        //! Converts the current value to an int (does nothing if string).
+        std::istringstream(currentAttribute->value()) >> attributeValue;  
+
+        if (attributeName == TILE_FACTORY_EMPTY_TILE)
+        {
+           currentLayer.setEmptyTile(attributeValue);
+        }
+        else if (attributeName == TILE_FACTORY_START_TILE)
+        {
+           currentLayer.setStartTile(attributeValue);
+        }
+	    else if (attributeName == TILE_FACTORY_LAYER_NAME)
+        {
+           currentLayer.setLayerName(currentAttribute->value());
+        }        
+	    else if(attributeName == TILE_FACTORY_FALSE_TILE)
+        {
+           currentLayer.setFalseTile(attributeValue);
+        }
+
+        currentAttribute=currentAttribute->next_attribute();
+    }
+    
+    //! Begin initialization of TileSpec Map.
+    iterableNode=headerNode->first_node("tile");
+
+    while(iterableNode !=0)
+    {
+        //! Get tile id.
+        std::istringstream(iterableNode->first_attribute("id")->value()) >> currentTile;
+
+        //! Get oid.
+        if(iterableNode->first_attribute("oid"))
+        {
+            std::istringstream(iterableNode->first_attribute("oid")->value()) >> oid;
+        }
+        else
+        {
+            oid=-1;
+        }
+       
+        //! Generate the TileSpec, add the oid and append the TileSpec and tileID to the tileSet.
+        currentSpec = appendCardinality(iterableNode->first_node());   
+        currentSpec.setOID(oid);
+
+        currentLayer.appendTileSpec(currentTile, currentSpec);
+
+        //! Advance
+        iterableNode=iterableNode->next_sibling("tile");
+    }
+    //! End initialization of TileSpec Map.
+    return currentLayer;
+}
+
 TileSet TileFactory::initializeTileSet(const rapidxml::xml_node<> *headerNode){
     //! The TileSet the will be loaded with the attributes of the supplied nodes.
     TileSet newSet;
@@ -187,14 +239,6 @@ TileSet TileFactory::initializeTileSet(const rapidxml::xml_node<> *headerNode){
         {
             newSet.setHorizontal((bool)attributeValue);
         }
-        else if (attributeName == TILE_FACTORY_EMPTY_TILE)
-        {
-            newSet.setEmptyTile(attributeValue);
-        }
-        else if (attributeName == TILE_FACTORY_START_TILE)
-        {
-            newSet.setStartTile(attributeValue);
-        }
         else if (attributeName == TILE_FACTORY_IMAGE_PATH)
         {
             newSet.setImagePath(currentAttribute->value());
@@ -215,14 +259,8 @@ TileSet TileFactory::initializeTileSet(const rapidxml::xml_node<> *headerNode){
         {
             newSet.setImageWidth(attributeValue);
         }
-        else if(attributeName == TILE_FACTORY_FALSE_TILE)
-        {
-            newSet.setFalseTile(attributeValue);
-        }
-        else if (attributeName == TILE_FACTORY_LAYER_NAME)
-        {
-            newSet.setLayerName(currentAttribute->value());
-        }
+
+        
         
         currentAttribute=currentAttribute->next_attribute();
     }

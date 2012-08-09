@@ -19,9 +19,11 @@ int main(){
         std::cout << endl << "==========Tile Set==========" << endl;
         
         DrunkenWalk dwalk = DrunkenWalk(width,height, tSet);
+        
+        
         dwalk.generate2DMap(2);
         
-        std::vector<std::vector<int> > matrix4 = dwalk.get2DMap();
+       /* std::vector<std::vector<int> > matrix4 = dwalk.get2DMap();
         cout << endl;
 
           for(unsigned int i = 0; i < matrix4.size(); i++){
@@ -30,7 +32,7 @@ int main(){
             }
             std::cout << endl;
         }
-
+*/
         dwalk.toTMX("Maptal.tmx");
 
         std::cout << "continue?(y|n):";

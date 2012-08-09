@@ -102,6 +102,9 @@
     <ClCompile Include="zlib\zutil.c">
       <Filter>Header Files\zlib</Filter>
     </ClCompile>
+    <ClCompile Include="TileLayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include=".\DrunkenWalk.h">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="rapidxml\rapidxml_utils.hpp">
       <Filter>Header Files\rapidxml</Filter>
+    </ClInclude>
+    <ClInclude Include="TileLayer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,7 @@
 #include <string>
 #include <map>
 #include "rapidxml/rapidxml.hpp"
+#include "TileLayer.h"
 
 struct ObjectType
 {
@@ -40,18 +41,6 @@ public:
     std::string getImagePath();    
     
     /*
-     *! \brief The so called empty tile.
-     *! \return The emptyTile field.
-     */
-    int getEmptyTile();
-
-    /*
-     *! \brief The tile that the map should begin with.
-     *! \return The startTile field.
-     */
-    int getStartTile();
-
-    /*
      *! \brief The division of the map (y value in tiles for the starting location).
      *! \return The horizon field.
      */
@@ -68,26 +57,11 @@ public:
      *! \return The widthHeight field.
      */
     int getImageWidth();
+     
+    int getNumLayers();
 
-    /*
-     *! \brief The false tile that prevents object overwrite.
-     *! \return The falseTile field.
-     */
-    int getFalseTile();
+    TileLayer getLayer(int lid);
 
-    // XXX Should this get removed?
-    /*
-     *! \brief Retrieves the tile map associated with the TileSet.
-     *! \return A Mapping of the tile ids to associated TileSpec objects.
-     */
-    std::map<int,TileSpec> getTileMap();
-        
-    /*
-     *! \brief A gettor for the TileSpec associated with a given tile id.
-     *! \param tileID The tile identifier for a specific tile specification.
-     *! \return The TileSpec if the tileID was found, 0 if not.
-     */
-    TileSpec * getTileID(int tileID);
     
     /*
      *! \brief A gettor for the Map Object associated with a given oid.
@@ -102,9 +76,7 @@ public:
      */
     bool isHorizontal();
 
-    std::string getLayerName();
-    
-    void setLayerName(std::string _layerName);
+
         /*
      *! \brief The settor for the horizontal field. True indicates a horizontally oriented tileset.
      *! \param _horizontal The tileset preference for map generation.
@@ -129,17 +101,6 @@ public:
      */
     void setTileHeight(int height);
 
-    /*
-     *! \brief A settor for the emptyTile field.
-     *! \param empty The new emptyTile.
-     */
-    void setEmptyTile(int empty);
-
-    /*
-     *! \brief A settor for the startTile field.
-     *! \param start The new startTile.
-     */
-    void setStartTile(int start);
 
     /*
      *! \brief A settor for the horizon field.
@@ -159,19 +120,8 @@ public:
      */
     void setImageHeight(int height);
 
-    /*
-     *! \brief  A settor for the falseTile field.
-     *! \param tile The new falseTile field.
-     */
-    void setFalseTile(int tile);
 
-    /*
-     *! \brief Adds the given tileID TileSpec pair to the tileMap.
-     *! \param tileID The ID of the supplied TileSpec.
-     *! \param specification The specification of one tile.
-     */
-    void appendTileSpec(int tileID, TileSpec specification);
-    
+   
     /*
      *! \brief Adds the given oid and object type pair to the object map.
      *! \param oid The object identifier.
@@ -180,14 +130,11 @@ public:
      */
     void addObjectType(int oid, std::string objectType, std::string group="");
 
+    void addTileLayer(int lid, TileLayer layer);
+
     TileSet();   
 
-private:
-    /*
-     *! \brief The tilemap containing tile rules for use with map generators.
-     */
-    std::map<int, TileSpec> tileMap;
-    
+private:  
     /*
      *! \brief The width of a single tile (pixels).
      */
@@ -202,16 +149,6 @@ private:
      *! \brief The absolute path of the tileset image.
      */
     std::string imagePath;
-    
-    /*
-     *! \brief The so called empty tile.
-     */
-    int emptyTile;
-    
-    /*
-     *! \brief The tile that the map should begin with.
-     */
-    int startTile;
     
     /*
      *! \brief The division of the map (y value in tiles for the starting location).
@@ -229,24 +166,20 @@ private:
     int imageWidth;
 
     /*
-     *! \brief A "fake" tile that's used to define objects, but prevent them from being overwritten by new tiles. 
-     *! All tiles with a tileID greater or equal to than this tile are considered "fake" and replaced with this tileID.
-     */
-    int falseTile;
-
-    /*
      *! \brief Specifies whether or not the map should have a horizontal bulding preference. [defaults to true]
      */
     bool horizontal;
-
 
     /*
      *! \brief A map of the objects associated with the TileSet.
      */
     std::map<int, ObjectType> objectMap;
 
-    std::string layerName;
-    
+    /*
+     *! \brief A collection of layer ids and their associated layers.
+     */   
+    std::map<int, TileLayer> layers;
+
 };
 
 

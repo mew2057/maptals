@@ -27,6 +27,8 @@
 #include "rapidxml/rapidxml.hpp"
 #include <string>
 #include <map>
+#include "TileLayer.h"
+
 
 class TileFactory
 {
@@ -45,6 +47,8 @@ private:
     * \return The TileSpec generated from the root tileNode.
     */
     static TileSpec appendCardinality(rapidxml::xml_node<> *tileNode);
+    
+    static TileLayer makeTileLayer(const rapidxml::xml_node<> *headerNode);
 
     
     /*!

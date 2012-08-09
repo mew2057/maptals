@@ -30,26 +30,6 @@ void TileSet::setImagePath(std::string path)
     imagePath=path;
 }
 
-int TileSet::getEmptyTile()
-{
-    return emptyTile;
-}
-
-void TileSet::setEmptyTile(int empty)
-{
-    emptyTile=empty;
-}
-
-int TileSet::getStartTile()
-{
-    return startTile;
-}
-
-void TileSet::setStartTile(int start)
-{
-    startTile=start;
-}
-
 int TileSet::getHorizon()
 {
     return horizon;
@@ -80,32 +60,10 @@ void TileSet::setImageWidth(int width)
     imageWidth=width;
 }
 
-void TileSet::appendTileSpec(int tileID, TileSpec specification)
-{
-    tileMap.insert(std::pair<int,TileSpec>(tileID, specification));
-}
-void TileSet::setFalseTile(int tile)
-{
-    falseTile=tile;
-}
 
-int TileSet::getFalseTile()
-{
-    return falseTile;
-}
 bool TileSet::isHorizontal()    
 {
     return horizontal;
-}
-
-std::string TileSet::getLayerName()    
-{
-    return layerName;
-}
-    
-void TileSet::setLayerName(std::string _layerName)
-{
-    layerName=_layerName;
 }
 
 void TileSet::setHorizontal(bool _horizontal)
@@ -114,19 +72,15 @@ void TileSet::setHorizontal(bool _horizontal)
 }
 
 
-std::map<int,TileSpec> TileSet::getTileMap()
+TileLayer TileSet::getLayer(int lid)
 {
-    return tileMap;
+    std::map<int, TileLayer>::iterator it = layers.find(lid);
+    if (it != layers.end())
+        return layers.find(lid)->second;
+    else
+        return TileLayer();
 }
 
-TileSpec * TileSet::getTileID(int tileID)
-{
-    std::map<int, TileSpec>::iterator it = tileMap.find(tileID);
-    if (it != tileMap.end())
-        return &(tileMap.find(tileID)->second);
-    else
-        return 0;
-}
 
 ObjectType TileSet::getObjectType(int oid)
 {
@@ -137,6 +91,8 @@ ObjectType TileSet::getObjectType(int oid)
         return ObjectType();
 }
 
+
+
 void TileSet::addObjectType(int oid, std::string objectType, std::string group)
 {
     ObjectType temp;
@@ -146,17 +102,26 @@ void TileSet::addObjectType(int oid, std::string objectType, std::string group)
     objectMap.insert(std::pair<int,ObjectType>(oid, temp));
 }
 
+void TileSet::addTileLayer(int lid, TileLayer layer)
+{
+    layers.insert(std::pair<int, TileLayer>(lid,layer));
+}
+
+int TileSet::getNumLayers()
+{
+    return layers.size();
+}
+
+
+
 TileSet::TileSet()
 {
-    setHorizon(0);
-    setStartTile(0);
-    setEmptyTile(0);
+    setHorizon(0);    
     setTileHeight(0);
     setTileWidth(0);
     setImagePath("\\");
-    setFalseTile(-1);
     setHorizontal(true);
-    setLayerName("default");
-    tileMap=std::map<int, TileSpec>();
     objectMap=std::map<int, ObjectType>();
+    layers=std::map<int, TileLayer>();
+
 }
