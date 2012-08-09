@@ -36,6 +36,8 @@ public:
     */
     DrunkenWalk(int width=0, int height=0,TileSet tileSet=TileSet()):Maptal(width, height, tileSet){};
 
+
+
    /*
     *! \brief Generate a 2D map utilizing the Maptal supplied TileSet with the DrunkenWalk world building algorithm.
     *!
@@ -53,6 +55,9 @@ public:
     *!                     I'm still developing recovery for failed executions, so please tread lightly on this feature.
     */
     void generate2DMap(int maxDeviation=0, int minDeviation=0);     
+
+    void generate2DMap(std::vector<std::vector<int> > * matrix, TileLayer layer,int maxDeviation, int minDeviation);
+
 };
 
 #endif

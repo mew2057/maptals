@@ -1,69 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<tileset emptyTile="6" falseTile="7" startTile="8" imagePath="TestTile.png" 
-         tileWidth="32" tileHeight="32" horizon="2" imageWidth="64" 
-         imageHeight="128" horizontal="1" layerName="foreground">
-  
+<tileset  imagePath="TestTile.png" tileWidth="32" tileHeight="32" horizon="2" imageWidth="64" imageHeight="128" horizontal="1">
+
   <objects>
-  
     <objectgroup name="collisions">
       <object type="AllCollide" oid="0"/>
       <object type="TopCollide" oid="1"/>
     </objectgroup>
-    
+
     <objectgroup name="spawns">
       <object type="Player" oid="3"/>
     </objectgroup>
-  
+
   </objects>
+
+  <!--<layer name="terrain" emptyTile="6">
+    
+    
+  </layer>-->
   
-  <tile id="0" oid="0">
-    <north>
-      <nextTile>0</nextTile>
-      <nextTile>1</nextTile>
-    </north>
-  </tile>
+  <layer name="foreground" emptyTile="6" falseTile="7" startTile="8">
+    <tile id="0" oid="0">
+      <north>
+        <nextTile>0</nextTile>
+        <nextTile>1</nextTile>
+      </north>
+    </tile>
 
-  <tile id="1" oid="1">
-    <east>
-      <nextTile>4</nextTile>
-    </east>
-  </tile>
+    <tile id="1" oid="0">
+      <east>
+        <nextTile>4</nextTile>
+      </east>
+    </tile>
 
-  <tile id="2" oid="0">
-    <east>
-      <nextTile>5</nextTile>
-    </east>
-    <south>
-      <nextTile>2</nextTile>
-    </south>
-  </tile>
+    <tile id="2" oid="0">
+      <east>
+        <nextTile>11</nextTile>
+      </east>
+      <south>
+        <nextTile>2</nextTile>
+      </south>
+    </tile>
 
-  <tile id="3" oid="0">
-    <east>
-      <nextTile>5</nextTile>
-    </east>
-    <south>
-      <nextTile>2</nextTile>
-    </south>
-  </tile>
+    <tile id="3" oid="0">
+      <east>
+        <nextTile>11</nextTile>
+      </east>
+      <south>
+        <nextTile>2</nextTile>
+      </south>
+    </tile>
 
-  <tile id="4" oid="0">
-    <east>
-      <nextTile>4</nextTile>
-      <nextTile>3</nextTile>
-    </east>
-  </tile>
+    <tile id="4" oid="0">
+      <east>
+        <nextTile>4</nextTile>
+        <nextTile>3</nextTile>
+      </east>
+    </tile>
 
-  <tile id="5" oid="-1">
-   <east>
-      <nextTile>0</nextTile>
-    </east>
-  </tile>
+    <tile id="8" oid="3">
+      <south>
+        <nextTile>4</nextTile>
+      </south>
+    </tile>
 
-  <tile id="8" oid="3">
-    <south>
-      <nextTile>4</nextTile>
-    </south>
-  </tile>
+    <tile id="9" oid="-1">
+      <east>
+        <nextTile>0</nextTile>
+        <nextTile>1</nextTile>
+        <nextTile>10</nextTile>
+      </east>
+    </tile>
+
+    <tile id="10" oid="-1">
+      <east>
+        <nextTile>0</nextTile>
+        <nextTile>1</nextTile>
+      </east>
+    </tile>
+
+    <tile id="11" oid="-1">
+      <east>
+        <nextTile>0</nextTile>
+        <nextTile>1</nextTile>
+        <nextTile>9</nextTile>
+        <nextTile>10</nextTile>
+
+      </east>
+    </tile>
+  </layer>
+  
 </tileset>

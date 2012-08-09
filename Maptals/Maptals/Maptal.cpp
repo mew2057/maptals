@@ -25,9 +25,14 @@ Maptal::Maptal(int width, int height, TileSet tSet)
     setHeight(height);
     setTileSet(tSet);
 
-    matrix = std::vector<std::vector<int> >(height, std::vector<int>(width));
+    int numLayers = tSet.getNumLayers();
 
-    zeroMatrix();
+    for (int i=0;i<numLayers;i++)
+    {
+        matrices.insert(std::pair<int,std::vector<std::vector<int> > >(i, std::vector<std::vector<int> > (height, std::vector<int>(width))));
+    }
+
+    zeroMatrices();
 }
 
         
@@ -51,26 +56,35 @@ void Maptal::setWidth(int _width)
     width = _width;
 }
 
-void Maptal::zeroMatrix()
+void Maptal::zeroMatrices()
 {
-    for (unsigned int y =0; y<matrix.size();y++)
+    int emptyTile;
+    for(int i=0; i<matrices.size(); i++)
     {
-        for(unsigned int x=0; x< matrix[y].size(); x++)
+        emptyTile = tileSet.getLayer(i).getEmptyTile();
+        for (unsigned int y =0; y<matrices[i].size();y++)
         {
-            matrix[y][x]=tileSet.getEmptyTile();
+            for(unsigned int x=0; x< matrices[i][y].size(); x++)
+            {
+                matrices[i][y][x]=emptyTile;
+            }
         }
     }
     
 }
 
-void Maptal::resizeMatrix()
+void Maptal::resizeMatrices()
 {
-    matrix.resize(height, std::vector<int>(width));
+    for(int i=0; i<matrices.size(); i++)
+    {
+        matrices[i].resize(height, std::vector<int>(width));
+    }
 }
 
+//!DEPRECATED
 std::vector<std::vector<int> > Maptal::get2DMap()
 {
-    return matrix;
+    return matrices[0];
 }
 
 void Maptal::objectsFromVector(std::vector<MapObject> objects, 
@@ -93,7 +107,6 @@ void Maptal::objectsFromVector(std::vector<MapObject> objects,
         //******************************************************* 
         subNodePtr=rootNodePtr->first_node("objectgroup");
 
-        //XXX Is there a more efficient way to do this?
         //! rapidxml has no xpath query support so I have to include this to allow for multiple object groups.
         while (subNodePtr !=0)
         {         
@@ -130,10 +143,24 @@ void Maptal::objectsFromVector(std::vector<MapObject> objects,
     }    
 }
 
-std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int> > matrix,TileSet tiles)
+std::vector<MapObject> Maptal::generateObjectVector(std::map<int, std::vector<std::vector<int> > >matrices,TileSet tiles)
+{
+   //! The vector of valid map object gorups or singletons.
+   std::vector<MapObject> objects;
+
+   for(int i = 0; i < matrices.size(); i++)
+   {
+       generateObjectVector(matrices[i], &objects, tileSet.getLayer(i));
+   }
+
+   return objects;
+}
+
+
+void Maptal::generateObjectVector(std::vector<std::vector<int> > matrix,std::vector<MapObject> * objects,TileLayer layer)
 {
     //! The tile id to be ignored in searching for objects.
-   int empty = tiles.getEmptyTile();
+   int empty = layer.getEmptyTile();
    
    //! oid placeholders.
    int currentoid=-1, previousoid=-1;
@@ -143,9 +170,6 @@ std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>
 
    //! Map objects used to ensure the tightest possible groupings.
    MapObject * currentGroup=new MapObject(), * previousGroup=new MapObject(), tempObject;
-
-   //! The vector of valid map object gorups or singletons.
-   std::vector<MapObject> objects;
    
    //! The matrix of objects that may benefit from vertical grouping.
    std::vector<std::vector<MapObject> > singularObjects= std::vector<std::vector<MapObject> >(matrix[0].size());
@@ -159,7 +183,7 @@ std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>
            // Else If an object is "buffered" place it in the respective collection.
            if(matrix[y][x] != empty)
            {
-               currentoid = tiles.getTileID(matrix[y][x])->getOID();
+               currentoid = layer.getTileID(matrix[y][x])->getOID();
                /*
                 * If An object is in the "buffer" and the current and previous oids match expand the group.
                 * Else place the current object in either the objects vector or singular matrix 
@@ -179,7 +203,7 @@ std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>
                    // If an object is present use grouped to select the correct structure to place it in.
                    if(grouped && bufferedObject)
                    {
-                       objects.push_back(*currentGroup);
+                       objects->push_back(*currentGroup);
                        grouped=!grouped;
                    }
                    else if(bufferedObject)
@@ -202,7 +226,7 @@ std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>
            {
                    if(grouped)
                    {
-                       objects.push_back(*currentGroup);
+                       objects->push_back(*currentGroup);
                        grouped=!grouped;
                    }
                    else
@@ -218,7 +242,7 @@ std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>
        {
            if(grouped)
            {
-               objects.push_back(*currentGroup);
+               objects->push_back(*currentGroup);
                grouped=false;
            }
            else
@@ -253,7 +277,7 @@ std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>
            }
            else if(bufferedObject)
            {
-               objects.push_back(*previousGroup);
+               objects->push_back(*previousGroup);
            }
 
            // The current is now the previous, and there is at least one object in the row.
@@ -264,13 +288,15 @@ std::vector<MapObject> Maptal::generateObjectVector(std::vector<std::vector<int>
        // If an object is still in the "buffer" make sure it makes it to the objects vector. (ensures single objects on a row make it to the vector)
        if(bufferedObject)
        {
-           objects.push_back(*previousGroup); 
+           objects->push_back(*previousGroup); 
            bufferedObject=false;
        }
    }
-
-   return objects;
 }
+
+
+
+
 
 std::string  Maptal::base64Encode(std::vector<std::vector<int> > matrix, int falseTile)
 {
@@ -364,36 +390,40 @@ void Maptal::toTMX(const char * fileDestination)
         //**********************************
     rootNodePtr->append_node(subNodePtr);
 
-    objectsFromVector(generateObjectVector(matrix, tileSet), &tileSet, rootNodePtr,&tmx);
+    objectsFromVector(generateObjectVector(matrices, tileSet), &tileSet, rootNodePtr,&tmx);
 
     //**********************************
     //! Layer node creation.
     //**********************************
-    subNodePtr = tmx.allocate_node(rapidxml::node_element, "layer");
-    subNodePtr->append_attribute(tmx.allocate_attribute("name",tmx.allocate_string(tileSet.getLayerName().c_str())));
-    subNodePtr->append_attribute(tmx.allocate_attribute("width", intToString(width,&tmx)));
-    subNodePtr->append_attribute(tmx.allocate_attribute("height",  intToString(height,&tmx)));  
 
-            //**********************************
-            //! Data node creation.
-            //**********************************
-            rapidxml::xml_node<char> * dataNodePtr = tmx.allocate_node(rapidxml::node_element, "data");
+    for(int layer=0;layer<matrices.size();layer++)
+    {
+        subNodePtr = tmx.allocate_node(rapidxml::node_element, "layer");
+        subNodePtr->append_attribute(tmx.allocate_attribute("name",tmx.allocate_string(tileSet.getLayer(layer).getLayerName().c_str())));
+        subNodePtr->append_attribute(tmx.allocate_attribute("width", intToString(width,&tmx)));
+        subNodePtr->append_attribute(tmx.allocate_attribute("height",  intToString(height,&tmx)));  
 
-            dataNodePtr->append_attribute(tmx.allocate_attribute("encoding","base64"));
-            dataNodePtr->append_attribute(tmx.allocate_attribute("compression","zlib"));
+        //**********************************
+        //! Data node creation.
+        //**********************************
+        rapidxml::xml_node<char> * dataNodePtr = tmx.allocate_node(rapidxml::node_element, "data");
+
+        dataNodePtr->append_attribute(tmx.allocate_attribute("encoding","base64"));
+        dataNodePtr->append_attribute(tmx.allocate_attribute("compression","zlib"));
             
-                //**********************************
-                //! Map data encoding.
-                //**********************************
-                dataNodePtr->value(tmx.allocate_string(base64Encode(matrix,tileSet.getFalseTile()).c_str()));
+        //**********************************
+        //! Map data encoding.
+        //**********************************
+        dataNodePtr->value(tmx.allocate_string(base64Encode(matrices[layer],tileSet.getLayer(layer).getFalseTile()).c_str()));
 
-                //**********************************
+        //**********************************
 
-            //**********************************
+        //**********************************
         subNodePtr->append_node(dataNodePtr);
-    //**********************************
-    rootNodePtr->append_node(subNodePtr);
-
+    
+        //**********************************
+        rootNodePtr->append_node(subNodePtr);
+    }
    
     std::ofstream tmxFile;
     tmxFile.open(fileDestination);

@@ -77,8 +77,9 @@ public:
     virtual void generate2DMap(int maxDeviation=0, int minDeviation=0)=0;        
 
     /*!
+     *!\deprecated
      * \brief The gettor for the matrix, ideal for reusing the map for respawn. 
-     * \return The map matrix, performs no procedural operation to recieve the map.
+     * \return The map matrix, performs no procedural operation to recieve the map. 
      */
     std::vector<std::vector<int> > get2DMap();  
 protected:
@@ -101,19 +102,19 @@ protected:
     TileSet tileSet;
 
     /*
-     *! \brief A matrix with dimensions height by width or matrix[height][width], containing a mapping of tileIDs.
+     *! \brief A collection of layers with dimensions height by width or matrix[height][width], containing a mapping of tileIDs.
      */
-    std::vector<std::vector<int> > matrix;
+    std::map<int, std::vector<std::vector<int> > > matrices;
 
     /*
      *! \brief Zeroes the matrices associated with the Maptal object with the "empty tile" value of the tileSet.
      */
-    void zeroMatrix();
+    void zeroMatrices();
     
     /*
      *! \brief Resizes the matrices associated with the Maptal object to its height and width fields.
      */
-    void resizeMatrix();
+    void resizeMatrices();
 private:
     /*
      *! \brief Appends objects within an object vector as children to the root node supplied in the function call. [For toTMX]
@@ -129,11 +130,15 @@ private:
 
     /*
      *! \brief Generates a vector of MapObjects based on the supplied tileID matrix that references the tileMap in the supplied TileSet. [For toTMX]
-     *! \param matrix A vector of a vector that holds a matrix of tileIDs
+     *! \param matrices A collection of map matrices.
      *! \param tiles Contains the tile specifications that are referenced by the contents of the matrix.
      *! \return A vector containing MapObjects that contain the oid, start x and y and the end x and y.
      */
-    std::vector<MapObject> generateObjectVector(std::vector<std::vector<int> > matrix,TileSet tiles);
+    std::vector<MapObject> generateObjectVector(std::map<int, std::vector<std::vector<int> > > matrices,TileSet tiles);
+
+
+    void generateObjectVector(std::vector<std::vector<int> > matrix,std::vector<MapObject> * objects,TileLayer layer);
+
 };
 
 #endif
