@@ -138,7 +138,7 @@ private:
 
     void generateObjectVector(std::vector<std::vector<int> > matrix,std::vector<MapObject> * objects,TileLayer layer);
     
-    std::string  Maptal::backgroundEncode(TileSet tSet,int height, int width);
+    std::string backgroundEncode(TileSet tSet,int height, int width);
 };
 
 #endif
