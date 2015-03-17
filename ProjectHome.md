@@ -1,0 +1,1 @@
+A C++ library designed to be used in conjunction with 2d platforming games: <a href='https://code.google.com/p/breaking-out/'>Breaking Out</a>.

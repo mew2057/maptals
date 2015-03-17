@@ -1,0 +1,29 @@
+Maptals was initially conceived for the iOS game Breaking Out that I had created during the first semester of the game design course. In my original treatment of the game I had outlined a level in which the player would navigate a cityscape at high speeds on a motorcycle. To adequately design a map to accommodate such speeds, however, would be difficult and would reduce the replay value (assuming I didn’t balance the difficulty properly). As such I began considering the creation of the procedural world generation library now known as Maptals.
+
+> My broad initial goals for the first milestone were as follows:
+
+  * Investigate several world generation algorithms and assess their viability for a 2d world.
+
+  * Implement at least one of these algorithms in C++.
+
+  * With the aforementioned implementation make it possible to use it in Breaking Out alongside my pre-existing code.
+
+  * Attempt to implement real time map generation.
+
+For the first goal I turned to the Procedural Content Generation Wiki (http://pcg.wikidot.com/). On the wiki I was introduced to algorithms such as simplex noise, some fractal map algorithms and the Drunken Walk. While all the procedural generation algorithms had their merits a lack of familiarity with the mathematics that drove the fractal procedural generators and the simplex noise algorithm I opted for the simpler Drunken Walk for my first target to implement.
+
+The first implementations of the Drunken Walk were laughable at best. The maps produced by trial runs weren’t terribly amazing and it took some degree of trial and error before I began sculpting maps that were at the level of the current implementation. In fact, through this trial and error I stumbled upon my current notion that drives the Drunken Walk in Maptals at the time of writing the introduction of what I call the tile set grammar which drives the Drunken Walk at present.
+
+In the process of implementing I also added some convenience functions and objects that allowed for quick conversions of the generated map to the TMX file format that I use in Breaking Out for maps. As a result the final bullet was a only a matter of fixing GCC compiler issues when I ported the library for use on iOS. At the time of writing the DrunkenWalk is performing admirably generating and running tile maps measuring 6x251 smoothly (with the ability to grow far larger).
+
+Finally, I have been unable to adequately devise a manner in which I may generate the map procedurally as the player moves through it. Perhaps another algorithm may provide a better solution to this issue, but at present this is a pitfall of the way I have implemented my algorithm. In the future I would like to explore this prospect more (perhaps in a future milestone)
+
+While I have achieved most of the goals in the first major milestone on this project there is still a great deal more I would like to do with this project:
+
+  * I need to implement an algorithm that allows for an even distribution of objects and enemies across the map as the Drunken Walk is effectively a platform generating algorithm at present.
+
+  * Add a pass that “beautifies” the maps, fixing aesthetic issues such as hanging tiles and awkward ending tiles.
+
+  * Implement different procedural algorithms to provide for different game types that may be focused on things other than.
+
+Additionally, I need to experiment with more complicated tile sets and really see the limits of the library as it stands, as I found I did not have enough time to do this adequately (although I did change up the way my current tile set works a few times in reaching this milestone).  I look forward to seeing where this project goes in the coming months and what someone else may do with it upon stumbling upon it.
